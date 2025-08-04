@@ -5,6 +5,7 @@ import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
+import ThemeToggle from './theme-toggle'
 
 export const ShowToast = () => {
    return (
@@ -14,21 +15,22 @@ export const ShowToast = () => {
 				<CardDescription>Click any button below to display a toast notification.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div className="flex flex-col gap-2">
+				<div className='flex flex-col gap-2'>
 					<Label>Title</Label>
-					<Input placeholder="Enter title" />
+					<Input placeholder='Enter title' />
 					<Label>Description</Label>
-					<Input placeholder="Enter description" />
+					<Input placeholder='Enter description' />
+					<ThemeToggle />
 				</div>
 			</CardContent>
-			<CardFooter className="flex items-center gap-3">
-				<Button onClick={() => toast.success('Hello you clicked the button')} size="lg" variant="default">
+			<CardFooter className='flex items-center gap-3'>
+				<Button onClick={() => toast.success('Hello you clicked the button')} size='lg' variant='default'>
 					Show toast
 				</Button>
-				<Button onClick={() => toast.success('Hello you clicked the button')} size="default" variant="secondary">
+				<Button onClick={() => toast.success('Hello you clicked the button')} size='default' variant='secondary'>
 					Show toast
 				</Button>
-				<Button onClick={() => toast.success('Hello you clicked the button')} size="sm" variant="ghost">
+				<Button onClick={() => toast.success('Hello you clicked the button')} size='sm' variant='ghost'>
 					Show toast
 				</Button>
 			</CardFooter>
