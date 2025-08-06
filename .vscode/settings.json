@@ -1,10 +1,10 @@
 {
-	"cSpell.words": ["postgres", "reposted", "supabase"],
+	"cSpell.words": ["jego", "postgres", "reposted", "supabase"],
 	"typescript.preferences.autoImportSpecifierExcludeRegexes": [
 		"**/dist/",
 		"**/build/",
 		"@radix-ui/*",
 		"node:test",
-		"next/router",
+		"next/router"
 	]
 }
