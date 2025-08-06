@@ -1,20 +1,16 @@
-import LogoutButton from '@/components/base/logout-button'
-import ThemeToggle from '@/components/base/theme-toggle'
-import UserOptions from '@/components/base/user-options'
-import { Card, CardContent } from '@/components/ui/card'
+import { ChartAreaInteractive } from '@/components/dashboard/chart-area-interactive'
+import { DataTable } from '@/components/dashboard/data-table'
+import { SectionCards } from '@/components/dashboard/section-cards'
+import data from '@/lib/data.json'
 
 export default function UserPage() {
 	return (
-		<Card>
-			<CardContent className='relative'>
-				<div className='flex flex-col gap-2'>
-					<UserOptions />
-				</div>
-				<div className='absolute -top-2 right-2'>
-					<ThemeToggle />
-					<LogoutButton />
-				</div>
-			</CardContent>
-		</Card>
+		<>
+			<SectionCards />
+			<div className='px-4 lg:px-6'>
+				<ChartAreaInteractive />
+			</div>
+			<DataTable data={data} />
+		</>
 	)
 }
