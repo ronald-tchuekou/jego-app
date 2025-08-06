@@ -1,43 +1,31 @@
 'use server'
 
-import actionClient from '@/lib/safe-action'
+import { AUTH_COOKIE_EXPIRES_AT, AUTH_COOKIE_NAME } from '@/lib/constants'
+import { actionClient } from '@/lib/safe-action'
+import AuthService from '@/services/auth-service'
+import { cookies } from 'next/headers'
 import { resetPasswordSchema } from './schema'
 
 export const resetPasswordAction = actionClient
-	.schema(resetPasswordSchema)
-	.metadata({ actionName: 'resetPassword' })
+	.metadata({ actionName: 'resetPasswordAction' })
+	.inputSchema(resetPasswordSchema)
 	.action(async ({ parsedInput }) => {
-		const { password, token } = parsedInput
+		const response = await AuthService.resetPassword(parsedInput)
 
-		// Simulate API call delay
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		const cookieStore = await cookies()
 
-		// Mock reset password logic
-		// In a real app, you would:
-		// 1. Validate the reset token and check if it's not expired
-		// 2. Hash the new password
-		// 3. Update the user's password in the database
-		// 4. Invalidate the reset token
-		// 5. Optionally, invalidate all existing sessions
+		const payload = JSON.stringify(response)
 
-		// For demo purposes, simulate different scenarios
-		if (token === 'invalid_token') {
-			return {
-				success: false,
-				error: 'Jeton de réinitialisation invalide ou expiré. Veuillez demander une nouvelle réinitialisation de mot de passe.',
-			}
-		}
+		cookieStore.set({
+			name: AUTH_COOKIE_NAME,
+			value: payload,
+			httpOnly: true,
+			expires: AUTH_COOKIE_EXPIRES_AT,
+			path: '/',
+		})
 
-		if (token === 'expired_token') {
-			return {
-				success: false,
-				error: 'Le jeton de réinitialisation a expiré. Veuillez demander une nouvelle réinitialisation de mot de passe.',
-			}
-		}
-
-		// Simulate successful password reset
 		return {
 			success: true,
-			message: 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.',
+			message: 'Votre mot de passe a été réinitialisé avec succès. Redirection vers votre compte...',
 		}
 	})
