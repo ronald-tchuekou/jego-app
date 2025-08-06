@@ -66,6 +66,15 @@
   --shadow-opacity: var(--shadow-opacity);
   --color-shadow-color: var(--shadow-color);
   --color-destructive-foreground: var(--destructive-foreground);
+  --animate-ripple: ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite;
+  @keyframes ripple {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+    }
+  }
 }
 
 :root {
@@ -128,9 +137,9 @@
   --background: oklch(0.2438 0.0061 17.5816);
   --foreground: oklch(0.9430 0.0286 17.6699);
   --card: oklch(0.2304 0.0111 17.9835);
-  --card-foreground: oklch(0.9299 0.0334 272.7879);
+  --card-foreground: oklch(0.9430 0.0286 17.6699);
   --popover: oklch(0.2304 0.0111 17.9835);
-  --popover-foreground: oklch(0.9299 0.0334 272.7879);
+  --popover-foreground: oklch(0.9430 0.0286 17.6699);
   --primary: oklch(0.5770 0.2450 27.3250);
   --primary-foreground: oklch(0.9850 0.0020 247.8390);
   --secondary: oklch(0.2461 0.0389 25.3600);

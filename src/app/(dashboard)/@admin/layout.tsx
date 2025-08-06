@@ -5,5 +5,10 @@ export default function AdminLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	return <main className={``}>{children}</main>
+	return (
+		<div className={`p-10`}>
+			<h1 className='text-2xl font-bold'>Admin Dashboard</h1>
+			{children}
+		</div>
+	)
 }

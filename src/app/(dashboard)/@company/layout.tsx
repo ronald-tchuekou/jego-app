@@ -5,5 +5,10 @@ export default function CompanyLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	return <main className={``}>{children}</main>
+	return (
+		<div className={`p-10`}>
+			<h1 className='text-2xl font-bold'>Company Dashboard</h1>
+			{children}
+		</div>
+	)
 }
