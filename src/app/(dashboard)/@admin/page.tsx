@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 
 export default function AdminPage() {
 	return (
-		<Card>
+		<Card className='m-5'>
 			<CardContent className='relative'>
 				<div className='flex flex-col gap-2'>
 					<UserOptions />
