@@ -12,9 +12,9 @@ import { AUTH_COOKIE_NAME } from '@/lib/constants'
 import UserService, { UserModel, UserRole } from '@/services/user-service'
 
 interface UserDetailPageProps {
-	params: {
+	params: Promise<{
 		id: string
-	}
+	}>
 }
 
 async function getUserData(id: string): Promise<UserModel | null> {
@@ -76,7 +76,8 @@ function formatDate(date: string | null) {
 }
 
 export default async function UserDetailPage({ params }: UserDetailPageProps) {
-	const user = await getUserData(params.id)
+	const { id } = await params
+	const user = await getUserData(id)
 
 	if (!user) {
 		notFound()
