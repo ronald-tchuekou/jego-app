@@ -1,5 +1,5 @@
 import fetchHelper from '@/lib/helpers/fetch-helper'
-import { DateTime } from 'luxon'
+import { objectToQueryString } from '@/lib/utils'
 import { CompanyModel } from './company-service'
 import { PostModel } from './post-service'
 
@@ -26,11 +26,11 @@ export type UserModel = {
 	role: UserRole
 	companyId: string | null
 	profileImage: string | null
-	verifiedAt: DateTime | null
-	lastLoginAt: DateTime | null
-	blockedAt: DateTime | null
-	createdAt: DateTime
-	updatedAt: DateTime
+	verifiedAt: string | null
+	lastLoginAt: string | null
+	blockedAt: string | null
+	createdAt: string
+	updatedAt: string
 	company?: CompanyModel
 	posts?: PostModel[]
 }
@@ -53,6 +53,37 @@ const UserService = {
 		const response = await fetchHelper<{ user: UserModel }>('/me', {
 			method: 'PUT',
 			body: JSON.stringify(data),
+		})
+		return response.user
+	},
+	async getUsers(filter: FilterQuery, token: string) {
+		const query = objectToQueryString(filter)
+		const response = await fetchHelper<PaginateResponse<UserModel>>(`/users?${query}`, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		return response
+	},
+	async getUserById(id: string, token: string) {
+		const response = await fetchHelper<UserModel>(`/users/${id}`, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		return response
+	},
+	async deleteUser(id: string) {
+		const response = await fetchHelper<{ message: string }>(`/users/${id}`, {
+			method: 'DELETE',
+		})
+		return response
+	},
+	async toggleBlockUser(id: string) {
+		const response = await fetchHelper<{ user: UserModel }>(`/users/${id}/toggle-block`, {
+			method: 'PATCH',
 		})
 		return response.user
 	},

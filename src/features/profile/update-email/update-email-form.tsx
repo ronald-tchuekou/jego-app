@@ -107,8 +107,8 @@ export default function UpdateEmailForm() {
 								)}
 							/>
 
-							<div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
-								<p className='text-sm text-yellow-800'>
+							<div className='bg-orange-500/10 border border-orange-500/20 rounded-lg p-4'>
+								<p className='text-sm text-orange-500'>
 									<strong>Important:</strong> Un code de vérification sera envoyé à votre nouvelle adresse
 									e-mail. Vous devrez confirmer le changement avant qu&apos;il ne soit effectif.
 								</p>

@@ -185,9 +185,9 @@ export default function UpdatePasswordForm() {
 							)}
 						/>
 
-						<div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
-							<h4 className='font-medium text-blue-900 mb-2'>Conseils de sécurité :</h4>
-							<ul className='text-sm text-blue-800 space-y-1'>
+						<div className='bg-blue-500/10 border border-blue-500/20 rounded-lg p-4'>
+							<h4 className='font-medium text-blue-500 mb-2'>Conseils de sécurité :</h4>
+							<ul className='text-sm text-blue-500 space-y-1'>
 								<li>• Utilisez un mot de passe unique que vous n&apos;utilisez nulle part ailleurs</li>
 								<li>• Combinez lettres majuscules, minuscules, chiffres et symboles</li>
 								<li>• Évitez les informations personnelles facilement devinables</li>

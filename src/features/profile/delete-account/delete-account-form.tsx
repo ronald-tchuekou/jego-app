@@ -55,24 +55,24 @@ export default function DeleteAccountForm({ userEmail }: DeleteAccountFormProps)
 	}
 
 	return (
-		<Card className='border-red-200 bg-red-50/50'>
+		<Card className='border-destructive'>
 			<CardHeader>
-				<CardTitle className='flex items-center gap-2 text-red-700'>
+				<CardTitle className='flex items-center gap-2 text-destructive'>
 					<AlertTriangle className='w-5 h-5' />
 					Zone de danger
 				</CardTitle>
-				<CardDescription className='text-red-600'>
+				<CardDescription>
 					La suppression de votre compte est irréversible. Toutes vos données seront définitivement perdues.
 				</CardDescription>
 			</CardHeader>
 
 			<CardContent>
 				<div className='space-y-6'>
-					<div className='bg-red-100 border border-red-300 rounded-lg p-4'>
-						<h4 className='font-medium text-red-900 mb-2'>
+					<div className='bg-destructive/5 border border-destructive/20 rounded-lg p-4'>
+						<h4 className='font-medium text-destructive mb-2'>
 							Que se passe-t-il quand vous supprimez votre compte ?
 						</h4>
-						<ul className='text-sm text-red-800 space-y-1'>
+						<ul className='text-sm text-destructive space-y-1'>
 							<li>• Votre profil et toutes vos données personnelles seront supprimés</li>
 							<li>• Vos publications, commentaires et interactions seront supprimés</li>
 							<li>• Vous perdrez l&apos;accès à tous vos contenus et historiques</li>
