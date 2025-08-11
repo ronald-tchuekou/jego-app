@@ -18,7 +18,7 @@ export const updateImageProfileAction = authenticatedActionClient
 		const formData = new FormData()
 		formData.append('image', parsedInput.image)
 
-		const response = await fetchHelper<{ user: UserModel }>('/me/image-profile', {
+		const { data, error } = await fetchHelper<{ user: UserModel }>('/me/image-profile', {
 			method: 'POST',
 			body: formData,
 			headers: {
@@ -26,7 +26,9 @@ export const updateImageProfileAction = authenticatedActionClient
 			},
 		})
 
-		if (!response.user) {
+		if (error) throw new Error(error)
+
+		if (!data?.user) {
 			return {
 				success: false,
 				message: 'Une erreur est survenue lors de la mise à jour de la photo de profil',
@@ -44,12 +46,12 @@ export const updateUserInfoAction = authenticatedActionClient
 	.inputSchema(updateUserInfoSchema)
 	.metadata({ actionName: 'updateUserInfoAction' })
 	.action(async ({ parsedInput, ctx }) => {
-		const response = await UserService.updateMe(parsedInput, ctx.token)
+		const data = await UserService.updateMe(parsedInput, ctx.token)
 
 		return {
 			success: true,
 			message: 'Informations mises à jour avec succès',
-			data: response,
+			data,
 		}
 	})
 
@@ -58,11 +60,11 @@ export const updateEmailAction = authenticatedActionClient
 	.inputSchema(updateEmailSchema)
 	.metadata({ actionName: 'updateEmailAction' })
 	.action(async ({ parsedInput, ctx }) => {
-		const response = await UserService.updateEmail(parsedInput, ctx.token)
+		const data = await UserService.updateEmail(parsedInput, ctx.token)
 
 		return {
 			success: true,
-			data: response,
+			data,
 			message: 'Code de vérification envoyé à votre nouvelle adresse e-mail',
 		}
 	})
@@ -72,11 +74,11 @@ export const verifyEmailChangeAction = authenticatedActionClient
 	.inputSchema(verifyEmailChangeSchema)
 	.metadata({ actionName: 'verifyEmailChangeAction' })
 	.action(async ({ parsedInput, ctx }) => {
-		const response = await UserService.verifyNewEmail(parsedInput.verificationCode, ctx.token)
+		const data = await UserService.verifyNewEmail(parsedInput.verificationCode, ctx.token)
 
 		return {
 			success: true,
-			data: response,
+			data,
 			message: 'Adresse e-mail mise à jour avec succès',
 		}
 	})

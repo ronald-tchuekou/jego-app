@@ -11,11 +11,8 @@ export const loginAction = actionClient
 	.metadata({ actionName: 'loginAction' })
 	.action(async ({ parsedInput }) => {
 		const response = await AuthService.login(parsedInput)
-
 		const cookieStore = await cookies()
-
 		const payload = JSON.stringify(response)
-
 		cookieStore.set({
 			name: AUTH_COOKIE_NAME,
 			value: payload,

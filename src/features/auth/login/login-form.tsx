@@ -28,6 +28,7 @@ export default function LoginForm() {
 			}
 		},
 		onError: ({ error }) => {
+			console.error(error)
 			toast.error(error.serverError || 'Une erreur est survenue', { duration: 8000 })
 		},
 	})

@@ -10,11 +10,19 @@ export const actionClient = createSafeActionClient({
 	defineMetadataSchema() {
 		return z.object({ actionName: z.string() })
 	},
+	handleServerError(error) {
+		console.error('Server error: ', error)
+		return error.message
+	},
 })
 
 export const authenticatedActionClient = createSafeActionClient({
 	defineMetadataSchema() {
 		return z.object({ actionName: z.string() })
+	},
+	handleServerError(error) {
+		console.error('Server error: ', error)
+		return error.message
 	},
 }).use(async ({ next }) => {
 	try {

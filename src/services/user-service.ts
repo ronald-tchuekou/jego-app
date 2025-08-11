@@ -38,42 +38,46 @@ export type UserModel = {
 
 const UserService = {
 	async getMe() {
-		const response = await fetchHelper<{ user: UserModel }>('/me')
-		return response.user
+		const { data, error } = await fetchHelper<{ user: UserModel }>('/me')
+		if (error) throw new Error(error)
+		return data?.user
 	},
 	async revalidateMe(token: string) {
-		const response = await fetchHelper<Auth>('/me/revalidate-token', {
+		const { data, error } = await fetchHelper<Auth>('/me/revalidate-token', {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 		})
-		return response
+		if (error) throw new Error(error)
+		return data
 	},
-	async updateMe(data: Partial<UserModel>, token: string) {
-		const response = await fetchHelper<{ user: UserModel }>('/me', {
+	async updateMe(body: Partial<UserModel>, token: string) {
+		const { data, error } = await fetchHelper<{ user: UserModel }>('/me', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify(body),
 		})
-		return response.user
+		if (error) throw new Error(error)
+		return data?.user
 	},
-	async updateEmail(data: { email: string; password: string }, token: string) {
-		const response = await fetchHelper<{ user: UserModel; message: string }>('/me/update-email', {
+	async updateEmail(body: { email: string; password: string }, token: string) {
+		const { data, error } = await fetchHelper<{ user: UserModel; message: string }>('/me/update-email', {
 			method: 'POST',
-			body: JSON.stringify(data),
+			body: JSON.stringify(body),
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 		})
-		return response
+		if (error) throw new Error(error)
+		return data
 	},
 	async verifyNewEmail(code: string, token: string) {
-		const response = await fetchHelper<{ user: UserModel; message: string }>('/me/verify-new-email', {
+		const { data, error } = await fetchHelper<{ user: UserModel; message: string }>('/me/verify-new-email', {
 			method: 'POST',
 			body: JSON.stringify({ token: code }),
 			headers: {
@@ -81,38 +85,43 @@ const UserService = {
 				Authorization: `Bearer ${token}`,
 			},
 		})
-		return response
+		if (error) throw new Error(error)
+		return data
 	},
 	async getUsers(filter: FilterQuery, token: string) {
 		const query = objectToQueryString(filter)
-		const response = await fetchHelper<PaginateResponse<UserModel>>(`/users?${query}`, {
+		const { data, error } = await fetchHelper<PaginateResponse<UserModel>>(`/users?${query}`, {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 		})
-		return response
+		if (error) throw new Error(error)
+		return data
 	},
 	async getUserById(id: string, token: string) {
-		const response = await fetchHelper<UserModel>(`/users/${id}`, {
+		const { data, error } = await fetchHelper<UserModel>(`/users/${id}`, {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 		})
-		return response
+		if (error) throw new Error(error)
+		return data
 	},
 	async deleteUser(id: string) {
-		const response = await fetchHelper<{ message: string }>(`/users/${id}`, {
+		const { data, error } = await fetchHelper<{ message: string }>(`/users/${id}`, {
 			method: 'DELETE',
 		})
-		return response
+		if (error) throw new Error(error)
+		return data
 	},
 	async toggleBlockUser(id: string) {
-		const response = await fetchHelper<{ user: UserModel }>(`/users/${id}/toggle-block`, {
+		const { data, error } = await fetchHelper<{ user: UserModel }>(`/users/${id}/toggle-block`, {
 			method: 'PATCH',
 		})
-		return response.user
+		if (error) throw new Error(error)
+		return data?.user
 	},
 }
 

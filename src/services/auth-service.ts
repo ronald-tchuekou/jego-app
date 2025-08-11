@@ -10,63 +10,85 @@ export type Auth = {
 
 const AuthService = {
 	login: async ({ email, password }: { email: string; password: string }) => {
-		const response = await fetchHelper<Auth>('/auth/login', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ email, password }),
-		})
-		return response
+		try {
+			const { data, error } = await fetchHelper<Auth>('/auth/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email, password }),
+			})
+
+			if (error) throw new Error(error)
+
+			return data
+		} catch (error: any) {
+			throw new Error(error.message)
+		}
 	},
 	register: async (body: RegisterSchema) => {
-		const response = await fetchHelper<Auth>('/auth/register', {
+		const { data, error } = await fetchHelper<Auth>('/auth/register', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(body),
 		})
-		return response
+
+		if (error) throw new Error(error)
+
+		return data
 	},
 	verifyEmail: async (token: string, userId: string) => {
-		const response = await fetchHelper<Auth>('/auth/verify-email', {
+		const { data, error } = await fetchHelper<Auth>('/auth/verify-email', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ token, userId }),
 		})
-		return response
+
+		if (error) throw new Error(error)
+
+		return data
 	},
 	logout: async (token: string) => {
-		const response = await fetchHelper<{ message: string }>('/auth/logout', {
+		const { data, error } = await fetchHelper<{ message: string }>('/auth/logout', {
 			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		})
-		return response
+
+		if (error) throw new Error(error)
+
+		return data
 	},
 	forgotPassword: async (email: string) => {
-		const response = await fetchHelper<{ message: string }>('/auth/forgot-password', {
+		const { data, error } = await fetchHelper<{ message: string }>('/auth/forgot-password', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ email }),
 		})
-		return response
+
+		if (error) throw new Error(error)
+
+		return data
 	},
 	resetPassword: async (body: ResetPasswordSchema) => {
-		const response = await fetchHelper<Auth>('/auth/reset-password', {
+		const { data, error } = await fetchHelper<Auth>('/auth/reset-password', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(body),
 		})
-		return response
+
+		if (error) throw new Error(error)
+
+		return data
 	},
 }
 

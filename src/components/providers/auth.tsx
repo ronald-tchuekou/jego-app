@@ -2,7 +2,7 @@
 
 import { Auth } from '@/services/auth-service'
 import { useAction } from 'next-safe-action/hooks'
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { revalidateUserAction } from './actions'
 
 const AuthContext = createContext<{ auth: Auth | null; revalidateAuth: VoidFunction }>({
@@ -21,7 +21,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children, auth: initialAuth }: { children: React.ReactNode; auth: Auth | null }) {
-	const [auth, setAuth] = useState<Auth | null>(initialAuth)
+	const [auth, setAuth] = useState<Auth | null>(null)
 
 	const { execute } = useAction(revalidateUserAction, {
 		onSuccess: (data) => {
@@ -32,6 +32,10 @@ export function AuthProvider({ children, auth: initialAuth }: { children: React.
 	const revalidateAuth = async () => {
 		execute()
 	}
+
+	useEffect(() => {
+		setAuth(initialAuth)
+	}, [initialAuth])
 
 	return <AuthContext value={{ auth, revalidateAuth }}>{children}</AuthContext>
 }
