@@ -4,6 +4,7 @@ import QueryProviders from '@/components/providers/query-provider'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { AUTH_COOKIE_NAME } from '@/lib/constants'
+import { Auth } from '@/services/auth-service'
 import '@/styles/style.css'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
@@ -29,7 +30,7 @@ export default async function RootLayout({
 }>) {
 	const cookieStore = await cookies()
 	const authKey = cookieStore.get(AUTH_COOKIE_NAME)?.value
-	const auth = authKey ? JSON.parse(authKey) : null
+	const auth = authKey ? (JSON.parse(authKey) as Auth) : null
 
 	return (
 		<html lang='fr'>

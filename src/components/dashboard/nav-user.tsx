@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
 import { DEFAULT_AVATAR } from '@/lib/constants'
+import env from '@/lib/env/client'
 import { confirmLogout } from '@/lib/stores/logout-modal-store'
 import { IconDashboard, IconDotsVertical, IconLogout, IconUserCircle } from '@tabler/icons-react'
 import Link from 'next/link'
@@ -24,6 +25,9 @@ type Props = {
 export function NavUser({ normal = false }: Props) {
 	const { auth } = useAuth()
 	const { isMobile } = useSidebar()
+	const user = auth?.user
+
+	const userProfile = user?.profileImage ? `${env.NEXT_PUBLIC_API_URL}/v1/${user?.profileImage}` : DEFAULT_AVATAR
 
 	return (
 		<SidebarMenu>
@@ -35,7 +39,7 @@ export function NavUser({ normal = false }: Props) {
 							className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
 						>
 							<Avatar className='size-10 rounded-full'>
-								<AvatarImage src={auth?.user.profileImage || DEFAULT_AVATAR} alt={auth?.user.displayName} />
+								<AvatarImage src={userProfile} alt={auth?.user.displayName} />
 								<AvatarFallback className='rounded-full'>
 									{auth?.user.displayName?.substring(0, 2).toUpperCase()}
 								</AvatarFallback>

@@ -1,5 +1,6 @@
 import fetchHelper from '@/lib/helpers/fetch-helper'
 import { objectToQueryString } from '@/lib/utils'
+import { Auth } from './auth-service'
 import { CompanyModel } from './company-service'
 import { PostModel } from './post-service'
 
@@ -41,20 +42,46 @@ const UserService = {
 		return response.user
 	},
 	async revalidateMe(token: string) {
-		const response = await fetchHelper<{ user: UserModel }>('/me/revalidate-token', {
+		const response = await fetchHelper<Auth>('/me/revalidate-token', {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 		})
-		return response.user
+		return response
 	},
-	async updateMe(data: Partial<UserModel>) {
+	async updateMe(data: Partial<UserModel>, token: string) {
 		const response = await fetchHelper<{ user: UserModel }>('/me', {
 			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			body: JSON.stringify(data),
 		})
 		return response.user
+	},
+	async updateEmail(data: { email: string; password: string }, token: string) {
+		const response = await fetchHelper<{ user: UserModel; message: string }>('/me/update-email', {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		return response
+	},
+	async verifyNewEmail(code: string, token: string) {
+		const response = await fetchHelper<{ user: UserModel; message: string }>('/me/verify-new-email', {
+			method: 'POST',
+			body: JSON.stringify({ token: code }),
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		return response
 	},
 	async getUsers(filter: FilterQuery, token: string) {
 		const query = objectToQueryString(filter)

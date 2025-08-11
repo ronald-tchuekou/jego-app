@@ -14,7 +14,7 @@ import { updateUserInfoAction } from '../actions'
 import { defaultUpdateUserInfoValue, updateUserInfoSchema, type UpdateUserInfoSchema } from './schema'
 
 export default function UpdateUserInfoForm() {
-	const { auth } = useAuth()
+	const { auth, revalidateAuth } = useAuth()
 	const user = auth?.user
 
 	const form = useForm<UpdateUserInfoSchema>({
@@ -36,6 +36,7 @@ export default function UpdateUserInfoForm() {
 		onSuccess: ({ data }) => {
 			if (data?.success) {
 				toast.success(data.message)
+				revalidateAuth()
 			}
 		},
 		onError: ({ error }) => {

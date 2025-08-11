@@ -1,9 +1,14 @@
 'use client'
 
 import { Auth } from '@/services/auth-service'
-import React, { createContext, useContext } from 'react'
+import { useAction } from 'next-safe-action/hooks'
+import React, { createContext, useContext, useState } from 'react'
+import { revalidateUserAction } from './actions'
 
-const AuthContext = createContext<{ auth: Auth | null }>({ auth: null })
+const AuthContext = createContext<{ auth: Auth | null; revalidateAuth: VoidFunction }>({
+	auth: null,
+	revalidateAuth: () => {},
+})
 
 export function useAuth() {
 	const context = useContext(AuthContext)
@@ -15,6 +20,18 @@ export function useAuth() {
 	return context
 }
 
-export function AuthProvider({ children, auth }: { children: React.ReactNode; auth: Auth | null }) {
-	return <AuthContext value={{ auth }}>{children}</AuthContext>
+export function AuthProvider({ children, auth: initialAuth }: { children: React.ReactNode; auth: Auth | null }) {
+	const [auth, setAuth] = useState<Auth | null>(initialAuth)
+
+	const { execute } = useAction(revalidateUserAction, {
+		onSuccess: (data) => {
+			setAuth(data.data)
+		},
+	})
+
+	const revalidateAuth = async () => {
+		execute()
+	}
+
+	return <AuthContext value={{ auth, revalidateAuth }}>{children}</AuthContext>
 }

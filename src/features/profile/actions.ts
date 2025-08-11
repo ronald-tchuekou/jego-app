@@ -1,6 +1,8 @@
 'use server'
 
-import { actionClient } from '@/lib/safe-action'
+import fetchHelper from '@/lib/helpers/fetch-helper'
+import { authenticatedActionClient } from '@/lib/safe-action'
+import UserService, { UserModel } from '@/services/user-service'
 import { redirect } from 'next/navigation'
 import { deleteAccountSchema } from './delete-account/schema'
 import { updateEmailSchema, verifyEmailChangeSchema } from './update-email/schema'
@@ -9,19 +11,28 @@ import { updatePasswordSchema } from './update-password/schema'
 import { updateUserInfoSchema } from './update-user-info/schema'
 
 // Update profile image action
-export const updateImageProfileAction = actionClient
+export const updateImageProfileAction = authenticatedActionClient
 	.inputSchema(updateImageProfileSchema)
 	.metadata({ actionName: 'updateImageProfileAction' })
-	.action(async ({ parsedInput }) => {
-		// TODO: Implement image upload logic
-		// This should handle file upload to your storage service (AWS S3, Cloudinary, etc.)
-		// and update user profile with new image URL
-		
-		console.log('Updating profile image:', parsedInput)
-		
-		// Simulate API call
-		await new Promise(resolve => setTimeout(resolve, 1000))
-		
+	.action(async ({ parsedInput, ctx }) => {
+		const formData = new FormData()
+		formData.append('image', parsedInput.image)
+
+		const response = await fetchHelper<{ user: UserModel }>('/me/image-profile', {
+			method: 'POST',
+			body: formData,
+			headers: {
+				Authorization: `Bearer ${ctx.token}`,
+			},
+		})
+
+		if (!response.user) {
+			return {
+				success: false,
+				message: 'Une erreur est survenue lors de la mise à jour de la photo de profil',
+			}
+		}
+
 		return {
 			success: true,
 			message: 'Photo de profil mise à jour avec succès',
@@ -29,82 +40,59 @@ export const updateImageProfileAction = actionClient
 	})
 
 // Update user info action
-export const updateUserInfoAction = actionClient
+export const updateUserInfoAction = authenticatedActionClient
 	.inputSchema(updateUserInfoSchema)
 	.metadata({ actionName: 'updateUserInfoAction' })
-	.action(async ({ parsedInput }) => {
-		// TODO: Implement user info update logic
-		// This should call your user service to update user information
-		
-		console.log('Updating user info:', parsedInput)
-		
-		// Simulate API call
-		await new Promise(resolve => setTimeout(resolve, 1000))
-		
+	.action(async ({ parsedInput, ctx }) => {
+		const response = await UserService.updateMe(parsedInput, ctx.token)
+
 		return {
 			success: true,
 			message: 'Informations mises à jour avec succès',
+			data: response,
 		}
 	})
 
 // Update email action (sends verification code)
-export const updateEmailAction = actionClient
+export const updateEmailAction = authenticatedActionClient
 	.inputSchema(updateEmailSchema)
 	.metadata({ actionName: 'updateEmailAction' })
-	.action(async ({ parsedInput }) => {
-		// TODO: Implement email update request logic
-		// This should:
-		// 1. Verify current password
-		// 2. Send verification code to new email
-		// 3. Store pending email change in database
-		
-		console.log('Requesting email update:', parsedInput)
-		
-		// Simulate API call
-		await new Promise(resolve => setTimeout(resolve, 1000))
-		
+	.action(async ({ parsedInput, ctx }) => {
+		const response = await UserService.updateEmail(parsedInput, ctx.token)
+
 		return {
 			success: true,
+			data: response,
 			message: 'Code de vérification envoyé à votre nouvelle adresse e-mail',
 		}
 	})
 
 // Verify email change action
-export const verifyEmailChangeAction = actionClient
-	.inputSchema(verifyEmailChangeSchema.extend({
-		email: updateEmailSchema.shape.email
-	}))
+export const verifyEmailChangeAction = authenticatedActionClient
+	.inputSchema(verifyEmailChangeSchema)
 	.metadata({ actionName: 'verifyEmailChangeAction' })
-	.action(async ({ parsedInput }) => {
-		// TODO: Implement email verification logic
-		// This should:
-		// 1. Verify the code
-		// 2. Update user email in database
-		// 3. Clear pending email change
-		
-		console.log('Verifying email change:', parsedInput)
-		
-		// Simulate API call
-		await new Promise(resolve => setTimeout(resolve, 1000))
-		
+	.action(async ({ parsedInput, ctx }) => {
+		const response = await UserService.verifyNewEmail(parsedInput.verificationCode, ctx.token)
+
 		return {
 			success: true,
+			data: response,
 			message: 'Adresse e-mail mise à jour avec succès',
 		}
 	})
 
 // Resend email verification action
-export const resendEmailVerificationAction = actionClient
+export const resendEmailVerificationAction = authenticatedActionClient
 	.inputSchema(updateEmailSchema.pick({ email: true }))
 	.metadata({ actionName: 'resendEmailVerificationAction' })
 	.action(async ({ parsedInput }) => {
 		// TODO: Implement resend verification code logic
-		
+
 		console.log('Resending verification code to:', parsedInput.email)
-		
+
 		// Simulate API call
-		await new Promise(resolve => setTimeout(resolve, 1000))
-		
+		await new Promise((resolve) => setTimeout(resolve, 1000))
+
 		return {
 			success: true,
 			message: 'Code de vérification renvoyé',
@@ -112,7 +100,7 @@ export const resendEmailVerificationAction = actionClient
 	})
 
 // Update password action
-export const updatePasswordAction = actionClient
+export const updatePasswordAction = authenticatedActionClient
 	.inputSchema(updatePasswordSchema)
 	.metadata({ actionName: 'updatePasswordAction' })
 	.action(async ({ parsedInput }) => {
@@ -135,7 +123,7 @@ export const updatePasswordAction = actionClient
 	})
 
 // Delete account action
-export const deleteAccountAction = actionClient
+export const deleteAccountAction = authenticatedActionClient
 	.inputSchema(deleteAccountSchema)
 	.metadata({ actionName: 'deleteAccountAction' })
 	.action(async ({ parsedInput }) => {

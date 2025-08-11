@@ -1,6 +1,7 @@
 'use client'
 
 import { IconInput } from '@/components/base/icon-input'
+import { useAuth } from '@/components/providers/auth'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -20,6 +21,8 @@ interface EmailVerificationModalProps {
 }
 
 export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }: EmailVerificationModalProps) {
+	const { revalidateAuth } = useAuth()
+
 	const form = useForm<VerifyEmailChangeSchema>({
 		resolver: zodResolver(verifyEmailChangeSchema),
 		defaultValues: defaultVerifyEmailChangeValue,
@@ -30,6 +33,7 @@ export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }:
 			if (data?.success) {
 				onSuccess()
 				form.reset()
+				revalidateAuth()
 			}
 		},
 		onError: ({ error }) => {
@@ -49,7 +53,7 @@ export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }:
 	})
 
 	const onSubmit = (data: VerifyEmailChangeSchema) => {
-		executeVerify({ ...data, email: newEmail })
+		executeVerify(data)
 	}
 
 	const handleResendCode = () => {

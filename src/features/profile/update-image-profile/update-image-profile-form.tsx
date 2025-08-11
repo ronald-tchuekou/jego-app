@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { DEFAULT_AVATAR } from '@/lib/constants'
+import env from '@/lib/env/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon, Upload } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
@@ -17,10 +18,12 @@ import { updateImageProfileAction } from '../actions'
 import { defaultUpdateImageProfileValue, updateImageProfileSchema, type UpdateImageProfileSchema } from './schema'
 
 export default function UpdateImageProfileForm() {
-	const { auth } = useAuth()
+	const { auth, revalidateAuth } = useAuth()
 	const user = auth?.user
 
-	const [previewUrl, setPreviewUrl] = useState<string | null>(user?.profileImage || DEFAULT_AVATAR)
+	const [previewUrl, setPreviewUrl] = useState<string | null>(
+		user?.profileImage ? `${env.NEXT_PUBLIC_API_URL}/v1/${user?.profileImage}` : DEFAULT_AVATAR
+	)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const form = useForm<UpdateImageProfileSchema>({
@@ -32,6 +35,7 @@ export default function UpdateImageProfileForm() {
 		onSuccess: ({ data }) => {
 			if (data?.success) {
 				toast.success(data.message)
+				revalidateAuth()
 			}
 		},
 		onError: ({ error }) => {
@@ -40,23 +44,7 @@ export default function UpdateImageProfileForm() {
 	})
 
 	const onSubmit = (data: UpdateImageProfileSchema) => {
-		const formData = new FormData()
-		formData.append('image', data.image)
-		execute({ image: data.image })
-	}
-
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0]
-		if (file) {
-			form.setValue('image', file)
-
-			// Create preview URL
-			const reader = new FileReader()
-			reader.onloadend = () => {
-				setPreviewUrl(reader.result as string)
-			}
-			reader.readAsDataURL(file)
-		}
+		execute(data)
 	}
 
 	const handleUploadClick = () => {
@@ -96,15 +84,31 @@ export default function UpdateImageProfileForm() {
 										<FormControl>
 											<div>
 												<Input
-													{...field}
 													ref={fileInputRef}
 													type='file'
 													accept='image/jpeg,image/png,image/webp'
 													className='hidden'
-													onChange={handleFileChange}
+													onChange={(e) => {
+														const file = e.target.files?.[0]
+														if (file) {
+															field.onChange(file)
+
+															// Create preview URL
+															const reader = new FileReader()
+															reader.onloadend = () => {
+																setPreviewUrl(reader.result as string)
+															}
+															reader.readAsDataURL(file)
+														}
+													}}
 												/>
-												<Button type='button' variant='outline' onClick={handleUploadClick}>
-													<Upload className='w-4 h-4 mr-2' />
+												<Button
+													type='button'
+													variant='outline'
+													onClick={handleUploadClick}
+													disabled={isPending}
+												>
+													<Upload />
 													Choisir une image
 												</Button>
 											</div>
@@ -117,10 +121,10 @@ export default function UpdateImageProfileForm() {
 
 						<div className='text-sm text-muted-foreground'>
 							<p>Formats acceptés: JPEG, PNG, WebP</p>
-							<p>Taille maximale: 5MB</p>
+							<p>Taille maximale: 2MB</p>
 						</div>
 
-						<Button type='submit' disabled={isPending || !form.watch('image')}>
+						<Button type='submit' disabled={isPending || !form.formState.isDirty}>
 							{isPending && <LoaderIcon className='animate-spin' />}
 							<span>Mettre à jour la photo</span>
 						</Button>
