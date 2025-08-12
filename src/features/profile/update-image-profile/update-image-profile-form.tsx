@@ -31,12 +31,8 @@ export default function UpdateImageProfileForm() {
 
 	const { execute, isPending } = useAction(updateImageProfileAction, {
 		onSuccess: ({ data }) => {
-			if (data?.success) {
-				toast.success(data.message)
-				revalidateAuth()
-			} else {
-				toast.error(data.message, { duration: 8000 })
-			}
+			toast.success(data.message)
+			revalidateAuth()
 		},
 		onError: ({ error }) => {
 			toast.error(error.serverError || 'Une erreur est survenue', { duration: 8000 })

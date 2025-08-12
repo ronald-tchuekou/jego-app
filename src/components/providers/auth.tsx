@@ -37,7 +37,7 @@ export function AuthProvider({ children, auth: initialAuth }: { children: React.
 		},
 	})
 
-	const revalidateAuth = async () => {
+	const revalidateAuth = () => {
 		execute()
 	}
 
