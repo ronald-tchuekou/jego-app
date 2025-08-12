@@ -34,6 +34,8 @@ export default function UpdateImageProfileForm() {
 			if (data?.success) {
 				toast.success(data.message)
 				revalidateAuth()
+			} else {
+				toast.error(data.message, { duration: 8000 })
 			}
 		},
 		onError: ({ error }) => {

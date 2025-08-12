@@ -1,9 +1,8 @@
 'use server'
 
 import { AUTH_COOKIE_NAME } from '@/lib/constants'
-import fetchHelper from '@/lib/helpers/fetch-helper'
 import { authenticatedActionClient } from '@/lib/safe-action'
-import UserService, { UserModel } from '@/services/user-service'
+import UserService from '@/services/user-service'
 import { cookies } from 'next/headers'
 import { deleteAccountSchema } from './delete-account/schema'
 import { updateEmailSchema, verifyEmailChangeSchema } from './update-email/schema'
@@ -16,21 +15,9 @@ export const updateImageProfileAction = authenticatedActionClient
 	.inputSchema(updateImageProfileSchema)
 	.metadata({ actionName: 'updateImageProfileAction' })
 	.action(async ({ parsedInput, ctx }) => {
-		const formData = new FormData()
-		const image = parsedInput.image as File
-		formData.append('image', image, `${Date.now()}.${image.type.split('/')[1]}`)
+		const data = await UserService.updateMeImageProfile(parsedInput.image, ctx.token)
 
-		const { data, error } = await fetchHelper<{ user: UserModel }>('/me/image-profile', {
-			method: 'POST',
-			body: formData,
-			headers: {
-				Authorization: `Bearer ${ctx.token}`,
-			},
-		})
-
-		if (error) throw new Error(error)
-
-		if (!data?.user) {
+		if (!data) {
 			return {
 				success: false,
 				message: 'Une erreur est survenue lors de la mise à jour de la photo de profil',
@@ -39,6 +26,7 @@ export const updateImageProfileAction = authenticatedActionClient
 
 		return {
 			success: true,
+			data,
 			message: 'Photo de profil mise à jour avec succès',
 		}
 	})
