@@ -11,7 +11,7 @@ import env from '@/lib/env/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon, Upload } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { updateImageProfileAction } from '../actions'
@@ -21,9 +21,7 @@ export default function UpdateImageProfileForm() {
 	const { auth, revalidateAuth } = useAuth()
 	const user = auth?.user
 
-	const [previewUrl, setPreviewUrl] = useState<string | null>(
-		user?.profileImage ? `${env.NEXT_PUBLIC_API_URL}/v1/${user?.profileImage}` : DEFAULT_AVATAR
-	)
+	const [previewUrl, setPreviewUrl] = useState<string | null>(DEFAULT_AVATAR)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const form = useForm<UpdateImageProfileSchema>({
@@ -59,6 +57,12 @@ export default function UpdateImageProfileForm() {
 				.toUpperCase()
 				.slice(0, 2)
 		: 'U'
+
+	useEffect(() => {
+		if (user?.profileImage) {
+			setPreviewUrl(`${env.NEXT_PUBLIC_API_URL}/v1/${user.profileImage}`)
+		}
+	}, [user?.profileImage])
 
 	return (
 		<Card>

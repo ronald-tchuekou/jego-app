@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon, Mail } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { updateEmailAction } from '../actions'
@@ -25,10 +25,7 @@ export default function UpdateEmailForm() {
 
 	const form = useForm<UpdateEmailSchema>({
 		resolver: zodResolver(updateEmailSchema),
-		defaultValues: {
-			...defaultUpdateEmailValue,
-			email: user?.email || '',
-		},
+		defaultValues: defaultUpdateEmailValue,
 	})
 
 	const { execute, isPending } = useAction(updateEmailAction, {
@@ -62,6 +59,15 @@ export default function UpdateEmailForm() {
 		setShowVerificationModal(false)
 		setPendingEmail('')
 	}
+
+	useEffect(() => {
+		if (user?.email) {
+			form.reset({
+				...defaultUpdateEmailValue,
+				email: user.email,
+			})
+		}
+	}, [user?.email])
 
 	return (
 		<>

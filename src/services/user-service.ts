@@ -64,10 +64,21 @@ const UserService = {
 		if (error) throw new Error(error)
 		return data?.user
 	},
-	async updateEmail(body: { email: string; password: string }, token: string) {
+	async updateMeEmail(body: { email: string; password: string }, token: string) {
 		const { data, error } = await fetchHelper<{ user: UserModel; message: string }>('/me/update-email', {
 			method: 'POST',
 			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		if (error) throw new Error(error)
+		return data
+	},
+	async resendMeEmailVerification(token: string) {
+		const { data, error } = await fetchHelper<{ message: string }>('/me/resend-email-verification', {
+			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
@@ -80,6 +91,33 @@ const UserService = {
 		const { data, error } = await fetchHelper<{ user: UserModel; message: string }>('/me/verify-new-email', {
 			method: 'POST',
 			body: JSON.stringify({ token: code }),
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		if (error) throw new Error(error)
+		return data
+	},
+	async updateMePassword(
+		body: { currentPassword: string; newPassword: string; confirmNewPassword: string },
+		token: string
+	) {
+		const { data, error } = await fetchHelper<{ user: UserModel; message: string }>('/me/update-password', {
+			method: 'POST',
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		if (error) throw new Error(error)
+		return data
+	},
+	async deleteMe(body: { password: string }, token: string) {
+		const { data, error } = await fetchHelper<{ message: string }>('/me/delete-account', {
+			method: 'POST',
+			body: JSON.stringify(body),
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,

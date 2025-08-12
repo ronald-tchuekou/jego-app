@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Building, Globe, LoaderIcon, MapPin, Phone, User } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { updateUserInfoAction } from '../actions'
@@ -19,17 +20,7 @@ export default function UpdateUserInfoForm() {
 
 	const form = useForm<UpdateUserInfoSchema>({
 		resolver: zodResolver(updateUserInfoSchema),
-		defaultValues: {
-			...defaultUpdateUserInfoValue,
-			firstName: user?.firstName,
-			lastName: user?.lastName,
-			phone: user?.phone || '',
-			address: user?.address || '',
-			city: user?.city || '',
-			state: user?.state || '',
-			zipCode: user?.zipCode || '',
-			country: user?.country || '',
-		},
+		defaultValues: defaultUpdateUserInfoValue,
 	})
 
 	const { execute, isPending } = useAction(updateUserInfoAction, {
@@ -50,6 +41,21 @@ export default function UpdateUserInfoForm() {
 		)
 		execute(filteredData as UpdateUserInfoSchema)
 	}
+
+	useEffect(() => {
+		if (user) {
+			form.reset({
+				firstName: user.firstName,
+				lastName: user.lastName,
+				phone: user.phone || '',
+				address: user.address || '',
+				city: user.city || '',
+				state: user.state || '',
+				zipCode: user.zipCode || '',
+				country: user.country || '',
+			})
+		}
+	}, [user])
 
 	return (
 		<Card>
