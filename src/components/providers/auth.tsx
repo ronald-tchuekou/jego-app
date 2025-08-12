@@ -1,6 +1,7 @@
 'use client'
 
 import { Auth } from '@/services/auth-service'
+import { useQuery } from '@tanstack/react-query'
 import { useAction } from 'next-safe-action/hooks'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { revalidateUserAction } from './actions'
@@ -22,6 +23,13 @@ export function useAuth() {
 
 export function AuthProvider({ children, auth: initialAuth }: { children: React.ReactNode; auth: Auth | null }) {
 	const [auth, setAuth] = useState<Auth | null>(null)
+
+	useQuery({
+		queryKey: ['auth-revalidate'],
+		queryFn: () => {
+			return revalidateUserAction()
+		},
+	})
 
 	const { execute } = useAction(revalidateUserAction, {
 		onSuccess: (data) => {

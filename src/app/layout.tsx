@@ -36,13 +36,13 @@ export default async function RootLayout({
 		<html lang='fr'>
 			<body className={`antialiased ${montserrat.className}`}>
 				<ThemeProvider defaultTheme='system' storageKey='ui-theme'>
-					<AuthProvider auth={auth}>
-						<QueryProviders>
+					<QueryProviders>
+						<AuthProvider auth={auth}>
 							{children}
 							<Toaster richColors position='top-center' duration={6000} />
 							<LogoutModal />
-						</QueryProviders>
-					</AuthProvider>
+						</AuthProvider>
+					</QueryProviders>
 				</ThemeProvider>
 			</body>
 		</html>
