@@ -28,6 +28,7 @@ export default function LoginForm() {
 			}
 		},
 		onError: ({ error }) => {
+			console.error(error)
 			toast.error(error.serverError || 'Une erreur est survenue', { duration: 8000 })
 		},
 	})
@@ -69,6 +70,7 @@ export default function LoginForm() {
 										<div className='flex items-center justify-between'>
 											<FormLabel className='text-sm font-medium'>Mot de passe</FormLabel>
 											<Link
+												tabIndex={-1}
 												href='/auth/forgot-password'
 												className='text-sm text-primary hover:underline transition-colors'
 											>

@@ -1,11 +1,23 @@
 'use client'
 
 import { PasswordInput } from '@/components/base/password-input'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { useAuth } from '@/components/providers/auth'
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { UserRole } from '@/services/user-service'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertTriangle, LoaderIcon, Trash2 } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
@@ -15,11 +27,9 @@ import { toast } from 'sonner'
 import { deleteAccountAction } from '../actions'
 import { defaultDeleteAccountValue, deleteAccountSchema, type DeleteAccountSchema } from './schema'
 
-interface DeleteAccountFormProps {
-	userEmail?: string
-}
-
-export default function DeleteAccountForm({ userEmail }: DeleteAccountFormProps) {
+export default function DeleteAccountForm() {
+	const { auth } = useAuth()
+	const userEmail = auth?.user?.email
 	const [showConfirmDialog, setShowConfirmDialog] = useState(false)
 
 	const form = useForm<DeleteAccountSchema>({
@@ -31,7 +41,6 @@ export default function DeleteAccountForm({ userEmail }: DeleteAccountFormProps)
 		onSuccess: ({ data }) => {
 			if (data?.success) {
 				toast.success(data.message)
-				// Redirect will be handled by the action
 			}
 		},
 		onError: ({ error }) => {
@@ -52,6 +61,10 @@ export default function DeleteAccountForm({ userEmail }: DeleteAccountFormProps)
 
 	const handleCancelDelete = () => {
 		setShowConfirmDialog(false)
+	}
+
+	if (auth?.user.role === UserRole.ADMIN) {
+		return null
 	}
 
 	return (

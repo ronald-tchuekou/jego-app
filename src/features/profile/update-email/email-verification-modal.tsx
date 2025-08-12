@@ -1,12 +1,14 @@
 'use client'
 
 import { IconInput } from '@/components/base/icon-input'
+import { useAuth } from '@/components/providers/auth'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderIcon, Mail, RefreshCw } from 'lucide-react'
+import { LoaderIcon, Mail, RefreshCw, Timer } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { resendEmailVerificationAction, verifyEmailChangeAction } from '../actions'
@@ -20,6 +22,10 @@ interface EmailVerificationModalProps {
 }
 
 export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }: EmailVerificationModalProps) {
+	const { revalidateAuth } = useAuth()
+	const [cooldownTime, setCooldownTime] = useState(0)
+	const [isInCooldown, setIsInCooldown] = useState(false)
+
 	const form = useForm<VerifyEmailChangeSchema>({
 		resolver: zodResolver(verifyEmailChangeSchema),
 		defaultValues: defaultVerifyEmailChangeValue,
@@ -30,6 +36,7 @@ export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }:
 			if (data?.success) {
 				onSuccess()
 				form.reset()
+				revalidateAuth()
 			}
 		},
 		onError: ({ error }) => {
@@ -41,6 +48,9 @@ export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }:
 		onSuccess: ({ data }) => {
 			if (data?.success) {
 				toast.success('Code de vérification renvoyé')
+				// Start cooldown timer (60 seconds)
+				setCooldownTime(60)
+				setIsInCooldown(true)
 			}
 		},
 		onError: ({ error }) => {
@@ -49,17 +59,50 @@ export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }:
 	})
 
 	const onSubmit = (data: VerifyEmailChangeSchema) => {
-		executeVerify({ ...data, email: newEmail })
+		executeVerify(data)
 	}
 
 	const handleResendCode = () => {
-		executeResend({ email: newEmail })
+		if (!isInCooldown) {
+			executeResend()
+		}
 	}
 
 	const handleClose = () => {
 		form.reset()
 		onClose()
 	}
+
+	// Countdown timer effect
+	useEffect(() => {
+		let interval: NodeJS.Timeout | null = null
+
+		if (isInCooldown && cooldownTime > 0) {
+			interval = setInterval(() => {
+				setCooldownTime((prevTime) => {
+					if (prevTime <= 1) {
+						setIsInCooldown(false)
+						return 0
+					}
+					return prevTime - 1
+				})
+			}, 1000)
+		}
+
+		return () => {
+			if (interval) {
+				clearInterval(interval)
+			}
+		}
+	}, [isInCooldown, cooldownTime])
+
+	// Reset cooldown when modal closes
+	useEffect(() => {
+		if (!isOpen) {
+			setCooldownTime(0)
+			setIsInCooldown(false)
+		}
+	}, [isOpen])
 
 	return (
 		<Dialog open={isOpen} onOpenChange={handleClose}>
@@ -98,7 +141,7 @@ export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }:
 						/>
 
 						<div className='flex flex-col space-y-3'>
-							<Button type='submit' className='w-full' disabled={isVerifying}>
+							<Button type='submit' className='w-full' disabled={isVerifying || isResending}>
 								{isVerifying && <LoaderIcon className='animate-spin' />}
 								<span>Vérifier le code</span>
 							</Button>
@@ -107,22 +150,39 @@ export function EmailVerificationModal({ isOpen, onClose, onSuccess, newEmail }:
 								type='button'
 								variant='outline'
 								onClick={handleResendCode}
-								disabled={isResending}
-								className='w-full'
+								disabled={isResending || isVerifying || isInCooldown}
+								className='w-full transition-all duration-200'
 							>
-								{isResending && <RefreshCw className='animate-spin w-4 h-4 mr-2' />}
-								<span>Renvoyer le code</span>
+								{isResending ? (
+									<RefreshCw className='animate-spin w-4 h-4 mr-2' />
+								) : isInCooldown ? (
+									<Timer className='w-4 h-4 mr-2 text-muted-foreground' />
+								) : (
+									<RefreshCw className='w-4 h-4 mr-2' />
+								)}
+								<span>{isInCooldown ? `Renvoyer le code (${cooldownTime}s)` : 'Renvoyer le code'}</span>
 							</Button>
 
-							<Button type='button' variant='ghost' onClick={handleClose} className='w-full'>
+							<Button
+								type='button'
+								variant='ghost'
+								onClick={handleClose}
+								className='w-full'
+								disabled={isVerifying || isResending}
+							>
 								Annuler
 							</Button>
 						</div>
 					</form>
 				</Form>
 
-				<div className='text-xs text-muted-foreground text-center'>
+				<div className='text-xs text-muted-foreground text-center space-y-1'>
 					<p>Le code expire dans 10 minutes</p>
+					{isInCooldown && (
+						<p className='text-amber-600 dark:text-amber-400 font-medium'>
+							Vous pourrez renvoyer un nouveau code dans {cooldownTime} seconde{cooldownTime > 1 ? 's' : ''}
+						</p>
+					)}
 				</div>
 			</DialogContent>
 		</Dialog>

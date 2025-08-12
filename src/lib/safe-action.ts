@@ -10,11 +10,19 @@ export const actionClient = createSafeActionClient({
 	defineMetadataSchema() {
 		return z.object({ actionName: z.string() })
 	},
+	handleServerError(error) {
+		console.error('Server error: ', error)
+		return error.message
+	},
 })
 
 export const authenticatedActionClient = createSafeActionClient({
 	defineMetadataSchema() {
 		return z.object({ actionName: z.string() })
+	},
+	handleServerError(error) {
+		console.error('Server error: ', error)
+		return error.message
 	},
 }).use(async ({ next }) => {
 	try {
@@ -24,9 +32,9 @@ export const authenticatedActionClient = createSafeActionClient({
 		if (!payload) throw new Error('No session found.')
 
 		const auth = JSON.parse(payload) as Auth
-		const user = await UserService.revalidateMe(auth.token)
+		const authResponse = await UserService.revalidateMe(auth.token)
 
-		const newAuth = { ...auth, user: { ...auth.user, ...user } }
+		const newAuth = { ...auth, ...authResponse }
 		cookieStore.set({
 			name: AUTH_COOKIE_NAME,
 			value: JSON.stringify(newAuth),
