@@ -17,13 +17,6 @@ export const updateImageProfileAction = authenticatedActionClient
 	.action(async ({ parsedInput, ctx }) => {
 		const data = await UserService.updateMeImageProfile(parsedInput.image, ctx.token)
 
-		if (!data) {
-			return {
-				success: false,
-				message: 'Une erreur est survenue lors de la mise à jour de la photo de profil',
-			}
-		}
-
 		return {
 			success: true,
 			data,
