@@ -4,18 +4,15 @@ import ResetLoginButton from '@/components/modals/logout-modal/reset-login-butto
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AUTH_COOKIE_NAME } from '@/lib/constants'
 import { Auth } from '@/services/auth-service'
+import { UserRole } from '@/services/user-service'
 import '@/styles/style.css'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardLayout({
-	admin,
-	company,
-	user,
+	children,
 }: Readonly<{
-	admin: React.ReactNode
-	company: React.ReactNode
-	user: React.ReactNode
+	children: React.ReactNode
 }>) {
 	const cookieStore = await cookies()
 	const authKey = cookieStore.get(AUTH_COOKIE_NAME)?.value
@@ -24,6 +21,7 @@ export default async function DashboardLayout({
 		return redirect('/auth/login')
 	}
 
+	const allowedRoles = [UserRole.ADMIN, UserRole.USER, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT]
 	const auth = JSON.parse(authKey) as Auth
 
 	return (
@@ -42,12 +40,8 @@ export default async function DashboardLayout({
 					<div className='flex flex-1 flex-col'>
 						<div className='@container/main flex flex-1 flex-col gap-2'>
 							<div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
-								{auth.user.role === 'admin' ? (
-									admin
-								) : auth.user.role === 'user' ? (
-									user
-								) : auth.user.role === 'company:agent' || auth.user.role === 'company:admin' ? (
-									company
+								{allowedRoles.includes(auth.user.role) ? (
+									children
 								) : (
 									<div className='flex flex-col items-center justify-center h-screen'>
 										<h1 className='text-2xl font-bold'>Vous n&apos;avez pas accès à cette page</h1>
