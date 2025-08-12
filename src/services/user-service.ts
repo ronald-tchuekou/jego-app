@@ -161,6 +161,20 @@ const UserService = {
 		if (error) throw new Error(error)
 		return data?.user
 	},
+	async updateMeImageProfile(image: File, token: string) {
+		const formData = new FormData()
+		formData.append('image', image, `${Date.now()}.${image.type.split('/')[1]}`)
+
+		const { data, error } = await fetchHelper<{ user: UserModel }>('/me/image-profile', {
+			method: 'POST',
+			body: formData,
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		if (error) throw new Error(error)
+		return data?.user
+	},
 }
 
 export default UserService
