@@ -17,7 +17,8 @@ export const updateImageProfileAction = authenticatedActionClient
 	.metadata({ actionName: 'updateImageProfileAction' })
 	.action(async ({ parsedInput, ctx }) => {
 		const formData = new FormData()
-		formData.append('image', parsedInput.image)
+		const image = parsedInput.image as File
+		formData.append('image', image, `${Date.now()}.${image.type.split('/')[1]}`)
 
 		const { data, error } = await fetchHelper<{ user: UserModel }>('/me/image-profile', {
 			method: 'POST',

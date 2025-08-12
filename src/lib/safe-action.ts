@@ -29,10 +29,12 @@ export const authenticatedActionClient = createSafeActionClient({
 		const cookieStore = await cookies()
 		const payload = cookieStore.get(AUTH_COOKIE_NAME)?.value
 
-		if (!payload) throw new Error('No session found.')
+		if (!payload) return redirect('/auth/login')
 
 		const auth = JSON.parse(payload) as Auth
 		const authResponse = await UserService.revalidateMe(auth.token)
+
+		if (!authResponse) return redirect('/auth/login')
 
 		const newAuth = { ...auth, ...authResponse }
 		cookieStore.set({
