@@ -11,7 +11,7 @@ import {
 	SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { ROUTES } from '@/lib/constants'
-import { IconInnerShadowTop } from '@tabler/icons-react'
+import Image from 'next/image'
 import * as React from 'react'
 
 const data = {
@@ -23,9 +23,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 		<Sidebar collapsible='offcanvas' {...props}>
 			<SidebarHeader>
 				<SidebarMenu>
-					<SidebarMenuItem className='flex items-center gap-2 text-primary'>
-						<IconInnerShadowTop className='!size-10' />
-						<span className='text-xl font-bold'>App logo</span>
+					<SidebarMenuItem className='flex items-center justify-center'>
+						<Image
+							src={'/jego-logo-red-fit.webp'}
+							alt='JeGo logo'
+							width={2010}
+							height={1200}
+							className='h-14 w-auto flex-none aspect-auto'
+						/>
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarHeader>
