@@ -55,7 +55,7 @@ export default function UpdateUserInfoForm() {
 				country: user.country || '',
 			})
 		}
-	}, [user])
+	}, [user, form])
 
 	return (
 		<Card>

@@ -67,7 +67,7 @@ export default function UpdateEmailForm() {
 				email: user.email,
 			})
 		}
-	}, [user?.email])
+	}, [user?.email, form])
 
 	return (
 		<>
