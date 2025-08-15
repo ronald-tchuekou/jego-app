@@ -1,7 +1,10 @@
+import { DashboardTitle } from '@/components/dashboard/dashboard-title'
+
 export default function Page() {
 	return (
-		<div className='flex flex-col gap-4 px-4'>
+		<>
+			<DashboardTitle title='Paramètres' />
 			<h2>This is the settings page.</h2>
-		</div>
+		</>
 	)
 }

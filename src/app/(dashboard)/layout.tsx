@@ -6,6 +6,7 @@ import { AUTH_COOKIE_NAME } from '@/lib/constants'
 import { Auth } from '@/services/auth-service'
 import { UserRole } from '@/services/user-service'
 import '@/styles/style.css'
+import { BanIcon } from 'lucide-react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -24,6 +25,33 @@ export default async function DashboardLayout({
 	const allowedRoles = [UserRole.ADMIN, UserRole.USER, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT]
 	const auth = JSON.parse(authKey) as Auth
 
+	if (auth.user.blockedAt) {
+		return (
+			<div className='flex flex-col items-center justify-center h-screen gap-6'>
+				<BanIcon className='size-32 text-destructive' />
+				<h1 className='text-2xl font-bold'>Votre compte a été bloqué</h1>
+				<p className='text-sm text-muted-foreground mb-5 max-w-lg text-center'>
+					Veuillez contacter l&apos;administrateur pour plus d&apos;informations. Ou bien vous vous connecter avec
+					un autre compte.
+				</p>
+				<ResetLoginButton />
+			</div>
+		)
+	}
+
+	if (!allowedRoles.includes(auth.user.role)) {
+		return (
+			<div className='flex flex-col items-center justify-center h-screen gap-6'>
+				<BanIcon className='size-32 text-destructive' />
+				<h1 className='text-2xl font-bold'>Vous n&apos;avez pas accès à cette page</h1>
+				<p className='text-sm text-muted-foreground mb-5 max-w-lg text-center'>
+					Veuillez contacter l&apos;administrateur pour obtenir un accès
+				</p>
+				<ResetLoginButton />
+			</div>
+		)
+	}
+
 	return (
 		<main className={``}>
 			<SidebarProvider
@@ -39,19 +67,7 @@ export default async function DashboardLayout({
 					<SiteHeader />
 					<div className='flex flex-1 flex-col'>
 						<div className='@container/main flex flex-1 flex-col gap-2'>
-							<div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>
-								{allowedRoles.includes(auth.user.role) ? (
-									children
-								) : (
-									<div className='flex flex-col items-center justify-center h-screen'>
-										<h1 className='text-2xl font-bold'>Vous n&apos;avez pas accès à cette page</h1>
-										<p className='text-sm text-muted-foreground mb-5'>
-											Veuillez contacter l&apos;administrateur pour obtenir un accès
-										</p>
-										<ResetLoginButton />
-									</div>
-								)}
-							</div>
+							<div className='flex flex-col gap-4 p-4 md:gap-6 md:p-6'>{children}</div>
 						</div>
 					</div>
 				</SidebarInset>

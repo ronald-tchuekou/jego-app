@@ -32,11 +32,11 @@ export const authenticatedActionClient = createSafeActionClient({
 		if (!payload) return redirect('/auth/login')
 
 		const auth = JSON.parse(payload) as Auth
-		const authResponse = await UserService.revalidateMe(auth.token)
+		const user = await UserService.revalidateMe(auth.token)
 
-		if (!authResponse) return redirect('/auth/login')
+		if (!user) return redirect('/auth/login')
 
-		const newAuth = { ...auth, ...authResponse }
+		const newAuth = { ...auth, user: { ...user } }
 		cookieStore.set({
 			name: AUTH_COOKIE_NAME,
 			value: JSON.stringify(newAuth),

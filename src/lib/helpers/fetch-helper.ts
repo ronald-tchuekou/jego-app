@@ -8,8 +8,14 @@ export default async function fetchHelper<T>(
 	const response = await fetch(url, options)
 	const data = await response.json()
 
-	if (response.status !== 200 && response.status !== 201)
-		return { data: null, error: data.message, status: response.status }
+	if (response.status !== 200 && response.status !== 201) {
+		console.error('Request Error => ', data)
+		return {
+			data: null,
+			error: data.message || data.error || data.errors?.[0]?.message || 'Une erreur est survenue.',
+			status: response.status,
+		}
+	}
 
 	return { data: data as T, error: null, status: response.status }
 }

@@ -67,16 +67,7 @@ export default function LoginForm() {
 								name='password'
 								render={({ field }) => (
 									<FormItem>
-										<div className='flex items-center justify-between'>
-											<FormLabel className='text-sm font-medium'>Mot de passe</FormLabel>
-											<Link
-												tabIndex={-1}
-												href='/auth/forgot-password'
-												className='text-sm text-primary hover:underline transition-colors'
-											>
-												Mot de passe oublié ?
-											</Link>
-										</div>
+										<FormLabel className='text-sm font-medium'>Mot de passe</FormLabel>
 										<FormControl>
 											<PasswordInput {...field} placeholder='Entrez votre mot de passe' />
 										</FormControl>
@@ -84,6 +75,13 @@ export default function LoginForm() {
 									</FormItem>
 								)}
 							/>
+
+							<Link
+								href='/auth/forgot-password'
+								className='text-sm text-primary hover:underline transition-colors'
+							>
+								Mot de passe oublié ?
+							</Link>
 						</div>
 						<Button type='submit' className='w-full' disabled={isPending}>
 							{isPending && <LoaderIcon className='animate-spin' />}
