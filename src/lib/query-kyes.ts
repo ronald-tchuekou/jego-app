@@ -12,3 +12,4 @@ function generateKeys(name: string) {
 }
 
 export const postKey = generateKeys('posts')
+export const userKey = generateKeys('users')

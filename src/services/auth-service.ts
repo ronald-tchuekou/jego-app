@@ -26,6 +26,7 @@ const AuthService = {
 			throw new Error(error.message)
 		}
 	},
+
 	register: async (body: RegisterSchema) => {
 		const { data, error } = await fetchHelper<Auth>('/auth/register', {
 			method: 'POST',
@@ -39,6 +40,7 @@ const AuthService = {
 
 		return data
 	},
+
 	verifyEmail: async (token: string, userId: string) => {
 		const { data, error } = await fetchHelper<Auth>('/auth/verify-email', {
 			method: 'POST',
@@ -52,6 +54,7 @@ const AuthService = {
 
 		return data
 	},
+
 	logout: async (token: string) => {
 		const { data, error } = await fetchHelper<{ message: string }>('/auth/logout', {
 			method: 'POST',
@@ -64,6 +67,7 @@ const AuthService = {
 
 		return data
 	},
+
 	forgotPassword: async (email: string) => {
 		const { data, error } = await fetchHelper<{ message: string }>('/auth/forgot-password', {
 			method: 'POST',
@@ -77,6 +81,7 @@ const AuthService = {
 
 		return data
 	},
+
 	resetPassword: async (body: ResetPasswordSchema) => {
 		const { data, error } = await fetchHelper<Auth>('/auth/reset-password', {
 			method: 'POST',

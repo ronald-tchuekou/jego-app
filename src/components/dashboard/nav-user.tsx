@@ -39,7 +39,7 @@ export function NavUser({ normal = false }: Props) {
 							className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
 						>
 							<Avatar className='size-10 rounded-full'>
-								<AvatarImage src={userProfile} alt={auth?.user.displayName} />
+								<AvatarImage src={userProfile} alt={user?.displayName} />
 								<AvatarFallback className='rounded-full'>
 									{auth?.user.displayName?.substring(0, 2).toUpperCase()}
 								</AvatarFallback>

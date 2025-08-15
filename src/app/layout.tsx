@@ -9,6 +9,7 @@ import '@/styles/style.css'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import { cookies } from 'next/headers'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 const montserrat = Montserrat({
 	subsets: ['latin'],
@@ -38,7 +39,7 @@ export default async function RootLayout({
 				<ThemeProvider defaultTheme='system' storageKey='ui-theme'>
 					<QueryProviders>
 						<AuthProvider auth={auth}>
-							{children}
+							<NuqsAdapter>{children}</NuqsAdapter>
 							<Toaster richColors position='top-center' duration={6000} />
 							<LogoutModal />
 						</AuthProvider>
