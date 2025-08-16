@@ -19,3 +19,4 @@ function generateKeys(name: string) {
 export const postKey = generateKeys('posts')
 export const userKey = generateKeys('users')
 export const categoryKey = generateKeys('categories')
+export const companyKey = generateKeys('companies')
