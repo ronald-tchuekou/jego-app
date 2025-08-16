@@ -6,12 +6,12 @@ export type LogoutModalState = {
 }
 
 export const useLogoutModalStore = create<LogoutModalState>((set) => ({
-	isVisible: false,
-	closeModal(){
-		set({ isVisible: false })
-	},
+   isVisible: false,
+   closeModal() {
+      set({ isVisible: false })
+   },
 }))
 
 export function confirmLogout() {
-	useLogoutModalStore.setState({ isVisible: true })
+   useLogoutModalStore.setState({ isVisible: true })
 }

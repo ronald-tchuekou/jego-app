@@ -7,47 +7,47 @@ import { z } from 'zod'
 import { AUTH_COOKIE_EXPIRES_AT, AUTH_COOKIE_NAME } from './constants'
 
 export const actionClient = createSafeActionClient({
-	defineMetadataSchema() {
-		return z.object({ actionName: z.string() })
-	},
-	handleServerError(error) {
-		console.error('Server error: ', error)
-		return error.message
-	},
+   defineMetadataSchema() {
+      return z.object({ actionName: z.string() })
+   },
+   handleServerError(error) {
+      console.error('Server error: ', error)
+      return error.message
+   },
 })
 
 export const authenticatedActionClient = createSafeActionClient({
-	defineMetadataSchema() {
-		return z.object({ actionName: z.string() })
-	},
-	handleServerError(error) {
-		console.error('Server error: ', error)
-		return error.message
-	},
+   defineMetadataSchema() {
+      return z.object({ actionName: z.string() })
+   },
+   handleServerError(error) {
+      console.error('Server error: ', error)
+      return error.message
+   },
 }).use(async ({ next }) => {
-	try {
-		const cookieStore = await cookies()
-		const payload = cookieStore.get(AUTH_COOKIE_NAME)?.value
+   try {
+      const cookieStore = await cookies()
+      const payload = cookieStore.get(AUTH_COOKIE_NAME)?.value
 
-		if (!payload) return redirect('/auth/login')
+      if (!payload) return redirect('/auth/login')
 
-		const auth = JSON.parse(payload) as Auth
-		const user = await UserService.revalidateMe(auth.token)
+      const auth = JSON.parse(payload) as Auth
+      const user = await UserService.revalidateMe(auth.token)
 
-		if (!user) return redirect('/auth/login')
+      if (!user) return redirect('/auth/login')
 
-		const newAuth = { ...auth, user: { ...user } }
-		cookieStore.set({
-			name: AUTH_COOKIE_NAME,
-			value: JSON.stringify(newAuth),
-			httpOnly: true,
-			expires: AUTH_COOKIE_EXPIRES_AT,
-			path: '/',
-		})
+      const newAuth = { ...auth, user: { ...user } }
+      cookieStore.set({
+         name: AUTH_COOKIE_NAME,
+         value: JSON.stringify(newAuth),
+         httpOnly: true,
+         expires: AUTH_COOKIE_EXPIRES_AT,
+         path: '/',
+      })
 
-		return next({ ctx: newAuth })
-	} catch (_err) {
-		console.log('Failed to authenticate user: ', _err)
-		redirect('/auth/login')
-	}
+      return next({ ctx: newAuth })
+   } catch (_err) {
+      console.log('Failed to authenticate user: ', _err)
+      redirect('/auth/login')
+   }
 })

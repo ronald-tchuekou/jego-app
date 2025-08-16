@@ -1,12 +1,12 @@
 import { NavMainItem } from '@/components/dashboard/nav-main'
 import { UserRole } from '@/services/user-service'
 import {
-	IconBriefcase,
-	IconChartBar,
-	IconDashboard,
-	IconListDetails,
-	IconSettings,
-	IconUsers,
+   IconBriefcase,
+   IconChartBar,
+   IconDashboard,
+   IconListDetails,
+   IconSettings,
+   IconUsers,
 } from '@tabler/icons-react'
 import { CircleUserIcon } from 'lucide-react'
 
@@ -15,43 +15,43 @@ export const DEFAULT_AVATAR = 'https://github.com/shadcn.png'
 export const AUTH_COOKIE_EXPIRES_AT = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
 
 export const ROUTES: NavMainItem[] = [
-	{
-		title: 'Dashboard',
-		url: '/',
-		icon: IconDashboard,
-	},
-	{
-		title: 'Annonces',
-		url: '/posts',
-		icon: IconListDetails,
-		allowedRoles: [UserRole.ADMIN, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
-	},
-	{
-		title: 'Entreprises',
-		url: '/companies',
-		icon: IconChartBar,
-		allowedRoles: [UserRole.ADMIN],
-	},
-	{
-		title: 'Utilisateurs',
-		url: '/users',
-		icon: IconUsers,
-		allowedRoles: [UserRole.ADMIN],
-	},
-	{
-		title: "Offres d'emploi",
-		url: '/jobs',
-		icon: IconBriefcase,
-		allowedRoles: [UserRole.USER, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
-	},
-	{
-		title: 'Paramètres',
-		url: '/settings',
-		icon: IconSettings,
-	},
-	{
-		title: 'Profil',
-		url: '/profile',
-		icon: CircleUserIcon,
-	},
+   {
+      title: 'Dashboard',
+      url: '/',
+      icon: IconDashboard,
+   },
+   {
+      title: 'Annonces',
+      url: '/posts',
+      icon: IconListDetails,
+      allowedRoles: [UserRole.ADMIN, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
+   },
+   {
+      title: 'Entreprises',
+      url: '/companies',
+      icon: IconChartBar,
+      allowedRoles: [UserRole.ADMIN],
+   },
+   {
+      title: 'Utilisateurs',
+      url: '/users',
+      icon: IconUsers,
+      allowedRoles: [UserRole.ADMIN],
+   },
+   {
+      title: "Offres d'emploi",
+      url: '/jobs',
+      icon: IconBriefcase,
+      allowedRoles: [UserRole.USER, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
+   },
+   {
+      title: 'Paramètres',
+      url: '/settings',
+      icon: IconSettings,
+   },
+   {
+      title: 'Profil',
+      url: '/profile',
+      icon: CircleUserIcon,
+   },
 ]
