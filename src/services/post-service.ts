@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon'
 import { UserModel } from './user-service'
 
 export type PostModel = {
@@ -9,8 +8,8 @@ export type PostModel = {
    status: string
    type: string
    category: string
-   createdAt: DateTime
-   updatedAt: DateTime
+   createdAt: string
+   updatedAt: string
    user: UserModel
 }
 

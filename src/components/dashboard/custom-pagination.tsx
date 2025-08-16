@@ -41,7 +41,7 @@ const CustomPagination = ({ totalCount, totalPages, label }: Props) => {
                   </SelectContent>
                </Select>
             </div>
-            <div className='flex w-[100px] items-center justify-center text-sm font-medium'>
+            <div className='flex items-center justify-center text-sm font-medium'>
                Page {page} sur {totalPages}
             </div>
             <Button variant='outline' size='icon-sm' onClick={() => setPage(page - 1)} disabled={page === 1}>
