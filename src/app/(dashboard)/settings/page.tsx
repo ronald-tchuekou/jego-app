@@ -1,10 +1,5 @@
-import { DashboardTitle } from '@/components/dashboard/dashboard-title'
+import { redirect } from 'next/navigation'
 
 export default function Page() {
-	return (
-		<>
-			<DashboardTitle title='Paramètres' />
-			<h2>This is the settings page.</h2>
-		</>
-	)
+   return redirect('/settings/categories')
 }

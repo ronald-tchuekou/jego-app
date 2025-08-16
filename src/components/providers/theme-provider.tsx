@@ -47,24 +47,27 @@ export function ThemeProvider({
    }
 
    // Apply theme to document with transition handling
-   const applyTheme = useCallback((newTheme: 'dark' | 'light') => {
-		const root = window.document.documentElement
+   const applyTheme = useCallback(
+      (newTheme: 'dark' | 'light') => {
+         const root = window.document.documentElement
 
-		if (disableTransitionOnChange) {
-			root.style.setProperty('transition', 'none')
-			root.classList.remove('light', 'dark')
-			root.classList.add(newTheme)
-			// Force a reflow
-			// root.offsetHeight
-			root.style.removeProperty('transition')
-		} else {
-			root.classList.remove('light', 'dark')
-			root.classList.add(newTheme)
-		}
+         if (disableTransitionOnChange) {
+            root.style.setProperty('transition', 'none')
+            root.classList.remove('light', 'dark')
+            root.classList.add(newTheme)
+            // Force a reflow
+            // root.offsetHeight
+            root.style.removeProperty('transition')
+         } else {
+            root.classList.remove('light', 'dark')
+            root.classList.add(newTheme)
+         }
 
-		// Update color-scheme
-		root.style.colorScheme = newTheme
-	}, [disableTransitionOnChange])
+         // Update color-scheme
+         root.style.colorScheme = newTheme
+      },
+      [disableTransitionOnChange],
+   )
 
    // Resolve the actual theme to apply
    const resolvedTheme = theme === 'system' ? systemTheme : theme

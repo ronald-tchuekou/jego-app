@@ -7,25 +7,25 @@ import { cookies } from 'next/headers'
 import { registerSchema } from './schema'
 
 export const registerAction = actionClient
-	.schema(registerSchema)
-	.metadata({ actionName: 'registerAction' })
-	.action(async ({ parsedInput }) => {
-		const response = await AuthService.register(parsedInput)
-	
-		const cookieStore = await cookies()
+   .schema(registerSchema)
+   .metadata({ actionName: 'registerAction' })
+   .action(async ({ parsedInput }) => {
+      const response = await AuthService.register(parsedInput)
 
-		const payload = JSON.stringify(response)
+      const cookieStore = await cookies()
 
-		cookieStore.set({
-			name: AUTH_COOKIE_NAME,
-			value: payload,
-			httpOnly: true,
-			expires: AUTH_COOKIE_EXPIRES_AT,
-			path: '/',
-		})
+      const payload = JSON.stringify(response)
 
-		return {
-			success: true,
-			message: 'Inscription réussie ! Redirection en cours...',
-		}
-	})
+      cookieStore.set({
+         name: AUTH_COOKIE_NAME,
+         value: payload,
+         httpOnly: true,
+         expires: AUTH_COOKIE_EXPIRES_AT,
+         path: '/',
+      })
+
+      return {
+         success: true,
+         message: 'Inscription réussie ! Redirection en cours...',
+      }
+   })

@@ -3,29 +3,29 @@ import { Ripple } from '@/components/magicui/ripple'
 import VerifyEmailChecker from '@/features/auth/verify-email/verify-email-checker'
 
 type Props = Readonly<{
-	searchParams: Promise<{
-		token: string
-		userId: string
-	}>
+   searchParams: Promise<{
+      token: string
+      userId: string
+   }>
 }>
 
 export default async function VerifyPage({ searchParams }: Props) {
-	const { token, userId } = await searchParams
+   const { token, userId } = await searchParams
 
-	return (
-		<>
-			<main className={`container mx-auto flex flex-col gap-5 min-h-screen items-center justify-center px-4 z-0`}>
-				<div className='h-14 w-40 flex-none bg-red-500' />
-				<div className='w-full max-w-md'>
-					<VerifyEmailChecker token={token} userId={userId} />
-				</div>
-			</main>
-			<div className='fixed top-5 right-5'>
-				<ThemeToggle />
-			</div>
-			<div className='fixed top-0 left-0 h-screen w-screen z-[-1]'>
-				<Ripple numCircles={10} mainCircleSize={500} />
-			</div>
-		</>
-	)
+   return (
+      <>
+         <main className={`container mx-auto flex flex-col gap-5 min-h-screen items-center justify-center px-4 z-0`}>
+            <div className='h-14 w-40 flex-none bg-red-500' />
+            <div className='w-full max-w-md'>
+               <VerifyEmailChecker token={token} userId={userId} />
+            </div>
+         </main>
+         <div className='fixed top-5 right-5'>
+            <ThemeToggle />
+         </div>
+         <div className='fixed top-0 left-0 h-screen w-screen z-[-1]'>
+            <Ripple numCircles={10} mainCircleSize={500} />
+         </div>
+      </>
+   )
 }

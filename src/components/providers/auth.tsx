@@ -6,44 +6,47 @@ import { useAction } from 'next-safe-action/hooks'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { revalidateUserAction } from './actions'
 
-const AuthContext = createContext<{ auth: Auth | null; revalidateAuth: VoidFunction }>({
-	auth: null,
-	revalidateAuth: () => {},
+const AuthContext = createContext<{
+   auth: Auth | null
+   revalidateAuth: VoidFunction
+}>({
+   auth: null,
+   revalidateAuth: () => {},
 })
 
 export function useAuth() {
-	const context = useContext(AuthContext)
+   const context = useContext(AuthContext)
 
-	if (!context) {
-		throw new Error('useAuth must be used within a AuthProvider.')
-	}
+   if (!context) {
+      throw new Error('useAuth must be used within a AuthProvider.')
+   }
 
-	return context
+   return context
 }
 
 export function AuthProvider({ children, auth: initialAuth }: { children: React.ReactNode; auth: Auth | null }) {
-	const [auth, setAuth] = useState<Auth | null>(null)
+   const [auth, setAuth] = useState<Auth | null>(null)
 
-	useQuery({
-		queryKey: ['auth-revalidate'],
-		queryFn: () => {
-			return revalidateUserAction()
-		},
-	})
+   useQuery({
+      queryKey: ['auth-revalidate'],
+      queryFn: () => {
+         return revalidateUserAction()
+      },
+   })
 
-	const { execute } = useAction(revalidateUserAction, {
-		onSuccess: (data) => {
-			setAuth(data.data)
-		},
-	})
+   const { execute } = useAction(revalidateUserAction, {
+      onSuccess: (data) => {
+         setAuth(data.data)
+      },
+   })
 
-	const revalidateAuth = () => {
-		execute()
-	}
+   const revalidateAuth = () => {
+      execute()
+   }
 
-	useEffect(() => {
-		setAuth(initialAuth)
-	}, [initialAuth])
+   useEffect(() => {
+      setAuth(initialAuth)
+   }, [initialAuth])
 
-	return <AuthContext value={{ auth, revalidateAuth }}>{children}</AuthContext>
+   return <AuthContext value={{ auth, revalidateAuth }}>{children}</AuthContext>
 }

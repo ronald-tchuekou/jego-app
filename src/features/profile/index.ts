@@ -5,4 +5,3 @@ export * from './update-email'
 export * from './update-image-profile'
 export * from './update-password'
 export * from './update-user-info'
-
