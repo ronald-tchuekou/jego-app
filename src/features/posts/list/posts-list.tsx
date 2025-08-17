@@ -1,0 +1,86 @@
+'use client'
+
+import EmptyContent from '@/components/base/empty-content'
+import LoaderContent from '@/components/base/loader-content'
+import CustomPagination from '@/components/dashboard/custom-pagination'
+import { postKey } from '@/lib/query-kies'
+import { useQuery } from '@tanstack/react-query'
+import { useQueryState } from 'nuqs'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
+import { getPostsAction } from '../actions'
+import PostItem from './post-item'
+
+export function PostsList() {
+   // Pagination and filters state
+   const [category] = useQueryState('category')
+   const [type] = useQueryState('type')
+   const [status] = useQueryState('status')
+   const [page] = useQueryState('page')
+   const [limit] = useQueryState('limit')
+   const [search] = useQueryState('q')
+
+   // React Query for data fetching
+   const {
+      data: postsData,
+      isLoading,
+      error,
+   } = useQuery({
+      queryKey: postKey.list({
+         page: page ? parseInt(page) : 1,
+         limit: limit ? parseInt(limit) : 10,
+         search: search || undefined,
+         category: category || undefined,
+         type: type || undefined,
+         status: status || undefined,
+      }),
+      async queryFn({ queryKey }) {
+         const filters = JSON.parse(queryKey[2].filters)
+         const result = await getPostsAction(filters)
+
+         if (result?.serverError) {
+            throw new Error(result.serverError)
+         }
+
+         return result?.data
+      },
+      staleTime: 5 * 60 * 1000, // 5 minutes
+   })
+
+   const posts = postsData?.data || []
+   const totalCount = postsData?.meta.total || 0
+   const totalPages = postsData?.meta.lastPage || 1
+
+   // Show error toast if query fails
+   useEffect(() => {
+      if (error) {
+         toast.error('Erreur lors du chargement des posts')
+      }
+   }, [error])
+
+   return (
+      <>
+         {/* Posts Grid */}
+         <div className='min-h-[400px]'>
+            {isLoading ? (
+               <LoaderContent />
+            ) : posts.length === 0 ? (
+               <EmptyContent text='Aucun post trouvé' />
+            ) : (
+               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3'>
+                  {posts.map((post) => (
+                     <div key={post.id}>
+                        <PostItem post={post} />
+                     </div>
+                  ))}
+               </div>
+            )}
+         </div>
+
+         {/* Pagination */}
+         {totalPages > 1 && <CustomPagination totalCount={totalCount} totalPages={totalPages} label='posts' />}
+      </>
+   )
+}
+
+export default PostsList
