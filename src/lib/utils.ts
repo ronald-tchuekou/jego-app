@@ -59,6 +59,13 @@ export function formatDate(date: string | null) {
    }).format(new Date(date))
 }
 
+export function formatPrice(price: number) {
+   return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'XAF',
+   }).format(price)
+}
+
 export function getSlug(name: string) {
    return name.toLowerCase().replace(/ /g, '-')
 }

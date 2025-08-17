@@ -8,6 +8,7 @@ export type PostModel = {
    status: string
    type: string
    category: string
+   image: string | null
    createdAt: string
    updatedAt: string
    user: UserModel

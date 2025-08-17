@@ -17,13 +17,21 @@ export type CompanyModel = {
    address: string
    city: string | null
    state: string | null
-   zip_code: string | null
+   zipCode: string | null
    country: string | null
    website: string | null
+   facebook: string | null
+   instagram: string | null
+   twitter: string | null
+   linkedin: string | null
+   youtube: string | null
+   tiktok: string | null
    logo: string | null
    description: string | null
    verifiedAt: string | null
    blockedAt: string | null
+   location: { lat: number; lng: number } | null
+   daily_program: Record<DAY_FOR_PROGRAM, { open: string; close: string }> | null
    createdAt: string
    updatedAt: string
    posts: PostModel[]
@@ -93,6 +101,17 @@ const CompanyService = {
    },
    async toggleBlock(id: string, token: string) {
       const { data, error } = await fetchHelper<CompanyModel>(`/companies/${id}/toggle-block`, {
+         method: 'PATCH',
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+         },
+      })
+      if (error) throw new Error(error)
+      return data ?? null
+   },
+   async toggleApprove(id: string, token: string) {
+      const { data, error } = await fetchHelper<CompanyModel>(`/companies/${id}/toggle-approve`, {
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json',

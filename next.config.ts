@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       },
    },
    images: {
-      remotePatterns: [new URL('https://github.com/**')],
+      domains: ['github.com', 'loremflickr.com', 'picsum.photos'],
    },
 }
 
