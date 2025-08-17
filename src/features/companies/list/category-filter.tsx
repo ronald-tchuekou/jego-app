@@ -2,7 +2,7 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getCategoriesAction } from '@/features/categories/actions'
-import { categoryKey } from '@/lib/query-kyes'
+import { categoryKey } from '@/lib/query-kies'
 import { useQuery } from '@tanstack/react-query'
 import { parseAsInteger, useQueryState } from 'nuqs'
 

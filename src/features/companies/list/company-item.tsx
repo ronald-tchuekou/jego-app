@@ -7,8 +7,9 @@ import { DEFAULT_COMPANY_IMAGE } from '@/lib/constants'
 import env from '@/lib/env/client'
 import { cn, formatDate } from '@/lib/utils'
 import { CompanyModel } from '@/services/company-service'
-import { BanIcon, CheckCircleIcon, CircleIcon } from 'lucide-react'
+import { CircleIcon } from 'lucide-react'
 import CompanyActions from './company-item-actions'
+import CompanyVerificationStatus from './company-verification-status'
 
 type Props = {
    company: CompanyModel
@@ -39,17 +40,7 @@ const CompanyItem = ({ company }: Props) => {
          </TableCell>
          <TableCell>
             <div className='flex items-center gap-1'>
-               {company.verifiedAt ? (
-                  <>
-                     <CheckCircleIcon className='h-4 w-4 text-green-500' />
-                     <span className='text-sm text-green-600'>Vérifiée</span>
-                  </>
-               ) : (
-                  <>
-                     <BanIcon className='h-4 w-4 text-orange-500' />
-                     <span className='text-sm text-orange-600'>Non vérifiée</span>
-                  </>
-               )}
+               <CompanyVerificationStatus company={company} />
             </div>
          </TableCell>
          <TableCell>

@@ -10,7 +10,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { categoryKey } from '@/lib/query-kyes'
+import { categoryKey } from '@/lib/query-kies'
 import { cn } from '@/lib/utils'
 import { CategoryModel } from '@/services/category-service'
 import { zodResolver } from '@hookform/resolvers/zod'

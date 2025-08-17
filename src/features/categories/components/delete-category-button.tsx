@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { categoryKey } from '@/lib/query-kyes'
+import { categoryKey } from '@/lib/query-kies'
 import { useQueryClient } from '@tanstack/react-query'
 import { LoaderIcon, Trash2Icon } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'

@@ -26,3 +26,5 @@ declare type DashboardTabType = {
    label: string
    icon?: ReactNode
 }
+
+declare type DAY_FOR_PROGRAM = 'Lundi' | 'Mardi' | 'Mercredi' | 'Jeudi' | 'Vendredi' | 'Samedi' | 'Dimanche'

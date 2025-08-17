@@ -1,6 +1,7 @@
 'use server'
 
 import { actionClient, authenticatedActionClient } from '@/lib/safe-action'
+import CompanyReviewService from '@/services/company-review-service'
 import CompanyService from '@/services/company-service'
 import { z } from 'zod'
 
@@ -14,7 +15,7 @@ export const getCompaniesAction = actionClient
          search: z.string().optional(),
          categoryId: z.string().optional(),
          status: z.string().optional(),
-      }),
+      })
    )
    .action(async ({ parsedInput: { page, limit, search, categoryId, status } }) => {
       try {
@@ -75,3 +76,21 @@ export const toggleBlockCompanyAction = authenticatedActionClient
          message: "Statut de l'entreprise modifié avec succès",
       }
    })
+
+export const getCompanyStatsAction = actionClient
+   .metadata({ actionName: 'getCompanyStatsAction' })
+   .inputSchema(z.object({ companyId: z.string().min(1, "L'ID entreprise est requis") }))
+   .action(async ({ parsedInput: { companyId } }) => {
+      return CompanyReviewService.getCompanyStats(companyId)
+   })
+
+   export const toggleApproveCompanyAction = authenticatedActionClient
+      .metadata({ actionName: 'toggleApproveCompanyAction' })
+      .inputSchema(z.object({ companyId: z.string().min(1, "L'ID entreprise est requis") }))
+      .action(async ({ parsedInput: { companyId }, ctx }) => {
+         await CompanyService.toggleApprove(companyId, ctx.token)
+         return {
+            success: true,
+            message: "Statut de l'entreprise modifié avec succès",
+         }
+      })
