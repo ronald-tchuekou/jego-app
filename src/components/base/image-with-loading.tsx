@@ -26,7 +26,9 @@ export const ImageWithLoading = ({ src, alt, className, ...props }: Props) => {
          {isLoading && <div className='absolute inset-0 bg-muted animate-pulse' />}
          {hasError ? (
             <div className='absolute inset-0 bg-muted flex items-center justify-center'>
-               <span className='text-muted-foreground text-sm'>Erreur lors du chargement de l&apos;image</span>
+               <span className='text-muted-foreground text-sm text-center p-4'>
+                  Erreur lors du chargement de l&apos;image
+               </span>
             </div>
          ) : (
             <Image
