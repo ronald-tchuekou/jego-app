@@ -56,11 +56,11 @@ const CompanyVerificationStatus = ({ company }: Props) => {
          <DropdownMenuContent>
             <DropdownMenuItem onClick={handleToggleApprove}>
                <CheckCircleIcon className='text-green-500' />
-               <span>Approuver l'entreprise</span>
+               <span>Approuver l&apos;entreprise</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleToggleApprove}>
                <BanIcon className='text-orange-500' />
-               <span>Refuser l'entreprise</span>
+               <span>Refuser l&apos;entreprise</span>
             </DropdownMenuItem>
          </DropdownMenuContent>
       </DropdownMenu>
