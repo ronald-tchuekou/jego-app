@@ -49,14 +49,7 @@ export default function UpdateImageProfileForm() {
       fileInputRef.current?.click()
    }
 
-   const initials = user?.firstName
-      ? user?.firstName
-           .split(' ')
-           .map((n) => n[0])
-           .join('')
-           .toUpperCase()
-           .slice(0, 2)
-      : 'U'
+   const initials = `${user?.firstName.charAt(0) || 'U'}${user?.lastName.charAt(0) || 'S'}`
 
    useEffect(() => {
       if (user?.profileImage) {

@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       },
    },
    images: {
-      domains: ['github.com', 'loremflickr.com', 'picsum.photos'],
+      domains: ['github.com', 'loremflickr.com', 'picsum.photos', 'localhost'],
    },
 }
 

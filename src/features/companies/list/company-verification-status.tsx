@@ -1,7 +1,7 @@
 "use client"
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { companyKey } from '@/lib/query-kies'
+import { companyKey } from '@/lib/query-kye'
 import { CompanyModel } from '@/services/company-service'
 import { useQueryClient } from '@tanstack/react-query'
 import { BanIcon, CheckCircleIcon, ChevronDownIcon, LoaderIcon } from 'lucide-react'

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { userKey } from '@/lib/query-kies'
+import { userKey } from '@/lib/query-kye'
 import { cn } from '@/lib/utils'
 import { UserModel } from '@/services/user-service'
 import { useQueryClient } from '@tanstack/react-query'

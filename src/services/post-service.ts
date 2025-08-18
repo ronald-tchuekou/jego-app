@@ -1,12 +1,17 @@
 import { UserModel } from './user-service'
 
+export enum PostType {
+   EVENT = 'event',
+   NEWS = 'news',
+}
+
 export type PostModel = {
    id: string
    userId: string
    title: string
    description: string
    status: string
-   type: string
+   type: PostType
    category: string
    image: string | null
    createdAt: string

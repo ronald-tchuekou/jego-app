@@ -2,13 +2,11 @@
 
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import UserAvatar from '@/components/base/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { DEFAULT_AVATAR } from '@/lib/constants'
-import env from '@/lib/env/client'
-import { userKey } from '@/lib/query-kies'
+import { userKey } from '@/lib/query-kye'
 import { cn, formatDate, getRoleLabel } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { BanIcon, CheckCircleIcon, Trash2Icon } from 'lucide-react'
@@ -43,9 +41,6 @@ const UserDetails = ({ userId }: Props) => {
 
    if (!data) return <EmptyContent />
 
-   const initials = `${data.firstName?.charAt(0)}${data.lastName?.charAt(0)}`
-   const userProfile = data?.profileImage ? `${env.NEXT_PUBLIC_API_URL}/v1/${data?.profileImage}` : DEFAULT_AVATAR
-
    return (
       <>
          <div className='flex flex-col gap-6 max-w-5xl'>
@@ -56,10 +51,7 @@ const UserDetails = ({ userId }: Props) => {
                </CardHeader>
 
                <CardContent className='space-y-4'>
-                  <Avatar className='size-32 border-2 border-primary'>
-                     <AvatarImage src={userProfile} alt={data?.displayName} />
-                     <AvatarFallback className='text-2xl'>{initials}</AvatarFallback>
-                  </Avatar>
+                  <UserAvatar user={data} className='size-32' />
 
                   <div className='border rounded-lg overflow-hidden'>
                      <Table>

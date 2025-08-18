@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { formatDate } from '@/lib/utils'
 import { PostModel } from '@/services/post-service'
+import Link from 'next/link'
 
 type Props = {
    posts: PostModel[]
@@ -27,27 +28,31 @@ const CompanyPost = ({ posts }: Props) => {
                      {posts.map((post) => (
                         <CarouselItem key={post.id} className='md:basis-1/2 lg:basis-1/3'>
                            <Card>
-                              <CardContent className='space-y-4'>
-                                 {post.image && (
-                                    <div className='relative w-full h-full aspect-video border rounded-lg overflow-hidden'>
-                                       <ImageWithLoading
-                                          src={post.image}
-                                          alt={post.title}
-                                          width={1000}
-                                          height={1000}
-                                          className='w-full h-auto aspect-video object-cover'
-                                       />
+                              <CardContent>
+                                 <Link href={`/posts/${post.id}`} className='space-y-4 block group'>
+                                    {post.image && (
+                                       <div className='relative w-full h-full aspect-video border rounded-lg overflow-hidden'>
+                                          <ImageWithLoading
+                                             src={post.image}
+                                             alt={post.title}
+                                             width={1000}
+                                             height={1000}
+                                             className='w-full h-auto aspect-video object-cover'
+                                          />
+                                       </div>
+                                    )}
+                                    <div className='flex flex-col gap-2'>
+                                       <h3 className='text-lg font-semibold line-clamp-1 group-hover:text-primary'>
+                                          {post.title}
+                                       </h3>
+                                       <p className='text-sm text-muted-foreground line-clamp-2'>{post.description}</p>
+                                       <p className='text-xs text-muted-foreground'>{formatDate(post.createdAt)}</p>
+                                       <div className='flex flex-wrap gap-2'>
+                                          <Badge variant={'outline'}>{post.category}</Badge>
+                                          <Badge variant={'outline'}>{post.type}</Badge>
+                                       </div>
                                     </div>
-                                 )}
-                                 <div className='flex flex-col gap-2'>
-                                    <h3 className='text-lg font-semibold line-clamp-1'>{post.title}</h3>
-                                    <p className='text-sm text-muted-foreground line-clamp-2'>{post.description}</p>
-                                    <p className='text-xs text-muted-foreground'>{formatDate(post.createdAt)}</p>
-                                    <div className='flex flex-wrap gap-2'>
-                                       <Badge variant={'outline'}>{post.category}</Badge>
-                                       <Badge variant={'outline'}>{post.type}</Badge>
-                                    </div>
-                                 </div>
+                                 </Link>
                               </CardContent>
                            </Card>
                         </CarouselItem>

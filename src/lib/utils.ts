@@ -1,3 +1,4 @@
+import { PostType } from '@/services/post-service'
 import { UserRole } from '@/services/user-service'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
@@ -68,4 +69,15 @@ export function formatPrice(price: number) {
 
 export function getSlug(name: string) {
    return name.toLowerCase().replace(/ /g, '-')
+}
+
+export function getPostTypeLabel(type: PostType) {
+   switch (type) {
+      case PostType.EVENT:
+         return 'Événement'
+      case PostType.NEWS:
+         return 'News'
+      default:
+         return '- - -'
+   }
 }

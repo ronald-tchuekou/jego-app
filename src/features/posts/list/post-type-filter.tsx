@@ -1,16 +1,8 @@
 'use client'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { POST_TYPES } from '@/lib/constants'
 import { useQueryState } from 'nuqs'
-
-const POST_TYPES = [
-   { value: 'all', label: 'Tous les types' },
-   { value: 'news', label: 'Actualité' },
-   { value: 'article', label: 'Article' },
-   { value: 'announcement', label: 'Annonce' },
-   { value: 'event', label: 'Événement' },
-   { value: 'promotion', label: 'Promotion' },
-]
 
 const PostTypeFilter = () => {
    const [type, setType] = useQueryState('type', { defaultValue: 'all' })
@@ -21,6 +13,7 @@ const PostTypeFilter = () => {
             <SelectValue placeholder='Type' />
          </SelectTrigger>
          <SelectContent align='end'>
+            <SelectItem value='all'>Tous les types</SelectItem>
             {POST_TYPES.map((typeOption) => (
                <SelectItem key={typeOption.value} value={typeOption.value}>
                   {typeOption.label}
