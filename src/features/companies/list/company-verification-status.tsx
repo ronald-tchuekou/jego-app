@@ -53,7 +53,7 @@ const CompanyVerificationStatus = ({ company }: Props) => {
             )}
             <ChevronDownIcon className='size-4 text-muted-foreground' />
          </DropdownMenuTrigger>
-         <DropdownMenuContent>
+         <DropdownMenuContent align='end'>
             <DropdownMenuItem onClick={handleToggleApprove}>
                <CheckCircleIcon className='text-green-500' />
                <span>Approuver l&apos;entreprise</span>

@@ -25,7 +25,7 @@ function SearchInput() {
    )
 
    return (
-      <div className='relative bg-card rounded-lg shadow-lg w-full md:max-w-[400px]'>
+      <div className='relative bg-card rounded-lg shadow-lg w-full lg:max-w-[400px]'>
          <Input
             placeholder='Rechercher...'
             defaultValue={query}

@@ -11,11 +11,11 @@ const PostCategoryFilter = () => {
 
    return (
       <Select value={category} onValueChange={(value) => setCategory(value === 'all' ? null : value)}>
-         <SelectTrigger className="w-full">
-            <SelectValue placeholder="Catégorie" />
+         <SelectTrigger className='w-full'>
+            <SelectValue placeholder='Catégorie' />
          </SelectTrigger>
-         <SelectContent>
-            <SelectItem value="all">Toutes les catégories</SelectItem>
+         <SelectContent align='end'>
+            <SelectItem value='all'>Toutes les catégories</SelectItem>
             {categories.map((cat) => (
                <SelectItem key={cat.id} value={cat.name}>
                   {cat.name}

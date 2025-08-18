@@ -15,10 +15,10 @@ const PostStatusFilter = () => {
 
    return (
       <Select value={status} onValueChange={(value) => setStatus(value === 'all' ? null : value)}>
-         <SelectTrigger className="w-full sm:w-[200px]">
-            <SelectValue placeholder="Statut" />
+         <SelectTrigger className='w-full sm:w-[180px]'>
+            <SelectValue placeholder='Statut' />
          </SelectTrigger>
-         <SelectContent>
+         <SelectContent align='end'>
             {POST_STATUSES.map((statusOption) => (
                <SelectItem key={statusOption.value} value={statusOption.value}>
                   {statusOption.label}
