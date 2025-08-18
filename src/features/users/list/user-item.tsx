@@ -1,10 +1,8 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import UserAvatar from '@/components/base/user-avatar'
 import { Badge } from '@/components/ui/badge'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { DEFAULT_AVATAR } from '@/lib/constants'
-import env from '@/lib/env/client'
 import { cn, formatDate, getRoleLabel } from '@/lib/utils'
 import { UserModel } from '@/services/user-service'
 import { BanIcon, CheckCircleIcon, CircleIcon } from 'lucide-react'
@@ -15,17 +13,11 @@ type Props = {
 }
 
 const UserItem = ({ user }: Props) => {
-   const initials = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`
-   const userProfile = user?.profileImage ? `${env.NEXT_PUBLIC_API_URL}/v1/${user?.profileImage}` : DEFAULT_AVATAR
-
    return (
       <TableRow>
          <TableCell>
             <div className='flex items-center space-x-3'>
-               <Avatar className='size-10'>
-                  <AvatarImage src={userProfile} alt={user.displayName} />
-                  <AvatarFallback className='text-xs'>{initials}</AvatarFallback>
-               </Avatar>
+               <UserAvatar user={user} className='size-10' />
                <div className='flex flex-col'>
                   <span className='font-medium'>{user.displayName}</span>
                   <span className='text-sm text-muted-foreground'>{user.email}</span>

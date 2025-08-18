@@ -39,7 +39,6 @@ const PostItemActions = ({ post }: Props) => {
    const deletePostDialogRef = useRef<{ open: VoidFunction }>(null)
 
    const { auth } = useAuth()
-   const queryClient = useQueryClient()
 
    const isAdmin = auth?.user?.role === UserRole.ADMIN
    const isAuthor = auth?.user?.id === post.userId
@@ -47,17 +46,6 @@ const PostItemActions = ({ post }: Props) => {
    const canEdit = isAdmin || isAuthor || isSameCompany
    const canDelete = isAdmin || isAuthor || isSameCompany
    const canChangeStatus = isAdmin
-
-   // Delete post action
-   const { execute: executeDelete, isExecuting: isDeleting } = useAction(deletePostAction, {
-      onSuccess: () => {
-         toast.success('Post supprimé avec succès')
-         queryClient.invalidateQueries({ queryKey: postKey.all })
-      },
-      onError: ({ error }) => {
-         toast.error(error.serverError || 'Erreur lors de la suppression du post')
-      },
-   })
 
    if (!canEdit && !canDelete && !canChangeStatus) {
       return null
@@ -94,7 +82,6 @@ const PostItemActions = ({ post }: Props) => {
                      <DropdownMenuSeparator />
                      <DropdownMenuItem
                         onClick={() => deletePostDialogRef.current?.open()}
-                        disabled={isDeleting}
                         className='text-destructive focus:text-destructive'
                      >
                         <Trash2Icon className='text-destructive' />

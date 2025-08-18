@@ -13,32 +13,6 @@ type Props = {
 }
 
 const PostItem = ({ post }: Props) => {
-   const getStatusColor = (status: string) => {
-      switch (status) {
-         case 'published':
-            return 'text-green-600 fill-green-500'
-         case 'draft':
-            return 'text-yellow-600 fill-yellow-500'
-         case 'archived':
-            return 'text-gray-600 fill-gray-500'
-         default:
-            return 'text-gray-600 fill-gray-500'
-      }
-   }
-
-   const getStatusLabel = (status: string) => {
-      switch (status) {
-         case 'published':
-            return 'Publié'
-         case 'draft':
-            return 'Brouillon'
-         case 'archived':
-            return 'Archivé'
-         default:
-            return status
-      }
-   }
-
    return (
       <Card className='py-0'>
          <CardContent className='p-0 h-full flex flex-col relative'>
