@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { DEFAULT_AVATAR } from '@/lib/constants'
 import env from '@/lib/env/client'
-import { userKey } from '@/lib/query-kies'
+import { userKey } from '@/lib/query-kye'
 import { cn, formatDate, getRoleLabel } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { BanIcon, CheckCircleIcon, Trash2Icon } from 'lucide-react'

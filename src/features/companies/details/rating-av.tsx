@@ -2,7 +2,7 @@
 
 import { Rating } from '@/components/ui/rating'
 import { Skeleton } from '@/components/ui/skeleton'
-import { companyReviewKey } from '@/lib/query-kies'
+import { companyReviewKey } from '@/lib/query-kye'
 import { useQuery } from '@tanstack/react-query'
 import { getCompanyStatsAction } from '../actions'
 

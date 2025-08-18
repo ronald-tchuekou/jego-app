@@ -3,9 +3,9 @@
 import ImageWithLoading from '@/components/base/image-with-loading'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { cn, formatDate } from '@/lib/utils'
+import { formatDate, getPostTypeLabel } from '@/lib/utils'
 import { PostModel } from '@/services/post-service'
-import { CircleIcon } from 'lucide-react'
+import Link from 'next/link'
 import PostItemActions from './post-item-actions'
 
 type Props = {
@@ -43,7 +43,10 @@ const PostItem = ({ post }: Props) => {
       <Card className='py-0'>
          <CardContent className='p-0 h-full flex flex-col relative'>
             {post.image && (
-               <div className='relative w-full aspect-video border rounded-t-lg overflow-hidden'>
+               <Link
+                  href={`/posts/${post.id}`}
+                  className='block relative w-full aspect-video border rounded-t-lg overflow-hidden'
+               >
                   <ImageWithLoading
                      src={post.image}
                      alt={post.title}
@@ -51,38 +54,30 @@ const PostItem = ({ post }: Props) => {
                      height={300}
                      className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-200'
                   />
-               </div>
+               </Link>
             )}
 
-            <div className='flex-1 space-y-3 p-4'>
+            <Link href={`/posts/${post.id}`} className='block space-y-3 p-4 group'>
                <div className='space-y-2'>
-                  <h3 className='text-lg font-semibold line-clamp-2 leading-tight'>{post.title}</h3>
+                  <h3 className='text-lg font-semibold line-clamp-2 leading-tight group-hover:text-primary'>
+                     {post.title}
+                  </h3>
                   <p className='text-sm text-muted-foreground line-clamp-3'>{post.description}</p>
                </div>
 
                <div className='space-y-2'>
                   <div className='flex flex-wrap gap-2'>
-                     <Badge variant='outline'>{post.category}</Badge>
-                     <Badge variant='outline'>{post.type}</Badge>
+                     <Badge variant='secondary'>{getPostTypeLabel(post.type)}</Badge>
                   </div>
 
                   <div className='flex items-center justify-between text-xs text-muted-foreground'>
-                     <span>
+                     <p className='line-clamp-1 w-full'>
                         Par <span className='font-bold'>{post.user?.displayName || 'Anonyme'}</span>
-                     </span>
-                     <span>{formatDate(post.createdAt)}</span>
-                  </div>
-
-                  <div className='flex items-center justify-between'>
-                     <div className='flex items-center gap-2'>
-                        <CircleIcon className={cn('size-2 stroke-0', getStatusColor(post.status))} />
-                        <span className={cn('text-sm', getStatusColor(post.status))}>
-                           {getStatusLabel(post.status)}
-                        </span>
-                     </div>
+                     </p>
+                     <p className='text-xs flex-none'>{formatDate(post.createdAt)}</p>
                   </div>
                </div>
-            </div>
+            </Link>
             <div className='absolute top-1 right-1'>
                <PostItemActions post={post} />
             </div>

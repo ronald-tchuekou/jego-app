@@ -3,7 +3,7 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import CustomPagination from '@/components/dashboard/custom-pagination'
-import { postKey } from '@/lib/query-kies'
+import { postKey } from '@/lib/query-kye'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
@@ -13,7 +13,6 @@ import PostItem from './post-item'
 
 export function PostsList() {
    // Pagination and filters state
-   const [category] = useQueryState('category')
    const [type] = useQueryState('type')
    const [status] = useQueryState('status')
    const [page] = useQueryState('page')
@@ -30,7 +29,6 @@ export function PostsList() {
          page: page ? parseInt(page) : 1,
          limit: limit ? parseInt(limit) : 10,
          search: search || undefined,
-         category: category || undefined,
          type: type || undefined,
          status: status || undefined,
       }),
@@ -67,18 +65,15 @@ export function PostsList() {
             ) : posts.length === 0 ? (
                <EmptyContent text='Aucun post trouvé' />
             ) : (
-               <>
-                  <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5 gap-4 space-y-4'>
-                     {posts.map((post) => (
-                        <div key={post.id} className='break-inside-avoid mb-4'>
-                           <PostItem post={post} />
-                        </div>
-                     ))}
-                  </div>
-               </>
+               <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5 gap-4 space-y-4'>
+                  {posts.map((post) => (
+                     <div key={post.id} className='break-inside-avoid mb-4'>
+                        <PostItem post={post} />
+                     </div>
+                  ))}
+               </div>
             )}
          </div>
-
          {/* Pagination */}
          {totalPages > 1 && <CustomPagination totalCount={totalCount} totalPages={totalPages} label='posts' />}
       </>

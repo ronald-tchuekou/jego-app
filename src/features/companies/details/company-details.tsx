@@ -2,7 +2,7 @@
 
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
-import { companyKey } from '@/lib/query-kies'
+import { companyKey } from '@/lib/query-kye'
 import { useQuery } from '@tanstack/react-query'
 import { getCompanyByIdAction } from '../actions'
 import CompanyGallery from './gallery'

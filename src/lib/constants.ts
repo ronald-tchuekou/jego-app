@@ -1,4 +1,5 @@
 import { NavMainItem } from '@/components/dashboard/nav-main'
+import { PostType } from '@/services/post-service'
 import { UserRole } from '@/services/user-service'
 import {
    IconBriefcase,
@@ -53,5 +54,15 @@ export const ROUTES: NavMainItem[] = [
       title: 'Profil',
       url: '/profile',
       icon: CircleUserIcon,
+   },
+]
+export const POST_TYPES = [
+   {
+      value: PostType.EVENT,
+      label: 'Événement',
+   },
+   {
+      value: PostType.NEWS,
+      label: 'News',
    },
 ]
