@@ -18,121 +18,116 @@ import { updateImageProfileAction } from '../actions'
 import { defaultUpdateImageProfileValue, updateImageProfileSchema, type UpdateImageProfileSchema } from './schema'
 
 export default function UpdateImageProfileForm() {
-	const { auth, revalidateAuth } = useAuth()
-	const user = auth?.user
+   const { auth, revalidateAuth } = useAuth()
+   const user = auth?.user
 
-	const [previewUrl, setPreviewUrl] = useState<string | null>(DEFAULT_AVATAR)
-	const fileInputRef = useRef<HTMLInputElement>(null)
+   const [previewUrl, setPreviewUrl] = useState<string | null>(DEFAULT_AVATAR)
+   const fileInputRef = useRef<HTMLInputElement>(null)
 
-	const form = useForm<UpdateImageProfileSchema>({
-		resolver: zodResolver(updateImageProfileSchema),
-		defaultValues: defaultUpdateImageProfileValue,
-	})
+   const form = useForm<UpdateImageProfileSchema>({
+      resolver: zodResolver(updateImageProfileSchema),
+      defaultValues: defaultUpdateImageProfileValue,
+   })
 
-	const { execute, isPending } = useAction(updateImageProfileAction, {
-		onSuccess: ({ data }) => {
-			toast.success(data.message)
-			revalidateAuth()
-		},
-		onError: ({ error }) => {
-			toast.error(error.serverError || 'Une erreur est survenue', { duration: 8000 })
-		},
-	})
+   const { execute, isPending } = useAction(updateImageProfileAction, {
+      onSuccess: ({ data }) => {
+         toast.success(data.message)
+         revalidateAuth()
+      },
+      onError: ({ error }) => {
+         toast.error(error.serverError || 'Une erreur est survenue', {
+            duration: 8000,
+         })
+      },
+   })
 
-	const onSubmit = (data: UpdateImageProfileSchema) => {
-		execute(data)
-	}
+   const onSubmit = (data: UpdateImageProfileSchema) => {
+      execute(data)
+   }
 
-	const handleUploadClick = () => {
-		fileInputRef.current?.click()
-	}
+   const handleUploadClick = () => {
+      fileInputRef.current?.click()
+   }
 
-	const initials = user?.firstName
-		? user?.firstName
-				.split(' ')
-				.map((n) => n[0])
-				.join('')
-				.toUpperCase()
-				.slice(0, 2)
-		: 'U'
+   const initials = `${user?.firstName.charAt(0) || 'U'}${user?.lastName.charAt(0) || 'S'}`
 
-	useEffect(() => {
-		if (user?.profileImage) {
-			setPreviewUrl(`${env.NEXT_PUBLIC_API_URL}/v1/${user.profileImage}`)
-		}
-	}, [user?.profileImage])
+   useEffect(() => {
+      if (user?.profileImage) {
+         setPreviewUrl(`${env.NEXT_PUBLIC_API_URL}/v1/${user.profileImage}`)
+      }
+   }, [user?.profileImage])
 
-	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>Photo de profil</CardTitle>
-				<CardDescription>Mettez à jour votre photo de profil</CardDescription>
-			</CardHeader>
+   return (
+      <Card>
+         <CardHeader>
+            <CardTitle>Photo de profil</CardTitle>
+            <CardDescription>Mettez à jour votre photo de profil</CardDescription>
+         </CardHeader>
 
-			<CardContent>
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-						<div className='flex flex-col space-y-4'>
-							<Avatar className='size-32 border-2 border-primary'>
-								<AvatarImage src={previewUrl || DEFAULT_AVATAR} alt={user?.displayName} />
-								<AvatarFallback className='text-2xl'>{initials}</AvatarFallback>
-							</Avatar>
+         <CardContent>
+            <Form {...form}>
+               <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+                  <div className='flex flex-col space-y-4'>
+                     <Avatar className='size-32 border-2 border-primary'>
+                        <AvatarImage src={previewUrl || DEFAULT_AVATAR} alt={user?.displayName} />
+                        <AvatarFallback className='text-2xl'>{initials}</AvatarFallback>
+                     </Avatar>
 
-							<FormField
-								control={form.control}
-								name='image'
-								render={({ field }) => (
-									<FormItem className='w-full'>
-										<FormControl>
-											<div>
-												<Input
-													ref={fileInputRef}
-													type='file'
-													accept='image/jpeg,image/png,image/webp'
-													className='hidden'
-													onChange={(e) => {
-														const file = e.target.files?.[0]
-														if (file) {
-															field.onChange(file)
+                     <FormField
+                        control={form.control}
+                        name='image'
+                        render={({ field }) => (
+                           <FormItem className='w-full'>
+                              <FormControl>
+                                 <div>
+                                    <Input
+                                       ref={fileInputRef}
+                                       type='file'
+                                       accept='image/jpeg,image/png,image/webp'
+                                       className='hidden'
+                                       onChange={(e) => {
+                                          const file = e.target.files?.[0]
+                                          if (file) {
+                                             field.onChange(file)
 
-															// Create preview URL
-															const reader = new FileReader()
-															reader.onloadend = () => {
-																setPreviewUrl(reader.result as string)
-															}
-															reader.readAsDataURL(file)
-														}
-													}}
-												/>
-												<Button
-													type='button'
-													variant='outline'
-													onClick={handleUploadClick}
-													disabled={isPending}
-												>
-													<Upload />
-													Choisir une image
-												</Button>
-											</div>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
+                                             // Create preview URL
+                                             const reader = new FileReader()
+                                             reader.onloadend = () => {
+                                                setPreviewUrl(reader.result as string)
+                                             }
+                                             reader.readAsDataURL(file)
+                                          }
+                                       }}
+                                    />
+                                    <Button
+                                       type='button'
+                                       variant='outline'
+                                       onClick={handleUploadClick}
+                                       disabled={isPending}
+                                    >
+                                       <Upload />
+                                       Choisir une image
+                                    </Button>
+                                 </div>
+                              </FormControl>
+                              <FormMessage />
+                           </FormItem>
+                        )}
+                     />
+                  </div>
 
-						<div className='text-sm text-muted-foreground'>
-							<p>Formats acceptés: JPEG, PNG, WebP</p>
-							<p>Taille maximale: 2MB</p>
-						</div>
+                  <div className='text-sm text-muted-foreground'>
+                     <p>Formats acceptés: JPEG, PNG, WebP</p>
+                     <p>Taille maximale: 2MB</p>
+                  </div>
 
-						<Button type='submit' disabled={isPending || !form.formState.isDirty}>
-							{isPending && <LoaderIcon className='animate-spin' />}
-							<span>Mettre à jour la photo</span>
-						</Button>
-					</form>
-				</Form>
-			</CardContent>
-		</Card>
-	)
+                  <Button type='submit' disabled={isPending || !form.formState.isDirty}>
+                     {isPending && <LoaderIcon className='animate-spin' />}
+                     <span>Mettre à jour la photo</span>
+                  </Button>
+               </form>
+            </Form>
+         </CardContent>
+      </Card>
+   )
 }

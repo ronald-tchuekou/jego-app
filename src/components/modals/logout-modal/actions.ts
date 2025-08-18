@@ -1,9 +1,9 @@
-"use server"
+'use server'
 
-import { AUTH_COOKIE_NAME } from "@/lib/constants"
-import { authenticatedActionClient } from "@/lib/safe-action"
-import AuthService from "@/services/auth-service"
-import { cookies } from "next/headers"
+import { AUTH_COOKIE_NAME } from '@/lib/constants'
+import { authenticatedActionClient } from '@/lib/safe-action'
+import AuthService from '@/services/auth-service'
+import { cookies } from 'next/headers'
 
 export const logoutAction = authenticatedActionClient.metadata({ actionName: 'logout' }).action(async ({ ctx }) => {
    await AuthService.logout(ctx.token)
