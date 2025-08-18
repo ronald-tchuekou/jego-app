@@ -4,7 +4,7 @@ import { actionClient, authenticatedActionClient } from '@/lib/safe-action'
 import PostService from '@/services/post-service'
 import { UserRole } from '@/services/user-service'
 import { z } from 'zod'
-import { createPostSchema, deletePostSchema, postStatusSchema, updatePostSchema } from './schemas'
+import { deletePostSchema, postStatusSchema } from './schemas'
 
 // Action to get posts with pagination and filters
 export const getPostsAction = actionClient
@@ -17,7 +17,7 @@ export const getPostsAction = actionClient
          category: z.string().optional(),
          type: z.string().optional(),
          status: z.string().optional(),
-      }),
+      })
    )
    .action(async ({ parsedInput: { page, limit, search, category, type, status } }) => {
       try {
@@ -53,34 +53,6 @@ export const getPostByIdAction = actionClient
    .inputSchema(z.object({ postId: z.string().min(1, "L'ID du post est requis") }))
    .action(async ({ parsedInput: { postId } }) => {
       return PostService.getById(postId)
-   })
-
-// Action to create a post (authenticated users)
-export const createPostAction = authenticatedActionClient
-   .metadata({ actionName: 'createPostAction' })
-   .inputSchema(createPostSchema)
-   .action(async ({ parsedInput, ctx }) => {
-      try {
-         const post = await PostService.create(parsedInput, ctx.token)
-         return { success: true, message: 'Post créé avec succès', post }
-      } catch (error) {
-         console.error(error)
-         throw new Error('Erreur lors de la création du post')
-      }
-   })
-
-// Action to update a post (author or admin only)
-export const updatePostAction = authenticatedActionClient
-   .metadata({ actionName: 'updatePostAction' })
-   .inputSchema(updatePostSchema)
-   .action(async ({ parsedInput: { postId, ...updateData }, ctx }) => {
-      try {
-         const post = await PostService.update(postId, updateData, ctx.token)
-         return { success: true, message: 'Post modifié avec succès', post }
-      } catch (error) {
-         console.error(error)
-         throw new Error('Erreur lors de la modification du post')
-      }
    })
 
 // Action to delete a post (author or admin only)
