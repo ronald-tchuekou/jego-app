@@ -21,7 +21,7 @@ function RoleFilter() {
          <SelectTrigger className='w-48 bg-card rounded-lg shadow-lg'>
             <SelectValue placeholder='Filtrer par rôle' />
          </SelectTrigger>
-         <SelectContent>
+         <SelectContent align='end'>
             <SelectItem value='all'>Tous les rôles</SelectItem>
             <SelectItem value='admin'>Administrateur</SelectItem>
             <SelectItem value='company:admin'>Admin Entreprise</SelectItem>

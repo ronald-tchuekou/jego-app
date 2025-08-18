@@ -40,7 +40,7 @@ function CategoryFilter() {
          <SelectTrigger className='w-48 bg-card rounded-lg shadow-lg'>
             <SelectValue placeholder='Filtrer par catégorie' />
          </SelectTrigger>
-         <SelectContent>
+         <SelectContent align='end'>
             <SelectItem value='all'>Toutes les catégories</SelectItem>
             {categories.map((category) => (
                <SelectItem key={category.id} value={category.id}>

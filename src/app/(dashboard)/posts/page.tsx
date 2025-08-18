@@ -16,7 +16,7 @@ export default function Page() {
                </Link>
             </Button>
          </DashboardTitle>
-         <div className='flex flex-col justify-between lg:flex-row gap-3'>
+         <div className='flex flex-col justify-between sm:flex-row gap-3'>
             <SearchInput />
             <div className='flex items-center gap-2'>
                {/* <PostCategoryFilter /> */}

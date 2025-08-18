@@ -17,10 +17,10 @@ const PostTypeFilter = () => {
 
    return (
       <Select value={type} onValueChange={(value) => setType(value === 'all' ? null : value)}>
-         <SelectTrigger className="w-full sm:w-[200px]">
-            <SelectValue placeholder="Type" />
+         <SelectTrigger className='w-full sm:w-[150px]'>
+            <SelectValue placeholder='Type' />
          </SelectTrigger>
-         <SelectContent>
+         <SelectContent align='end'>
             {POST_TYPES.map((typeOption) => (
                <SelectItem key={typeOption.value} value={typeOption.value}>
                   {typeOption.label}

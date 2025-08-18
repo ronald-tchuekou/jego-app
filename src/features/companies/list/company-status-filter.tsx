@@ -21,7 +21,7 @@ function CompanyStatusFilter() {
          <SelectTrigger className='w-32 bg-card rounded-lg shadow-lg'>
             <SelectValue placeholder='Statut' />
          </SelectTrigger>
-         <SelectContent>
+         <SelectContent align='end'>
             <SelectItem value='all'>Tous</SelectItem>
             <SelectItem value='active'>Actives</SelectItem>
             <SelectItem value='blocked'>Bloquées</SelectItem>
