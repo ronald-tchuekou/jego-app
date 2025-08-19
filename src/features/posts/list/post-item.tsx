@@ -46,7 +46,10 @@ const PostItem = ({ post }: Props) => {
 
                   <div className='flex items-center justify-between text-xs text-muted-foreground'>
                      <p className='line-clamp-1 w-full'>
-                        Par <span className='font-bold'>{post.user?.displayName || 'Anonyme'}</span>
+                        Par{' '}
+                        <span className='font-bold'>
+                           {post.user?.company?.name || post.user?.displayName || 'Anonyme'}
+                        </span>
                      </p>
                      <p className='text-xs flex-none'>{formatDate(post.createdAt)}</p>
                   </div>

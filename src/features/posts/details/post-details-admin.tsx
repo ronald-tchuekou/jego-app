@@ -84,7 +84,7 @@ export function PostDetailsAdmin({ post }: Post) {
                      <div className='flex flex-wrap gap-4 text-sm text-muted-foreground whitespace-nowrap'>
                         <div className='flex items-center gap-2'>
                            <User className='size-4' />
-                           <span>{post.user.displayName}</span>
+                           <span>{post.user?.company?.name || post.user?.displayName || 'Anonyme'}</span>
                         </div>
                         <div className='flex items-center gap-2'>
                            <Calendar className='size-4' />
@@ -147,6 +147,13 @@ export function PostDetailsAdmin({ post }: Post) {
                                  {formatRole(post.user.role)}
                               </span>
                            </div>
+
+                           {post.user.company && (
+                              <div className='flex justify-between'>
+                                 <span className='text-muted-foreground'>Entreprise:</span>
+                                 <span className='font-medium text-right'>{post.user.company.name}</span>
+                              </div>
+                           )}
 
                            <div className='flex justify-between'>
                               <span className='text-muted-foreground'>ID Utilisateur:</span>
