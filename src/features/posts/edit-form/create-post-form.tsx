@@ -1,5 +1,6 @@
 'use client'
 
+import FileUploader from '@/components/base/file-uploader'
 import { IconInput } from '@/components/base/icon-input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -76,6 +77,49 @@ export default function CreatePostForm({ post }: Props) {
             <Form {...form}>
                <form onSubmit={onSubmit} className='space-y-10'>
                   <div className='grid gap-4'>
+                     <FormField
+                        control={form.control}
+                        name='image'
+                        render={({ field }) => (
+                           <FormItem>
+                              <FormLabel className='text-sm font-medium'>
+                                 Image à joindre sur le post (maximum une image, facultatif)
+                              </FormLabel>
+                              <FormControl>
+                                 <FileUploader
+                                    maxFiles={6}
+                                    value={field.value ? [field.value] : []}
+                                    onValueChange={(files) => {
+                                       field.onChange(files[0])
+                                    }}
+                                 />
+                              </FormControl>
+                           </FormItem>
+                        )}
+                     />
+
+                     <FormField
+                        control={form.control}
+                        name='images'
+                        render={({ field }) => (
+                           <FormItem>
+                              <FormLabel className='text-sm font-medium'>
+                                 Images à joindre sur le post (maximum 6 images, facultatif)
+                              </FormLabel>
+                              <FormControl>
+                                 <FileUploader
+                                    maxFiles={6}
+                                    value={field.value || []}
+                                    onValueChange={(files) => {
+                                       console.log('Files ==> ', files)
+                                       field.onChange(files)
+                                    }}
+                                 />
+                              </FormControl>
+                           </FormItem>
+                        )}
+                     />
+
                      <FormField
                         control={form.control}
                         name='type'

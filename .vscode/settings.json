@@ -1,5 +1,5 @@
 {
-   "cSpell.words": ["jego", "postgres", "reposted", "supabase"],
+   "cSpell.words": ["filepond", "jego", "postgres", "reposted", "supabase"],
    "typescript.preferences.autoImportSpecifierExcludeRegexes": [
       "**/dist/",
       "**/build/",
