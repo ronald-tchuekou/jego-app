@@ -1,7 +1,5 @@
 import LogoutModal from '@/components/modals/logout-modal'
-import { AuthProvider } from '@/components/providers/auth'
-import QueryProviders from '@/components/providers/query-provider'
-import { ThemeProvider } from '@/components/providers/theme-provider'
+import { AppProviders } from '@/components/providers/app-providers'
 import { Toaster } from '@/components/ui/sonner'
 import { AUTH_COOKIE_NAME } from '@/lib/constants'
 import { Auth } from '@/services/auth-service'
@@ -9,7 +7,6 @@ import '@/styles/style.css'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import { cookies } from 'next/headers'
-import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 const montserrat = Montserrat({
    subsets: ['latin'],
@@ -36,15 +33,11 @@ export default async function RootLayout({
    return (
       <html lang='fr'>
          <body className={`antialiased ${montserrat.className}`}>
-            <ThemeProvider defaultTheme='system' storageKey='ui-theme'>
-               <QueryProviders>
-                  <AuthProvider auth={auth}>
-                     <NuqsAdapter>{children}</NuqsAdapter>
-                     <Toaster richColors position='top-center' duration={6000} />
-                     <LogoutModal />
-                  </AuthProvider>
-               </QueryProviders>
-            </ThemeProvider>
+            <AppProviders auth={auth}>
+               {children}
+               <Toaster richColors position='top-center' duration={6000} />
+               <LogoutModal />
+            </AppProviders>
          </body>
       </html>
    )
