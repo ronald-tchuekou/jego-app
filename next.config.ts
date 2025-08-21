@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       },
    },
    images: {
-      domains: ['github.com', 'loremflickr.com', 'picsum.photos', 'localhost'],
+      domains: ['github.com', 'loremflickr.com', 'picsum.photos', 'localhost', 'dev.api.jego.cm', 'api.jego.cm'],
    },
 }
 
