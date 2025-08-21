@@ -10,14 +10,20 @@ type Provider = (p: Props) => JSX.Element
 
 export const composeProviders = (...p: Provider[]) =>
    p.reduceRight(
-      (Acc, P) =>
-         ({ children, ...props }: Props) =>
-            (
-               <P {...props}>
-                  <Acc {...props}>{children}</Acc>
-               </P>
-            ),
-      ({ children }) => <>{children}</>
+      (Acc, P) => {
+         const ComposedComponent = ({ children, ...props }: Props) => (
+            <P {...props}>
+               <Acc {...props}>{children}</Acc>
+            </P>
+         )
+         ComposedComponent.displayName = `ComposedProvider(${P.name || 'Unknown'})`
+         return ComposedComponent
+      },
+      (() => {
+         const BaseComponent = ({ children }: { children: ReactNode }) => <>{children}</>
+         BaseComponent.displayName = 'BaseProvider'
+         return BaseComponent
+      })()
    )
 
 // USE CASE
