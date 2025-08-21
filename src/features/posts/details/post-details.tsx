@@ -14,7 +14,7 @@ type Props = {
    postId: string
 }
 
-export function PostDetails({ postId }: Props) {
+export default function PostDetails({ postId }: Props) {
    const { auth } = useAuth()
 
    const { data, isLoading } = useQuery({

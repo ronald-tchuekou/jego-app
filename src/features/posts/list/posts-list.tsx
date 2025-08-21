@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { getPostsAction } from '../actions'
 import PostItem from './post-item'
 
-export function PostsList() {
+function PostsList() {
    // Pagination and filters state
    const [type] = useQueryState('type')
    const [status] = useQueryState('status')

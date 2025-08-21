@@ -2,7 +2,11 @@ import SearchInput from '@/components/base/search-input'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
 import AccountStatusFilter from '@/features/users/list/account-status-filter'
 import RoleFilter from '@/features/users/list/role-filter'
-import { UsersList } from '@/features/users/list/users-list'
+import dynamic from 'next/dynamic'
+
+const DynamicUsersList = dynamic(() => import('@/features/users/list/users-list'), {
+   loading: () => <p>Loading...</p>,
+})
 
 export default function UsersPage() {
    return (
@@ -14,7 +18,7 @@ export default function UsersPage() {
                <AccountStatusFilter />
             </div>
          </DashboardTitle>
-         <UsersList />
+         <DynamicUsersList />
       </>
    )
 }

@@ -1,8 +1,16 @@
+import LoaderContent from '@/components/base/loader-content'
 import SearchInput from '@/components/base/search-input'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
-import CategoryFilter from '@/features/companies/list/category-filter'
-import { CompaniesList } from '@/features/companies/list/companies-list'
 import CompanyStatusFilter from '@/features/companies/list/company-status-filter'
+import dynamic from 'next/dynamic'
+
+const DynamicCompaniesList = dynamic(() => import('@/features/companies/list/companies-list'), {
+   loading: () => <LoaderContent />,
+})
+
+const DynamicCategoryFilter = dynamic(() => import('@/features/companies/list/category-filter'), {
+   loading: () => <LoaderContent />,
+})
 
 export default function CompaniesPage() {
    return (
@@ -10,11 +18,11 @@ export default function CompaniesPage() {
          <DashboardTitle title='Gestion des entreprises' description='Gérez les entreprises de votre plateforme'>
             <div className='flex items-center gap-2'>
                <SearchInput />
-               <CategoryFilter />
+               <DynamicCategoryFilter />
                <CompanyStatusFilter />
             </div>
          </DashboardTitle>
-         <CompaniesList />
+         <DynamicCompaniesList />
       </>
    )
 }

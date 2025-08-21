@@ -1,5 +1,9 @@
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
-import UserDetails from '@/features/users/details/user-details'
+import dynamic from 'next/dynamic'
+
+const DynamicUserDetails = dynamic(() => import('@/features/users/details/user-details'), {
+   loading: () => <p>Loading...</p>,
+})
 
 interface UserDetailPageProps {
    params: Promise<{
@@ -17,7 +21,7 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
             description='Informations détaillées du compte utilisateur'
             withBackButton
          />
-         <UserDetails userId={id} />
+         <DynamicUserDetails userId={id} />
       </>
    )
 }

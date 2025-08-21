@@ -23,7 +23,7 @@ const COLUMNS = [
    { name: '', width: 50 },
 ]
 
-export function CompaniesList() {
+export default function CompaniesList() {
    // Pagination and filters state
    const [categoryId] = useQueryState('categoryId')
    const [page] = useQueryState('page')
