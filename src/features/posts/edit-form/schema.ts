@@ -19,5 +19,4 @@ export const defaultCreatePostFormValue: CreatePostFormSchema = {
    description: '',
    category: '- - -',
    type: PostType.NEWS,
-   image: '',
 }

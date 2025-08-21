@@ -26,7 +26,7 @@ const PostItem = ({ post }: Props) => {
                      alt={post.title}
                      width={400}
                      height={300}
-                     className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-200'
+                     className='w-full h-full object-contain bg-accent'
                   />
                </Link>
             )}
@@ -46,7 +46,10 @@ const PostItem = ({ post }: Props) => {
 
                   <div className='flex items-center justify-between text-xs text-muted-foreground'>
                      <p className='line-clamp-1 w-full'>
-                        Par <span className='font-bold'>{post.user?.displayName || 'Anonyme'}</span>
+                        Par{' '}
+                        <span className='font-bold'>
+                           {post.user?.company?.name || post.user?.displayName || 'Anonyme'}
+                        </span>
                      </p>
                      <p className='text-xs flex-none'>{formatDate(post.createdAt)}</p>
                   </div>

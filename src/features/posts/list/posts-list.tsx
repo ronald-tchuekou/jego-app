@@ -27,7 +27,7 @@ export function PostsList() {
    } = useQuery({
       queryKey: postKey.list({
          page: page ? parseInt(page) : 1,
-         limit: limit ? parseInt(limit) : 10,
+         limit: limit ? parseInt(limit) : 20,
          search: search || undefined,
          type: type || undefined,
          status: status || undefined,
@@ -75,7 +75,9 @@ export function PostsList() {
             )}
          </div>
          {/* Pagination */}
-         {totalPages > 1 && <CustomPagination totalCount={totalCount} totalPages={totalPages} label='posts' />}
+         {totalPages > 1 && (
+            <CustomPagination totalCount={totalCount} totalPages={totalPages} label='posts' currentLimit={20} />
+         )}
       </>
    )
 }

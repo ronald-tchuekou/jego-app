@@ -8,10 +8,11 @@ type Props = {
    totalCount: number
    totalPages: number
    label: string
+   currentLimit?: number
 }
 
-const CustomPagination = ({ totalCount, totalPages, label }: Props) => {
-   const [limit, setLimit] = useQueryState('limit', parseAsInteger.withDefault(10))
+const CustomPagination = ({ totalCount, totalPages, label, currentLimit }: Props) => {
+   const [limit, setLimit] = useQueryState('limit', parseAsInteger.withDefault(currentLimit || 10))
    const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1))
 
    return (
