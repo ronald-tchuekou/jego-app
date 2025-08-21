@@ -1,5 +1,10 @@
+import LoaderContent from '@/components/base/loader-content'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
-import EditPostWrapper from '@/features/posts/edit-form/edit-post-wrapper'
+import dynamic from 'next/dynamic'
+
+const DynamicEditPostWrapper = dynamic(() => import('@/features/posts/edit-form/edit-post-wrapper'), {
+   loading: () => <LoaderContent />,
+})
 
 export default async function Page({ params }: { params: Promise<{ post_id: string }> }) {
    const { post_id } = await params
@@ -7,7 +12,7 @@ export default async function Page({ params }: { params: Promise<{ post_id: stri
    return (
       <>
          <DashboardTitle withBackButton title='Modifier une annonce' />
-         <EditPostWrapper postId={post_id} />
+         <DynamicEditPostWrapper postId={post_id} />
       </>
    )
 }

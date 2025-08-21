@@ -43,7 +43,6 @@ export const ROUTES: NavMainItem[] = [
       title: "Offres d'emploi",
       url: '/jobs',
       icon: IconBriefcase,
-      allowedRoles: [UserRole.USER, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
    },
    {
       title: 'Paramètres',

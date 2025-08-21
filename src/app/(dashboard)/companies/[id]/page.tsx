@@ -1,5 +1,10 @@
+import LoaderContent from '@/components/base/loader-content'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
-import CompanyDetails from '@/features/companies/details/company-details'
+import dynamic from 'next/dynamic'
+
+const DynamicCompanyDetails = dynamic(() => import('@/features/companies/details/company-details'), {
+   loading: () => <LoaderContent />,
+})
 
 interface CompanyDetailPageProps {
    params: Promise<{
@@ -17,7 +22,7 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
             description="Informations détaillées de l'entreprise"
             withBackButton
          />
-         <CompanyDetails companyId={id} />
+         <DynamicCompanyDetails companyId={id} />
       </>
    )
 }

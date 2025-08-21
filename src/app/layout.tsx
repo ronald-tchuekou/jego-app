@@ -1,10 +1,11 @@
-import LogoutModal from '@/components/modals/logout-modal'
+import LoaderContent from '@/components/base/loader-content'
 import { AppProviders } from '@/components/providers/app-providers'
 import { Toaster } from '@/components/ui/sonner'
 import { AUTH_COOKIE_NAME } from '@/lib/constants'
 import { Auth } from '@/services/auth-service'
 import '@/styles/style.css'
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import { Montserrat } from 'next/font/google'
 import { cookies } from 'next/headers'
 
@@ -21,6 +22,10 @@ export const metadata: Metadata = {
    description: "Votre source d'information fiable dans tout les villes du Cameroun",
 }
 
+const DynamicLogoutModal = dynamic(() => import('@/components/modals/logout-modal'), {
+   loading: () => <LoaderContent />,
+})
+
 export default async function RootLayout({
    children,
 }: Readonly<{
@@ -36,7 +41,7 @@ export default async function RootLayout({
             <AppProviders auth={auth}>
                {children}
                <Toaster richColors position='top-center' duration={6000} />
-               <LogoutModal />
+               <DynamicLogoutModal />
             </AppProviders>
          </body>
       </html>
