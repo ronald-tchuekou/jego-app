@@ -10,7 +10,6 @@ export const createPostFormSchema = z.object({
    category: z.string(),
    type: z.enum(PostType, 'Le type est requis'),
    image: z.string().optional(),
-   images: z.array(z.string()).optional(),
 })
 
 export type CreatePostFormSchema = z.infer<typeof createPostFormSchema>
@@ -20,6 +19,4 @@ export const defaultCreatePostFormValue: CreatePostFormSchema = {
    description: '',
    category: '- - -',
    type: PostType.NEWS,
-   image: 'storage/uploads/files/1755722117101_jpeg.jpeg',
-   images: ['storage/uploads/files/1755722117101_jpeg.jpeg', 'storage/uploads/files/1755722117101_jpeg.jpeg'],
 }

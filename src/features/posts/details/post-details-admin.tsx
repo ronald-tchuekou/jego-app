@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { formatDate, getPostTypeLabel } from '@/lib/utils'
 import { PostModel } from '@/services/post-service'
 import { Calendar, EditIcon, Eye, Trash2Icon, User } from 'lucide-react'
+import { DateTime } from 'luxon'
 import Link from 'next/link'
 import { useRef } from 'react'
 import { DeletePostDialog } from '../list/post-item-actions'
@@ -90,7 +91,8 @@ export function PostDetailsAdmin({ post }: Post) {
                            <Calendar className='size-4' />
                            <span>Créé le {formatDate(post.createdAt)}</span>
                         </div>
-                        {post.updatedAt !== post.createdAt && (
+                        {DateTime.fromISO(post.updatedAt).startOf('day') >
+                           DateTime.fromISO(post.createdAt).startOf('day') && (
                            <div className='flex items-center gap-2 sm:col-span-2'>
                               <Eye className='size-4' />
                               <span>Dernière modification le {formatDate(post.updatedAt)}</span>
@@ -107,7 +109,7 @@ export function PostDetailsAdmin({ post }: Post) {
                               src={post.image}
                               alt={post.title}
                               fill
-                              className='object-cover'
+                              className='object-contain bg-accent'
                               sizes='(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw'
                            />
                         </div>

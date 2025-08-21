@@ -8,6 +8,7 @@ import { DEFAULT_AVATAR } from '@/lib/constants'
 import { formatDate, getPostTypeLabel } from '@/lib/utils'
 import { PostModel } from '@/services/post-service'
 import { Calendar, Eye, Tag, User } from 'lucide-react'
+import { DateTime } from 'luxon'
 
 type Props = {
    post: PostModel
@@ -41,7 +42,8 @@ export function PostDetailsUser({ post }: Props) {
                      <Calendar className='h-4 w-4' />
                      <span>Publié le {formatDate(post.createdAt)}</span>
                   </div>
-                  {post.updatedAt !== post.createdAt && (
+                  {DateTime.fromISO(post.updatedAt).startOf('day') >
+                     DateTime.fromISO(post.createdAt).startOf('day') && (
                      <div className='flex items-center gap-2'>
                         <Eye className='h-4 w-4' />
                         <span>Modifié le {formatDate(post.updatedAt)}</span>
@@ -58,7 +60,7 @@ export function PostDetailsUser({ post }: Props) {
                         src={post.image}
                         alt={post.title}
                         fill
-                        className='object-cover'
+                        className='object-contain bg-accent'
                         sizes='(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw'
                      />
                   </div>
