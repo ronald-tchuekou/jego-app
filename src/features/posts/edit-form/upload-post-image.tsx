@@ -17,7 +17,7 @@ type Props = {
 }
 
 function UploadPostImage({ value, onValueChange }: Props) {
-   const [files, setFiles] = useState<any[]>([{ source: value, options: { type: 'local' } }])
+   const [files, setFiles] = useState<any[]>(value ? [{ source: value, options: { type: 'local' } }] : [])
 
    return (
       <div className='max-w-[500px]'>

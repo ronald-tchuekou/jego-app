@@ -20,6 +20,7 @@ export const ImageWithLoading = ({ src, alt, className, ...props }: Props) => {
    const [hasError, setHasError] = useState(false)
 
    const imageUrl = src.startsWith('http') ? src : `${env.NEXT_PUBLIC_API_URL}/v1/${src}`
+   console.log(imageUrl)
 
    return (
       <>
