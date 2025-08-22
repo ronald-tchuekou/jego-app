@@ -2,44 +2,38 @@
 
 import { CHART_DATA } from '@/lib/constants'
 import { authenticatedActionClient } from '@/lib/safe-action'
+import CompanyService from '@/services/company-service'
+import PostService from '@/services/post-service'
+import UserService from '@/services/user-service'
 import z from 'zod'
 
 export const getUserCountAction = authenticatedActionClient
    .metadata({ actionName: 'getUserCount' })
    .action(async ({ ctx }) => {
-      // TODO: Get user count
-
-      // Wait 1 seconds
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const result = await UserService.count(ctx.token)
 
       return {
-         count: 1020,
+         count: result,
       }
    })
 
 export const getCompanyCountAction = authenticatedActionClient
    .metadata({ actionName: 'getCompanyCount' })
    .action(async ({ ctx }) => {
-      // TODO: Get company count
-
-      // Wait 1 seconds
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const result = await CompanyService.count(ctx.token)
 
       return {
-         count: 10,
+         count: result,
       }
    })
 
 export const getPostCountAction = authenticatedActionClient
    .metadata({ actionName: 'getPostCount' })
    .action(async ({ ctx }) => {
-      // TODO: Get post count
-
-      // Wait 1 seconds
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const result = await PostService.count(ctx.token)
 
       return {
-         count: 234,
+         count: result,
       }
    })
 

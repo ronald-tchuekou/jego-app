@@ -6,7 +6,7 @@ import { getPostCountAction } from "../actions"
 
 export default function useGetPostCount() {
    const { data, isLoading } = useQuery({
-      queryKey: postKey.list({label: 'post-count'}),
+      queryKey: postKey.list({ label: 'get-post-count' }),
       async queryFn() {
          const { data, serverError } = await getPostCountAction()
 

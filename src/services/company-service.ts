@@ -45,6 +45,16 @@ export type CompanyModel = {
 }
 
 const CompanyService = {
+   async count(token: string, search: string = '') {
+      const { data, error } = await fetchHelper<{ count: number }>(`/companies/count?search=${search}`, {
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+         },
+      })
+      if (error) throw new Error(error)
+      return data?.count
+   },
    async getAll(filter: FilterQuery & { categoryId?: string; status?: 'active' | 'blocked' }) {
       const query = objectToQueryString(filter)
 

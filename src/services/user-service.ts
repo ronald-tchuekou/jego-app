@@ -36,6 +36,18 @@ export type UserModel = {
 }
 
 const UserService = {
+   async count(token: string, search: string = '') {
+      const { data, error } = await fetchHelper<{ count: number }>(`/users/count?search=${search}`, {
+         method: 'GET',
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+         },
+      })
+      if (error) throw new Error(error)
+      return data?.count
+   },
+
    async getMe() {
       const { data, error } = await fetchHelper<{ user: UserModel }>('/me')
       if (error) throw new Error(error)
@@ -116,7 +128,7 @@ const UserService = {
          newPassword: string
          confirmNewPassword: string
       },
-      token: string,
+      token: string
    ) {
       const { data, error } = await fetchHelper<{
          user: UserModel

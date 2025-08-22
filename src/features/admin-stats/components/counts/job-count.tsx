@@ -16,7 +16,7 @@ const JobCount = () => {
          <CardHeader>
             <CardDescription>Total Offres d'Emploi</CardDescription>
             <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
-               {data || '- - -'}
+               {data ?? '- - -'}
             </CardTitle>
             <CardAction>
                <Badge variant='outline'>

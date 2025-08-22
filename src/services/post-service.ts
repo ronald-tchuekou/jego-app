@@ -23,6 +23,17 @@ import fetchHelper from '@/lib/helpers/fetch-helper'
 import { objectToQueryString } from '@/lib/utils'
 
 const PostService = {
+   async count(token: string, search: string = '') {
+      const { data, error } = await fetchHelper<{ count: number }>(`/posts/count?search=${search}`, {
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+         },
+      })
+      console.log(data, error)
+      if (error) throw new Error(error)
+      return data?.count
+   },
    async getAll(filter: FilterQuery & { status?: string; category?: string; type?: string }) {
       const query = objectToQueryString(filter)
 
