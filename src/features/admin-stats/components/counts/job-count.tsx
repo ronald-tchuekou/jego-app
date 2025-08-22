@@ -14,7 +14,7 @@ const JobCount = () => {
    return (
       <Card className='@container/card'>
          <CardHeader>
-            <CardDescription>Total Offres d'Emploi</CardDescription>
+            <CardDescription>Total Offres d&apos;Emploi</CardDescription>
             <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
                {data ?? '- - -'}
             </CardTitle>
@@ -27,9 +27,9 @@ const JobCount = () => {
          </CardHeader>
          <CardFooter className='flex-col items-start gap-1.5 text-sm'>
             <div className='line-clamp-1 flex gap-2 font-medium'>
-               Le nombre d'offres d'emploi est en croissance <IconTrendingUp className='size-4' />
+               Le nombre d&apos;offres d&apos;emploi est en croissance <IconTrendingUp className='size-4' />
             </div>
-            <div className='text-muted-foreground'>Total de toutes les offres d'emploi</div>
+            <div className='text-muted-foreground'>Total de toutes les offres d&apos;emploi</div>
          </CardFooter>
       </Card>
    )

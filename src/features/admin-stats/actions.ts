@@ -43,6 +43,7 @@ export const getJobCountAction = authenticatedActionClient
    .metadata({ actionName: 'getJobCount' })
    .action(async ({ ctx }) => {
       // TODO: Get job count
+      console.log(ctx)
 
       // Wait 1 seconds
       await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -114,6 +115,7 @@ export const getJobChartDataAction = authenticatedActionClient
    .inputSchema(z.object({ timeRange: z.string().optional() }))
    .action(async ({ parsedInput, ctx }) => {
       // TODO: Get job chart data
+      console.log(ctx, parsedInput)
 
       // Wait 3 seconds
       await new Promise((resolve) => setTimeout(resolve, 1000))

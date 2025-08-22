@@ -27,7 +27,7 @@ const CompanyCount = () => {
          </CardHeader>
          <CardFooter className='flex-col items-start gap-1.5 text-sm'>
             <div className='line-clamp-1 flex gap-2 font-medium'>
-               Le nombre d'entreprises est en croissance <IconTrendingUp className='size-4' />
+               Le nombre d&apos;entreprises est en croissance <IconTrendingUp className='size-4' />
             </div>
             <div className='text-muted-foreground'>Total de toutes les entreprises</div>
          </CardFooter>

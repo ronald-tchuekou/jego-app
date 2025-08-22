@@ -19,7 +19,7 @@ export default function ChartFilter() {
       if (isMobile) {
          setTimeRange('7d')
       }
-   }, [isMobile])
+   }, [isMobile, setTimeRange])
 
    return (
       <>
