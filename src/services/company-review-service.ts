@@ -1,5 +1,4 @@
 import fetchHelper from '@/lib/helpers/fetch-helper'
-import { objectToQueryString } from '@/lib/utils'
 import { CompanyModel } from './company-service'
 import { UserModel } from './user-service'
 
@@ -17,16 +16,6 @@ export type CompanyReviewModel = {
 }
 
 const CompanyReviewService = {
-   async getAll(filter: FilterQuery) {
-      const query = objectToQueryString(filter)
-      const { data, error } = await fetchHelper<PaginateResponse<CompanyReviewModel>>(`/company-reviews?${query}`, {
-         headers: {
-            'Content-Type': 'application/json',
-         },
-      })
-      if (error) throw new Error(error)
-      return data
-   },
    async getById(id: string) {
       const { data, error } = await fetchHelper<{ data: CompanyReviewModel }>(`/company-reviews/${id}`, {
          headers: {
