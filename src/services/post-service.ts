@@ -98,6 +98,25 @@ const PostService = {
       if (error) throw new Error(error)
       return data?.post
    },
+
+   async chartData(token: string, range?: { startDate: string; endDate: string }) {
+      let query = ''
+      if (range) {
+         query = objectToQueryString(range)
+      }
+      const { data, error } = await fetchHelper<{
+         data: { date: string; count: number }[]
+         startDate: string
+         endDate: string
+      }>(`/posts/count-per-day?${query}`, {
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+         },
+      })
+      if (error) throw new Error(error)
+      return data
+   },
 }
 
 export default PostService

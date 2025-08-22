@@ -82,7 +82,7 @@ export default function JobChart() {
                      />
                      <Area
                         dataKey='count'
-                        type='natural'
+                        type='monotone'
                         fill='url(#fillJobs)'
                         stroke='var(--color-count)'
                         stackId='a'

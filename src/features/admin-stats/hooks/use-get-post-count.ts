@@ -8,10 +8,14 @@ export default function useGetPostCount() {
    const { data, isLoading } = useQuery({
       queryKey: postKey.list({ label: 'get-post-count' }),
       async queryFn() {
-         const { data, serverError } = await getPostCountAction()
+         const { data, serverError, validationErrors } = await getPostCountAction()
 
          if (serverError) {
             throw new Error(serverError)
+         }
+
+         if (validationErrors?.formErrors) {
+            throw new Error(validationErrors.formErrors.join(', '))
          }
 
          return data?.count || 0

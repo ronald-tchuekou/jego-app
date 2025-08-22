@@ -8,10 +8,14 @@ export default function useGetCompanyCount() {
    const { data, isLoading } = useQuery({
       queryKey: companyKey.list({label: 'company-count'}),
       async queryFn() {
-         const { data, serverError } = await getCompanyCountAction()
+         const { data, serverError, validationErrors } = await getCompanyCountAction()
 
          if (serverError) {
             throw new Error(serverError)
+         }
+
+         if (validationErrors?.formErrors) {
+            throw new Error(validationErrors.formErrors.join(', '))
          }
 
          return data?.count || 0

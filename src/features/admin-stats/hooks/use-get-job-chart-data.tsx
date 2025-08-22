@@ -13,9 +13,13 @@ export default function useGetJobChartData() {
       async queryFn({ queryKey }) {
          const filters = JSON.parse(queryKey[2].filters)
          const { data, serverError, validationErrors } = await getJobChartDataAction(filters)
-         console.log(data, serverError, validationErrors)
+
          if (serverError) {
             throw new Error(serverError)
+         }
+
+         if (validationErrors?._errors) {
+            throw new Error(validationErrors._errors.join(', '))
          }
 
          return data || []

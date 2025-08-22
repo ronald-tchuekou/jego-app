@@ -18,7 +18,9 @@ const chartConfig = {
 
 export default function UserChart() {
    const [timeRange] = useQueryState('timeRange')
-   const { data: chartData = [], isLoading } = useGetUserChartData()
+   const { data, isLoading } = useGetUserChartData()
+
+   const chartData = data?.data || []
 
    return (
       <Card className='@container/card'>
@@ -82,7 +84,7 @@ export default function UserChart() {
                      />
                      <Area
                         dataKey='count'
-                        type='natural'
+                        type='monotone'
                         fill='url(#fillUsers)'
                         stroke='var(--color-count)'
                         stackId='a'

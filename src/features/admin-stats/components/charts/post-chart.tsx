@@ -18,7 +18,9 @@ const chartConfig = {
 
 export default function PostChart() {
    const [timeRange] = useQueryState('timeRange')
-   const { data: chartData = [], isLoading } = useGetPostChartData()
+   const { data, isLoading } = useGetPostChartData()
+
+   const chartData = data?.data || []
 
    return (
       <Card className='@container/card'>
@@ -82,7 +84,7 @@ export default function PostChart() {
                      />
                      <Area
                         dataKey='count'
-                        type='natural'
+                        type='monotone'
                         fill='url(#fillPosts)'
                         stroke='var(--color-count)'
                         stackId='a'

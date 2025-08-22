@@ -13,12 +13,16 @@ export default function useGetCompanyChartData() {
       async queryFn({ queryKey }) {
          const filters = JSON.parse(queryKey[2].filters)
          const { data, serverError, validationErrors } = await getCompanyChartDataAction(filters)
-         console.log(data, serverError, validationErrors)
+
          if (serverError) {
             throw new Error(serverError)
          }
 
-         return data || []
+         if (validationErrors?._errors) {
+            throw new Error(validationErrors._errors[0])
+         }
+
+         return data
       },
    })
 

@@ -18,7 +18,9 @@ const chartConfig = {
 
 export default function CompanyChart() {
    const [timeRange] = useQueryState('timeRange')
-   const { data: chartData = [], isLoading } = useGetCompanyChartData()
+   const { data, isLoading } = useGetCompanyChartData()
+
+   const chartData = data?.data || []
 
    return (
       <Card className='@container/card'>
@@ -82,7 +84,7 @@ export default function CompanyChart() {
                      />
                      <Area
                         dataKey='count'
-                        type='natural'
+                        type='monotone'
                         fill='url(#fillCompanies)'
                         stroke='var(--color-count)'
                         stackId='a'

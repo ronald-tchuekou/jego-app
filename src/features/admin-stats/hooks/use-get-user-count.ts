@@ -8,10 +8,14 @@ export default function useGetUserCount() {
    const { data, isLoading } = useQuery({
       queryKey: userKey.list({label: 'user-count'}),
       async queryFn() {
-         const { data, serverError } = await getUserCountAction()
+         const { data, serverError, validationErrors } = await getUserCountAction()
 
          if (serverError) {
             throw new Error(serverError)
+         }
+
+         if (validationErrors?.formErrors) {
+            throw new Error(validationErrors.formErrors.join(', '))
          }
 
          return data?.count || 0
