@@ -23,7 +23,7 @@ const COLUMNS = [
    { name: '', width: 50 },
 ]
 
-export function UsersList() {
+export default function UsersList() {
    // Pagination and filters state
    const [role] = useQueryState('role')
    const [page] = useQueryState('page')
