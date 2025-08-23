@@ -18,7 +18,9 @@ const chartConfig = {
 
 export default function JobChart() {
    const [timeRange] = useQueryState('timeRange')
-   const { data: chartData = [], isLoading } = useGetJobChartData()
+   const { data, isLoading } = useGetJobChartData()
+
+   const chartData = data?.data || []
 
    return (
       <Card className='@container/card'>
