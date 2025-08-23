@@ -1,12 +1,13 @@
 'use client'
 
+import { CHART_PERIODS } from '@/lib/constants'
 import { postKey } from '@/lib/query-kye'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryState } from 'nuqs'
 import { getPostChartDataAction } from '../actions'
 
 export default function useGetPostChartData() {
-   const [timeRange] = useQueryState('timeRange')
+   const [timeRange] = useQueryState('timeRange', { defaultValue: CHART_PERIODS[0].value })
 
    const { data, isLoading } = useQuery({
       queryKey: postKey.list({ label: 'post-chart-data', timeRange: timeRange || undefined }),

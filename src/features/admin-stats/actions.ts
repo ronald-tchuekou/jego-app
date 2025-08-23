@@ -1,8 +1,9 @@
 'use server'
 
-import { CHART_DATA, CHART_PERIODS } from '@/lib/constants'
+import { CHART_PERIODS } from '@/lib/constants'
 import { authenticatedActionClient } from '@/lib/safe-action'
 import CompanyService from '@/services/company-service'
+import JobService from '@/services/job-service'
 import PostService from '@/services/post-service'
 import UserService from '@/services/user-service'
 import z from 'zod'
@@ -39,19 +40,13 @@ export const getPostCountAction = authenticatedActionClient
       }
    })
 
-export const getJobCountAction = authenticatedActionClient
-   .metadata({ actionName: 'getJobCount' })
-   .action(async ({ ctx }) => {
-      // TODO: Get job count
-      console.log(ctx)
+export const getJobCountAction = authenticatedActionClient.metadata({ actionName: 'getJobCount' }).action(async () => {
+   const result = await JobService.count()
 
-      // Wait 1 seconds
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      return {
-         count: 130,
-      }
-   })
+   return {
+      count: result,
+   }
+})
 
 export const getUserChartDataAction = authenticatedActionClient
    .metadata({ actionName: 'getUserChartData' })
@@ -63,7 +58,9 @@ export const getUserChartDataAction = authenticatedActionClient
 
       if (timeRange) {
          range = {
-            startDate: new Date(new Date().setDate(new Date().getDate() - parseInt(timeRange))).toISOString(),
+            startDate: new Date(
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+            ).toISOString(),
             endDate: new Date().toISOString(),
          }
       }
@@ -82,7 +79,9 @@ export const getCompanyChartDataAction = authenticatedActionClient
 
       if (timeRange) {
          range = {
-            startDate: new Date(new Date().setDate(new Date().getDate() - parseInt(timeRange))).toISOString(),
+            startDate: new Date(
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+            ).toISOString(),
             endDate: new Date().toISOString(),
          }
       }
@@ -101,7 +100,9 @@ export const getPostChartDataAction = authenticatedActionClient
 
       if (timeRange) {
          range = {
-            startDate: new Date(new Date().setDate(new Date().getDate() - parseInt(timeRange))).toISOString(),
+            startDate: new Date(
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+            ).toISOString(),
             endDate: new Date().toISOString(),
          }
       }
@@ -114,12 +115,21 @@ export const getJobChartDataAction = authenticatedActionClient
    .metadata({ actionName: 'getJobChartData' })
    .inputSchema(z.object({ timeRange: z.string().optional() }))
    .action(async ({ parsedInput, ctx }) => {
-      // TODO: Get job chart data
-      console.log(ctx, parsedInput)
+      const { timeRange } = parsedInput
 
-      // Wait 3 seconds
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      let range: { startDate: string; endDate: string } | undefined
 
-      return CHART_DATA
+      if (timeRange) {
+         range = {
+            startDate: new Date(
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+            ).toISOString(),
+            endDate: new Date().toISOString(),
+         }
+      }
+
+      const result = await JobService.chartData(ctx.token, range)
+
+      return result
    })
    

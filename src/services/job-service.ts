@@ -2,52 +2,59 @@ import fetchHelper from '@/lib/helpers/fetch-helper'
 import { objectToQueryString } from '@/lib/utils'
 import { UserModel } from './user-service'
 
-export enum PostType {
-   EVENT = 'event',
-   NEWS = 'news',
+export enum JobStatus {
+   OPEN = 'open',
+   CLOSED = 'closed',
 }
 
-export type PostModel = {
+export type JobModel = {
    id: string
    userId: string
    title: string
    description: string
-   status: string
-   type: PostType
-   category: string
-   image: string | null
+   companyName: string | null
+   companyLogo: string | null
+   companyWebsite: string | null
+   companyEmail: string | null
+   companyPhone: string | null
+   companyAddress: string | null
+   companyCity: string | null
+   companyState: string | null
+   companyZip: string | null
+   companyCountry: string | null
+   expiresAt: string | null
+   status: JobStatus
    createdAt: string
    updatedAt: string
    user: UserModel
 }
 
-const PostService = {
-   async count(token: string, search: string = '') {
-      const { data, error } = await fetchHelper<{ count: number }>(`/posts/count?search=${search}`, {
+const JobService = {
+   async count(search: string = '') {
+      const { data, error } = await fetchHelper<{ count: number }>(`/jobs/count?search=${search}`, {
          headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
          },
       })
       if (error) throw new Error(error)
       return data?.count
    },
-   async getAll(filter: FilterQuery & { status?: string; category?: string; type?: string }) {
+   async getAll(filter: FilterQuery & { status?: string }) {
       const query = objectToQueryString(filter)
 
-      const { data, error } = await fetchHelper<PaginateResponse<PostModel>>(`/posts?${query}`)
+      const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(`/jobs?${query}`)
       if (error) throw new Error(error)
       return data
    },
 
    async getById(id: string) {
-      const { data, error } = await fetchHelper<{ data: PostModel }>(`/posts/${id}`)
+      const { data, error } = await fetchHelper<{ data: JobModel }>(`/jobs/${id}`)
       if (error) throw new Error(error)
       return data?.data || null
    },
 
-   async create(body: Partial<PostModel>, token: string) {
-      const { data, error } = await fetchHelper<{ post: PostModel }>('/posts', {
+   async create(body: Partial<JobModel>, token: string) {
+      const { data, error } = await fetchHelper<{ data: JobModel }>('/jobs', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -56,11 +63,11 @@ const PostService = {
          body: JSON.stringify(body),
       })
       if (error) throw new Error(error)
-      return data?.post
+      return data?.data
    },
 
-   async update(id: string, body: Partial<PostModel>, token: string) {
-      const { data, error } = await fetchHelper<{ post: PostModel }>(`/posts/${id}`, {
+   async update(id: string, body: Partial<JobModel>, token: string) {
+      const { data, error } = await fetchHelper<{ data: JobModel }>(`/jobs/${id}`, {
          method: 'PUT',
          headers: {
             'Content-Type': 'application/json',
@@ -69,11 +76,11 @@ const PostService = {
          body: JSON.stringify(body),
       })
       if (error) throw new Error(error)
-      return data?.post
+      return data?.data
    },
 
    async delete(id: string, token: string) {
-      const { data, error } = await fetchHelper<{ message: string }>(`/posts/${id}`, {
+      const { data, error } = await fetchHelper<{ message: string }>(`/jobs/${id}`, {
          method: 'DELETE',
          headers: {
             'Content-Type': 'application/json',
@@ -84,17 +91,16 @@ const PostService = {
       return data
    },
 
-   async updateStatus(id: string, status: string, token: string) {
-      const { data, error } = await fetchHelper<{ post: PostModel }>(`/posts/${id}/status`, {
+   async toggleStatus(id: string, token: string) {
+      const { data, error } = await fetchHelper<{ data: JobModel }>(`/jobs/${id}/toggle-status`, {
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
          },
-         body: JSON.stringify({ status }),
       })
       if (error) throw new Error(error)
-      return data?.post
+      return data?.data
    },
 
    async chartData(token: string, range?: { startDate: string; endDate: string }) {
@@ -106,7 +112,7 @@ const PostService = {
          data: { date: string; count: number }[]
          startDate: string
          endDate: string
-      }>(`/posts/count-per-day?${query}`, {
+      }>(`/jobs/count-per-day?${query}`, {
          headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -117,4 +123,4 @@ const PostService = {
    },
 }
 
-export default PostService
+export default JobService
