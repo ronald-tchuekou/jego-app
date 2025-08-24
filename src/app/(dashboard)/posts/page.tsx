@@ -11,6 +11,7 @@ const DynamicPostsList = dynamic(() => import('@/features/posts/list/posts-list'
 export default function Page() {
    return (
       <>
+         {/* Title */}
          <DashboardTitle title='Annonces' description='Gérez les annonces de votre site'>
             <Button asChild>
                <Link href='/posts/edit'>
@@ -19,12 +20,14 @@ export default function Page() {
                </Link>
             </Button>
          </DashboardTitle>
+         {/* Filters */}
          <div className='flex justify-between gap-3'>
             <SearchInput />
             <div className='flex items-center gap-2'>
                <DynamicPostTypeFilter />
             </div>
          </div>
+         {/* Posts List */}
          <DynamicPostsList />
       </>
    )
