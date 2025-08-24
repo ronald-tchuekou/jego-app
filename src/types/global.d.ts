@@ -17,8 +17,8 @@ declare type FilterQuery = {
    page?: number
    limit?: number
    search?: string
-   user_id?: string
-   company_id?: string
+   userId?: string
+   companyId?: string
 }
 
 declare type DashboardTabType = {

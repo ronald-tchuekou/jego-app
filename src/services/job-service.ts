@@ -39,7 +39,8 @@ const JobService = {
       if (error) throw new Error(error)
       return data?.count
    },
-   async getAll(filter: FilterQuery & { status?: string }) {
+
+   async getAll(filter: FilterQuery & { status?: JobStatus; companyName?: string }) {
       const query = objectToQueryString(filter)
 
       const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(`/jobs?${query}`)
@@ -51,6 +52,24 @@ const JobService = {
       const { data, error } = await fetchHelper<{ data: JobModel }>(`/jobs/${id}`)
       if (error) throw new Error(error)
       return data?.data || null
+   },
+
+   async getByUserId(userId: string) {
+      const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(`/jobs/user/${userId}`)
+      if (error) throw new Error(error)
+      return data
+   },
+
+   async getExpired() {
+      const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(`/jobs/expired`)
+      if (error) throw new Error(error)
+      return data
+   },
+
+   async getActive() {
+      const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(`/jobs/active`)
+      if (error) throw new Error(error)
+      return data
    },
 
    async create(body: Partial<JobModel>, token: string) {
@@ -103,6 +122,43 @@ const JobService = {
       return data?.data
    },
 
+   async closeOne(id: string, token: string) {
+      const { data, error } = await fetchHelper<{ data: JobModel }>(`/jobs/${id}/close`, {
+         method: 'PATCH',
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+         },
+      })
+      if (error) throw new Error(error)
+      return data?.data
+   },
+
+   async reopenOne(id: string, token: string) {
+      const { data, error } = await fetchHelper<{ data: JobModel }>(`/jobs/${id}/reopen`, {
+         method: 'PATCH',
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+         },
+      })
+      if (error) throw new Error(error)
+      return data?.data
+   },
+
+   async setExpireDate(id: string, expireDate: Date, token: string) {
+      const { data, error } = await fetchHelper<{ data: JobModel }>(`/jobs/${id}/set-expiration`, {
+         method: 'PATCH',
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+         },
+         body: JSON.stringify({ expiresAt: expireDate }),
+      })
+      if (error) throw new Error(error)
+      return data?.data
+   },
+
    async chartData(token: string, range?: { startDate: string; endDate: string }) {
       let query = ''
       if (range) {
@@ -120,6 +176,22 @@ const JobService = {
       })
       if (error) throw new Error(error)
       return data
+   },
+
+   async getStats() {
+      const { data, error } = await fetchHelper<{
+         data: {
+            total: number
+            open: number
+            closed: number
+            expired: number
+            active: number
+            withCompany: number
+            withoutCompany: number
+         }
+      }>(`/jobs/stats`)
+      if (error) throw new Error(error)
+      return data?.data
    },
 }
 
