@@ -1,6 +1,5 @@
 'use client'
 
-import { ImageWithLoading } from '@/components/base/image-with-loading'
 import ViewAsMarkdown from '@/components/base/view-as-markdown'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
@@ -71,21 +70,6 @@ export function JobDetailsUser({ job }: Props) {
                   )}
                </div>
             </CardHeader>
-
-            {/* Company Logo */}
-            {job.companyLogo && (
-               <CardContent className='pt-0'>
-                  <div className='relative aspect-video w-full max-w-md overflow-hidden rounded-lg border bg-gray-50 dark:bg-gray-900'>
-                     <ImageWithLoading
-                        src={job.companyLogo}
-                        alt={job.companyName || 'Company logo'}
-                        fill
-                        className='object-contain p-4'
-                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                     />
-                  </div>
-               </CardContent>
-            )}
 
             {/* Job Description */}
             <CardContent>

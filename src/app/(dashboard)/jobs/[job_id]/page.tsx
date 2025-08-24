@@ -4,16 +4,18 @@ import dynamic from 'next/dynamic'
 const DynamicJobDetails = dynamic(() => import('@/features/jobs/details/job-details'))
 
 type Props = {
-   params: {
-      id: string
-   }
+   params: Promise<{
+      job_id: string
+   }>
 }
 
-export default function JobDetailPage({ params }: Props) {
+export default async function JobDetailPage({ params }: Props) {
+   const { job_id } = await params
+
    return (
       <>
          <DashboardTitle withBackButton title={`Détails de l'offre d'emploi`} />
-         <DynamicJobDetails jobId={params.id} />
+         <DynamicJobDetails jobId={job_id} />
       </>
    )
 }
