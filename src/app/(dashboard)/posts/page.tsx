@@ -1,4 +1,3 @@
-import LoaderContent from '@/components/base/loader-content'
 import SearchInput from '@/components/base/search-input'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
 import { Button } from '@/components/ui/button'
@@ -6,13 +5,8 @@ import { PlusIcon } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
-const DynamicPostTypeFilter = dynamic(() => import('@/features/posts/list/post-type-filter'), {
-   loading: () => <LoaderContent />,
-})
-
-const DynamicPostsList = dynamic(() => import('@/features/posts/list/posts-list'), {
-   loading: () => <LoaderContent />,
-})
+const DynamicPostTypeFilter = dynamic(() => import('@/features/posts/list/post-type-filter'))
+const DynamicPostsList = dynamic(() => import('@/features/posts/list/posts-list'))
 
 export default function Page() {
    return (

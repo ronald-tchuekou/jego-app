@@ -1,14 +1,8 @@
-import LoaderContent from '@/components/base/loader-content'
 import ThemeToggle from '@/components/base/theme-toggle'
 import dynamic from 'next/dynamic'
 
-const DynamicRipple = dynamic(() => import('@/components/magicui/ripple'), {
-   loading: () => <LoaderContent />,
-})
-
-const DynamicVerifyEmailChecker = dynamic(() => import('@/features/auth/verify-email/verify-email-checker'), {
-   loading: () => <LoaderContent />,
-})
+const DynamicRipple = dynamic(() => import('@/components/magicui/ripple'))
+const DynamicVerifyEmailChecker = dynamic(() => import('@/features/auth/verify-email/verify-email-checker'))
 
 type Props = Readonly<{
    searchParams: Promise<{

@@ -1,4 +1,3 @@
-import LoaderContent from '@/components/base/loader-content'
 import { AppProviders } from '@/components/providers/app-providers'
 import { Toaster } from '@/components/ui/sonner'
 import { AUTH_COOKIE_NAME } from '@/lib/constants'
@@ -22,9 +21,7 @@ export const metadata: Metadata = {
    description: "Votre source d'information fiable dans tout les villes du Cameroun",
 }
 
-const DynamicLogoutModal = dynamic(() => import('@/components/modals/logout-modal'), {
-   loading: () => <LoaderContent />,
-})
+const DynamicLogoutModal = dynamic(() => import('@/components/modals/logout-modal'))
 
 export default async function RootLayout({
    children,
