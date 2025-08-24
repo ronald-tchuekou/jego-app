@@ -21,7 +21,7 @@ export default function JobsPage() {
             <Button asChild>
                <Link href='/jobs/edit'>
                   <PlusIcon className='size-4' />
-                  <span className='hidden sm:block'>Créer une offre d'emploi</span>
+                  <span className='hidden sm:block'>Créer une offre d&apos;emploi</span>
                </Link>
             </Button>
          </DashboardTitle>

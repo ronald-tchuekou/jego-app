@@ -48,7 +48,7 @@ export default function CreateJobForm({ job }: Props) {
    })
 
    const onSubmit = form.handleSubmit((data) => {
-      const body = Object.fromEntries(Object.entries(data).filter(([_, value]) => value !== ''))
+      const body = Object.fromEntries(Object.entries(data).filter(([, value]) => value !== ''))
 
       if (job) {
          updateJob({ jobId: job.id, ...body })
@@ -109,7 +109,9 @@ export default function CreateJobForm({ job }: Props) {
                            name='expiresAt'
                            render={({ field }) => (
                               <FormItem>
-                                 <FormLabel className='text-sm font-medium'>Date d'expiration (optionnel)</FormLabel>
+                                 <FormLabel className='text-sm font-medium'>
+                                    Date d&apos;expiration (optionnel)
+                                 </FormLabel>
                                  <FormControl>
                                     <SelectDate {...field} placeholder={"Sélectionnez une date d'expiration"} />
                                  </FormControl>
@@ -121,7 +123,7 @@ export default function CreateJobForm({ job }: Props) {
 
                      {/* Company Information */}
                      <div className='space-y-4 border-t pt-4'>
-                        <h3 className='text-lg font-semibold'>Informations de l'entreprise (optionnel)</h3>
+                        <h3 className='text-lg font-semibold'>Informations de l&apos;entreprise (optionnel)</h3>
 
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                            <FormField
@@ -130,7 +132,7 @@ export default function CreateJobForm({ job }: Props) {
                               render={({ field }) => (
                                  <FormItem className='md:col-span-2'>
                                     <FormLabel className='text-sm font-medium'>
-                                       Logo de l'entreprise (facultatif)
+                                       Logo de l&apos;entreprise (facultatif)
                                     </FormLabel>
                                     <FormControl>
                                        <FileUploader value={field.value} onValueChange={field.onChange} />
@@ -144,7 +146,7 @@ export default function CreateJobForm({ job }: Props) {
                               name='companyName'
                               render={({ field }) => (
                                  <FormItem>
-                                    <FormLabel className='text-sm font-medium'>Nom de l'entreprise</FormLabel>
+                                    <FormLabel className='text-sm font-medium'>Nom de l&apos;entreprise</FormLabel>
                                     <FormControl>
                                        <IconInput
                                           {...field}
@@ -163,7 +165,7 @@ export default function CreateJobForm({ job }: Props) {
                               name='companyEmail'
                               render={({ field }) => (
                                  <FormItem>
-                                    <FormLabel className='text-sm font-medium'>Email de l'entreprise</FormLabel>
+                                    <FormLabel className='text-sm font-medium'>Email de l&apos;entreprise</FormLabel>
                                     <FormControl>
                                        <IconInput
                                           {...field}
