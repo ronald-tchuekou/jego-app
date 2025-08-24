@@ -55,7 +55,7 @@ export function formatDate(date: string | null) {
    if (!date) return 'Jamais'
    return Intl.DateTimeFormat('fr-FR', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
    }).format(new Date(date))
 }

@@ -4,9 +4,7 @@ import AccountStatusFilter from '@/features/users/list/account-status-filter'
 import RoleFilter from '@/features/users/list/role-filter'
 import dynamic from 'next/dynamic'
 
-const DynamicUsersList = dynamic(() => import('@/features/users/list/users-list'), {
-   loading: () => <p>Loading...</p>,
-})
+const DynamicUsersList = dynamic(() => import('@/features/users/list/users-list'))
 
 export default function UsersPage() {
    return (
