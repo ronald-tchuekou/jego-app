@@ -56,14 +56,14 @@ const JobItem = ({ job }: Props) => {
                   </Avatar>
                   <div>
                      {job.companyName && (
-                        <div className='flex items-center gap-1 text-sm text-muted-foreground'>
+                        <div className='flex items-center gap-1 text-sm text-foreground'>
                            <Building className='size-3 flex-none' />
                            <span className='line-clamp-1'>{job.companyName}</span>
                         </div>
                      )}
                      {/* Location */}
                      {(job.companyCity || job.companyState) && (
-                        <div className='flex items-center gap-1 text-sm text-muted-foreground'>
+                        <div className='flex items-center gap-1 text-sm text-foreground'>
                            <MapPin className='size-3 flex-none' />
                            <span className='line-clamp-1'>
                               {[job.companyCity, job.companyState].filter(Boolean).join(', ')}
