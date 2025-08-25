@@ -2,9 +2,7 @@ import { z } from 'zod'
 
 export const createJobFormSchema = z.object({
    title: z.string().min(1, 'Le titre est requis').max(255, 'Le titre ne doit pas dépasser 255 caractères'),
-   description: z
-      .string()
-      .min(1, 'La description est requise'),
+   description: z.string().min(1, 'La description est requise'),
    companyName: z.string().optional(),
    companyLogo: z.string().optional(),
    companyWebsite: z.string().optional(),

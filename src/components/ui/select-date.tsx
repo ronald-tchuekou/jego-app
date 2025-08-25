@@ -72,7 +72,7 @@ const SelectDate = ({
                      'w-full justify-start text-left font-normal',
                      !selectedDate && 'text-muted-foreground',
                      error && 'border-destructive focus-visible:ring-destructive/20',
-                     className
+                     className,
                   )}
                   disabled={disabled}
                   onKeyDown={handleKeyDown}
@@ -83,7 +83,11 @@ const SelectDate = ({
                   {...props}
                >
                   <CalendarIcon className='h-4 w-4 text-muted-foreground' />
-                  {selectedDate ? format(selectedDate, dateFormat, { locale: fr }) : <span className='text-muted-foreground'>{placeholder}</span>}
+                  {selectedDate ? (
+                     format(selectedDate, dateFormat, { locale: fr })
+                  ) : (
+                     <span className='text-muted-foreground'>{placeholder}</span>
+                  )}
                </Button>
             </PopoverTrigger>
             <PopoverContent className='w-auto p-0' align='start'>

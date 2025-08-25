@@ -1,15 +1,15 @@
-"use client"
+'use client'
 
-import { useAuth } from "@/components/providers/auth";
-import { useAction } from "next-safe-action/hooks";
-import { toast } from "sonner";
-import { updateCompanyInfoAction } from "./actions";
+import { useAuth } from '@/components/providers/auth'
+import { useAction } from 'next-safe-action/hooks'
+import { toast } from 'sonner'
+import { updateCompanyInfoAction } from './actions'
 
 export default function useUpdateCompany() {
-   const {revalidateAuth} = useAuth()
-   
+   const { revalidateAuth } = useAuth()
+
    const { execute, isPending } = useAction(updateCompanyInfoAction, {
-      onSuccess({data}) {
+      onSuccess({ data }) {
          if (data?.success) {
             toast.success(data.message)
             revalidateAuth()
@@ -19,8 +19,8 @@ export default function useUpdateCompany() {
       },
       onError(error) {
          toast.error(error.error.serverError || 'Une erreur est survenue lors de la mise à jour')
-      }
+      },
    })
-   
-   return {updateCompany: execute, isPending}
+
+   return { updateCompany: execute, isPending }
 }

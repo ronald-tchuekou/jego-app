@@ -23,7 +23,7 @@ export const composeProviders = (...p: Provider[]) =>
          const BaseComponent = ({ children }: { children: ReactNode }) => <>{children}</>
          BaseComponent.displayName = 'BaseProvider'
          return BaseComponent
-      })()
+      })(),
    )
 
 // USE CASE

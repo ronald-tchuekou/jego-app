@@ -2,22 +2,22 @@
 
 import { useAuth } from '@/components/providers/auth'
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
+   AlertDialog,
+   AlertDialogAction,
+   AlertDialogCancel,
+   AlertDialogContent,
+   AlertDialogDescription,
+   AlertDialogFooter,
+   AlertDialogHeader,
+   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuSeparator,
+   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { jobKey } from '@/lib/query-kye'
 import { cn } from '@/lib/utils'
@@ -107,10 +107,10 @@ const JobItemActions = ({ job }: Props) => {
                )}
             </DropdownMenuContent>
          </DropdownMenu>
-         
+
          {/* Delete job dialog */}
          <DeleteJobDialog ref={deleteJobDialogRef} job={job} />
-         
+
          {/* Toggle status dialog */}
          <ToggleJobStatusDialog ref={toggleStatusDialogRef} job={job} />
       </>

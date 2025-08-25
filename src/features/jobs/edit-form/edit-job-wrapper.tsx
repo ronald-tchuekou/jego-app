@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
@@ -25,7 +25,7 @@ function EditJobWrapper({ jobId }: Props) {
    if (isLoading) return <LoaderContent />
 
    if (!data) return <EmptyContent text="Le job que vous recherchez n'existe pas." />
-   
+
    return <CreateJobForm job={data} />
 }
 

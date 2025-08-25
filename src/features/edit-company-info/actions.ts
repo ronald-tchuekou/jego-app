@@ -20,7 +20,7 @@ export const updateCompanyInfoAction = authenticatedActionClient
 
          return {
             success: true,
-            message: 'Informations de l\'entreprise mises à jour avec succès',
+            message: "Informations de l'entreprise mises à jour avec succès",
             data: updatedCompany,
          }
       } catch (error: any) {

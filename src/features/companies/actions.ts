@@ -15,7 +15,7 @@ export const getCompaniesAction = actionClient
          search: z.string().optional(),
          categoryId: z.string().optional(),
          status: z.string().optional(),
-      })
+      }),
    )
    .action(async ({ parsedInput: { page, limit, search, categoryId, status } }) => {
       try {
@@ -54,7 +54,7 @@ export const deleteCompanyAction = authenticatedActionClient
    .inputSchema(
       z.object({
          companyId: z.string().min(1, "L'ID entreprise est requis"),
-      })
+      }),
    )
    .action(async ({ parsedInput: { companyId }, ctx }) => {
       await CompanyService.delete(companyId, ctx.token)
@@ -67,7 +67,7 @@ export const toggleBlockCompanyAction = authenticatedActionClient
    .inputSchema(
       z.object({
          companyId: z.string().min(1, "L'ID entreprise est requis"),
-      })
+      }),
    )
    .action(async ({ parsedInput: { companyId }, ctx }) => {
       await CompanyService.toggleBlock(companyId, ctx.token)
@@ -84,13 +84,13 @@ export const getCompanyStatsAction = actionClient
       return CompanyReviewService.getCompanyStats(companyId)
    })
 
-   export const toggleApproveCompanyAction = authenticatedActionClient
-      .metadata({ actionName: 'toggleApproveCompanyAction' })
-      .inputSchema(z.object({ companyId: z.string().min(1, "L'ID entreprise est requis") }))
-      .action(async ({ parsedInput: { companyId }, ctx }) => {
-         await CompanyService.toggleApprove(companyId, ctx.token)
-         return {
-            success: true,
-            message: "Statut de l'entreprise modifié avec succès",
-         }
-      })
+export const toggleApproveCompanyAction = authenticatedActionClient
+   .metadata({ actionName: 'toggleApproveCompanyAction' })
+   .inputSchema(z.object({ companyId: z.string().min(1, "L'ID entreprise est requis") }))
+   .action(async ({ parsedInput: { companyId }, ctx }) => {
+      await CompanyService.toggleApprove(companyId, ctx.token)
+      return {
+         success: true,
+         message: "Statut de l'entreprise modifié avec succès",
+      }
+   })

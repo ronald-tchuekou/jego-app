@@ -10,4 +10,3 @@ export { JobDetailsUser } from './details/job-details-user'
 
 export * from './actions'
 export * from './schemas'
-

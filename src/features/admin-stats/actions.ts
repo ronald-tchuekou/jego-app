@@ -59,7 +59,7 @@ export const getUserChartDataAction = authenticatedActionClient
       if (timeRange) {
          range = {
             startDate: new Date(
-               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
             ).toISOString(),
             endDate: new Date().toISOString(),
          }
@@ -80,7 +80,7 @@ export const getCompanyChartDataAction = authenticatedActionClient
       if (timeRange) {
          range = {
             startDate: new Date(
-               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
             ).toISOString(),
             endDate: new Date().toISOString(),
          }
@@ -101,7 +101,7 @@ export const getPostChartDataAction = authenticatedActionClient
       if (timeRange) {
          range = {
             startDate: new Date(
-               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
             ).toISOString(),
             endDate: new Date().toISOString(),
          }
@@ -122,7 +122,7 @@ export const getJobChartDataAction = authenticatedActionClient
       if (timeRange) {
          range = {
             startDate: new Date(
-               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
             ).toISOString(),
             endDate: new Date().toISOString(),
          }
@@ -132,4 +132,3 @@ export const getJobChartDataAction = authenticatedActionClient
 
       return result
    })
-   

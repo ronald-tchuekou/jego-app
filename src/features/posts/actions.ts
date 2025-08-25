@@ -17,7 +17,7 @@ export const getPostsAction = actionClient
          category: z.string().optional(),
          type: z.string().optional(),
          status: z.string().optional(),
-      })
+      }),
    )
    .action(async ({ parsedInput: { page, limit, search, category, type, status } }) => {
       try {
@@ -81,10 +81,10 @@ export const updatePostStatusAction = authenticatedActionClient
          }
 
          const post = await PostService.updateStatus(postId, status, ctx.token)
-         return { 
-            success: true, 
-            message: 'Statut du post modifié avec succès', 
-            post 
+         return {
+            success: true,
+            message: 'Statut du post modifié avec succès',
+            post,
          }
       } catch (error) {
          console.error(error)

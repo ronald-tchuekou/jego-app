@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { UserRole } from "@/services/user-service"
-import { useAuth } from "../providers/auth"
-import { DashboardTitle } from "./dashboard-title"
+import { UserRole } from '@/services/user-service'
+import { useAuth } from '../providers/auth'
+import { DashboardTitle } from './dashboard-title'
 
 export default function HomeDashboardTitle() {
    const { auth } = useAuth()
@@ -17,8 +17,8 @@ export default function HomeDashboardTitle() {
             user?.role === UserRole.ADMIN
                ? "Visibilité sur l'ensemble des opérations effectuées sur l'application."
                : user.role === UserRole.COMPANY_ADMIN
-               ? "Visibilité sur l'ensemble des opérations effectuées par votre entreprise."
-               : "Vu d'ensemble de tout vos opérations."
+                 ? "Visibilité sur l'ensemble des opérations effectuées par votre entreprise."
+                 : "Vu d'ensemble de tout vos opérations."
          }
       />
    )

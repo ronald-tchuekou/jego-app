@@ -18,9 +18,9 @@ export const createJobFormAction = authenticatedActionClient
                ? DateTime.fromJSDate(parsedInput.expiresAt as Date).toFormat('yyyy-MM-dd')
                : null,
          },
-         ctx.token
+         ctx.token,
       )
-      
+
       return {
          success: true,
          message: 'Job créé avec succès',
@@ -35,7 +35,7 @@ export const updateJobAction = authenticatedActionClient
       z.object({
          jobId: z.string().min(1, "L'ID du job est requis"),
          ...createJobFormSchema.shape,
-      })
+      }),
    )
    .action(async ({ parsedInput: { jobId, ...updateData }, ctx }) => {
       const job = await JobService.update(
@@ -46,12 +46,7 @@ export const updateJobAction = authenticatedActionClient
                ? DateTime.fromJSDate(updateData.expiresAt as Date).toFormat('yyyy-MM-dd')
                : null,
          },
-         ctx.token
+         ctx.token,
       )
       return { success: true, message: 'Job modifié avec succès', job }
    })
-
-
-
-
-

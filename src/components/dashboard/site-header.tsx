@@ -25,7 +25,7 @@ export function SiteHeader() {
                {auth?.user?.company?.name}
             </span>
          ) : null,
-      [auth]
+      [auth],
    )
 
    return (
