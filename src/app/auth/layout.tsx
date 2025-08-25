@@ -1,8 +1,7 @@
 import ThemeToggle from '@/components/base/theme-toggle'
-import { AUTH_COOKIE_NAME } from '@/lib/constants'
+import { getAuth } from '@/lib/helpers/auth-helper'
 import '@/styles/style.css'
 import dynamic from 'next/dynamic'
-import { cookies } from 'next/headers'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
 
@@ -13,10 +12,9 @@ export default async function AuthLayout({
 }: Readonly<{
    children: React.ReactNode
 }>) {
-   const cookieStore = await cookies()
-   const authKey = cookieStore.get(AUTH_COOKIE_NAME)?.value
+   const auth = await getAuth()
 
-   if (authKey) {
+   if (auth) {
       return redirect('/')
    }
 
