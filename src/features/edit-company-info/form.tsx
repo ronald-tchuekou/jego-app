@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon } from 'lucide-react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import EditCompanyLogoForm from '../edit-company-logo/form'
 import { editCompanyInfoDefaultValues, EditCompanyInfoSchema, editCompanyInfoSchema } from './schema'
 import useUpdateCompanyInfo from './use-update-company-info'
 
@@ -61,6 +62,8 @@ const EditCompanyInfoForm = () => {
                <CardDescription>Modifiez les informations de votre entreprise</CardDescription>
             </CardHeader>
             <CardContent>
+               <EditCompanyLogoForm />
+               <div className='h-10' />
                <form onSubmit={handleSubmit} className='space-y-6'>
                   {/* Basic Information */}
                   <div className='space-y-4'>
