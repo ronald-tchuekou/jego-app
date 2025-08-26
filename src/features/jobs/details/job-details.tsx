@@ -3,8 +3,8 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import { useAuth } from '@/components/providers/auth'
+import { getEditJobPermissions } from '@/lib/permissions'
 import { jobKey } from '@/lib/query-kye'
-import { UserRole } from '@/services/user-service'
 import { useQuery } from '@tanstack/react-query'
 import { getJobByIdAction } from '../actions'
 import { JobDetailsAdmin } from './job-details-admin'
@@ -31,9 +31,10 @@ export default function JobDetails({ jobId }: Props) {
 
    if (!data) return <EmptyContent text="Le job que vous recherchez n'existe pas ou a été supprimé." />
 
-   // Check if user is admin or author
-   const isAdmin = auth?.user && auth.user.role === UserRole.ADMIN
-   const isAuthor = auth?.user && data.userId === auth.user.id
+   const { canEdit, canDelete, canChangeStatus } = getEditJobPermissions(auth?.user, data)
 
-   return isAdmin || isAuthor ? <JobDetailsAdmin job={data} /> : <JobDetailsUser job={data} />
+   // Check if user is admin or author
+   const isAdmin = canEdit || canDelete || canChangeStatus
+
+   return isAdmin ? <JobDetailsAdmin job={data} /> : <JobDetailsUser job={data} />
 }

@@ -19,10 +19,10 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { getEditJobPermissions } from '@/lib/permissions'
 import { jobKey } from '@/lib/query-kye'
 import { cn } from '@/lib/utils'
 import { JobModel, JobStatus } from '@/services/job-service'
-import { UserRole } from '@/services/user-service'
 import { useQueryClient } from '@tanstack/react-query'
 import { EditIcon, EyeIcon, LoaderIcon, LockIcon, MoreHorizontal, Trash2Icon, UnlockIcon } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
@@ -41,11 +41,7 @@ const JobItemActions = ({ job }: Props) => {
 
    const { auth } = useAuth()
 
-   const isAdmin = auth?.user?.role === UserRole.ADMIN
-   const isAuthor = auth?.user?.id === job.userId
-   const canEdit = isAdmin || isAuthor
-   const canDelete = isAdmin || isAuthor
-   const canChangeStatus = isAdmin || isAuthor
+   const { canEdit, canDelete, canChangeStatus } = getEditJobPermissions(auth?.user, job)
 
    if (!canEdit && !canDelete && !canChangeStatus) {
       return null

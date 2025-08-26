@@ -34,8 +34,10 @@ const PostService = {
    },
    async getAll(filter: FilterQuery & { status?: string; category?: string; type?: string }) {
       const query = objectToQueryString(filter)
+      const companyId = filter.companyId
+      const withoutCompanyId = companyId ? `/company/${companyId}` : ''
 
-      const { data, error } = await fetchHelper<PaginateResponse<PostModel>>(`/posts?${query}`)
+      const { data, error } = await fetchHelper<PaginateResponse<PostModel>>(`/posts${withoutCompanyId}?${query}`)
       if (error) throw new Error(error)
       return data
    },

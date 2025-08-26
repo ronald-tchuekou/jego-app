@@ -65,7 +65,7 @@ function PostsList() {
             ) : posts.length === 0 ? (
                <EmptyContent text='Aucun post trouvé' />
             ) : (
-               <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5 gap-4 space-y-4'>
+               <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4'>
                   {posts.map((post) => (
                      <div key={post.id} className='break-inside-avoid mb-4'>
                         <PostItem post={post} />
@@ -75,9 +75,7 @@ function PostsList() {
             )}
          </div>
          {/* Pagination */}
-         {totalPages > 1 && (
-            <CustomPagination totalCount={totalCount} totalPages={totalPages} label='posts' currentLimit={20} />
-         )}
+         <CustomPagination totalCount={totalCount} totalPages={totalPages} label='posts' currentLimit={20} />
       </>
    )
 }
