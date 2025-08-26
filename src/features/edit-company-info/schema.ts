@@ -17,12 +17,6 @@ export const editCompanyInfoSchema = z.object({
    youtube: z.url('Veuillez entrer une URL YouTube valide').optional().or(z.literal('')),
    tiktok: z.url('Veuillez entrer une URL TikTok valide').optional().or(z.literal('')),
    description: z.string().min(1, 'La description est requise'),
-   location: z
-      .object({
-         lat: z.number(),
-         lng: z.number(),
-      })
-      .optional(),
 })
 
 export type EditCompanyInfoSchema = z.infer<typeof editCompanyInfoSchema>
@@ -44,5 +38,4 @@ export const editCompanyInfoDefaultValues: EditCompanyInfoSchema = {
    youtube: '',
    tiktok: '',
    description: '',
-   location: undefined,
 }

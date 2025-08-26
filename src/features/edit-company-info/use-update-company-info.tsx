@@ -5,7 +5,7 @@ import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
 import { updateCompanyInfoAction } from './actions'
 
-export default function useUpdateCompany() {
+export default function useUpdateCompanyInfo() {
    const { revalidateAuth } = useAuth()
 
    const { execute, isPending } = useAction(updateCompanyInfoAction, {

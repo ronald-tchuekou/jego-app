@@ -31,7 +31,7 @@ export type CompanyModel = {
    verifiedAt: string | null
    blockedAt: string | null
    location: { lat: number; lng: number } | null
-   daily_program: Record<DAY_FOR_PROGRAM, { open: string; close: string }> | null
+   dailyProgram: Record<DAY_FOR_PROGRAM, { open?: string; close?: string }> | null
    createdAt: string
    updatedAt: string
    posts: PostModel[]

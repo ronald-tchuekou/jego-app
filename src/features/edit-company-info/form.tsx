@@ -9,49 +9,49 @@ import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon } from 'lucide-react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { editCompanyInfoDefaultValues, EditCompanyInfoSchema, editCompanyInfoSchema } from './schema'
-import useUpdateCompany from './use-update-company'
+import useUpdateCompanyInfo from './use-update-company-info'
 
 const EditCompanyInfoForm = () => {
    const { auth } = useAuth()
    const company = auth?.user.company
 
-   const { updateCompany, isPending } = useUpdateCompany()
-
-   const getDefaultValues = (): EditCompanyInfoSchema => {
-      if (!company) return editCompanyInfoDefaultValues
-
-      return {
-         name: company.name || '',
-         email: company.email || '',
-         phone: company.phone || '',
-         address: company.address || '',
-         city: company.city || '',
-         state: company.state || '',
-         zipCode: company.zipCode || '',
-         country: company.country || '',
-         website: company.website || '',
-         facebook: company.facebook || '',
-         instagram: company.instagram || '',
-         twitter: company.twitter || '',
-         linkedin: company.linkedin || '',
-         youtube: company.youtube || '',
-         tiktok: company.tiktok || '',
-         description: company.description || '',
-         location: company.location || undefined,
-      }
-   }
+   const { updateCompany, isPending } = useUpdateCompanyInfo()
 
    const form = useForm<EditCompanyInfoSchema>({
       resolver: zodResolver(editCompanyInfoSchema),
-      defaultValues: getDefaultValues(),
+      defaultValues: editCompanyInfoDefaultValues,
    })
 
    const handleSubmit = form.handleSubmit((data) => {
       const filteredData = Object.fromEntries(Object.entries(data).filter(([, value]) => value !== ''))
       updateCompany(filteredData as EditCompanyInfoSchema)
    })
+
+   useEffect(() => {
+      const data = {
+         name: company?.name || '',
+         email: company?.email || '',
+         phone: company?.phone || '',
+         address: company?.address || '',
+         city: company?.city || '',
+         state: company?.state || '',
+         zipCode: company?.zipCode || '',
+         country: company?.country || '',
+         website: company?.website || '',
+         facebook: company?.facebook || '',
+         instagram: company?.instagram || '',
+         twitter: company?.twitter || '',
+         linkedin: company?.linkedin || '',
+         youtube: company?.youtube || '',
+         tiktok: company?.tiktok || '',
+         description: company?.description || '',
+      }
+
+      form.reset(data)
+   }, [company])
 
    return (
       <Form {...form}>
@@ -317,7 +317,7 @@ const EditCompanyInfoForm = () => {
                         'animate-spin absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 size-5',
                         {
                            'opacity-0': !isPending,
-                        },
+                        }
                      )}
                   />
                   <span

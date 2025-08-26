@@ -3,7 +3,7 @@ import { DashboardTitle } from '@/components/dashboard/dashboard-title'
 import { getAuth } from '@/lib/helpers/auth-helper'
 import { UserRole } from '@/services/user-service'
 import '@/styles/style.css'
-import { Building2Icon, NotebookTextIcon, UsersIcon } from 'lucide-react'
+import { Building2Icon, CalendarDaysIcon, MapPinIcon, NotebookTextIcon, UsersIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 export default async function SettingsLayout({
@@ -31,6 +31,16 @@ export default async function SettingsLayout({
                  label: 'Info entreprise',
                  link: '/settings/company-info',
                  icon: <Building2Icon className='size-4' />,
+              },
+              {
+                 label: 'Localisation',
+                 link: '/settings/company-location',
+                 icon: <MapPinIcon className='size-4' />,
+              },
+              {
+                 label: 'Horaires',
+                 link: '/settings/company-program',
+                 icon: <CalendarDaysIcon className='size-4' />,
               },
            ]
 
