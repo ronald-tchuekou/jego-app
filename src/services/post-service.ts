@@ -22,8 +22,8 @@ export type PostModel = {
 }
 
 const PostService = {
-   async count(token: string, search: string = '') {
-      const { data, error } = await fetchHelper<{ count: number }>(`/posts/count?search=${search}`, {
+   async count(token: string, companyId?: string) {
+      const { data, error } = await fetchHelper<{ count: number }>(`/posts/count?companyId=${companyId || ''}`, {
          headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

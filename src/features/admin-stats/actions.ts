@@ -33,15 +33,17 @@ export const getCompanyCountAction = authenticatedActionClient
 export const getPostCountAction = authenticatedActionClient
    .metadata({ actionName: 'getPostCount' })
    .action(async ({ ctx }) => {
-      const result = await PostService.count(ctx.token)
+      const companyId = ctx.user.companyId
+      const result = await PostService.count(ctx.token, companyId || '')
 
       return {
          count: result,
       }
    })
 
-export const getJobCountAction = authenticatedActionClient.metadata({ actionName: 'getJobCount' }).action(async () => {
-   const result = await JobService.count()
+export const getJobCountAction = authenticatedActionClient.metadata({ actionName: 'getJobCount' }).action(async ({ ctx }) => {
+   const companyId = ctx.user.companyId
+   const result = await JobService.count(companyId || '')
 
    return {
       count: result,
@@ -59,7 +61,7 @@ export const getUserChartDataAction = authenticatedActionClient
       if (timeRange) {
          range = {
             startDate: new Date(
-               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
             ).toISOString(),
             endDate: new Date().toISOString(),
          }
@@ -80,7 +82,7 @@ export const getCompanyChartDataAction = authenticatedActionClient
       if (timeRange) {
          range = {
             startDate: new Date(
-               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
             ).toISOString(),
             endDate: new Date().toISOString(),
          }
@@ -101,7 +103,7 @@ export const getPostChartDataAction = authenticatedActionClient
       if (timeRange) {
          range = {
             startDate: new Date(
-               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
             ).toISOString(),
             endDate: new Date().toISOString(),
          }
@@ -122,7 +124,7 @@ export const getJobChartDataAction = authenticatedActionClient
       if (timeRange) {
          range = {
             startDate: new Date(
-               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
+               new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
             ).toISOString(),
             endDate: new Date().toISOString(),
          }

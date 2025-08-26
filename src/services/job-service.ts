@@ -30,8 +30,8 @@ export type JobModel = {
 }
 
 const JobService = {
-   async count(search: string = '') {
-      const { data, error } = await fetchHelper<{ count: number }>(`/jobs/count?search=${search}`, {
+   async count(companyId?: string) {
+      const { data, error } = await fetchHelper<{ count: number }>(`/jobs/count?companyId=${companyId || ''}`, {
          headers: {
             'Content-Type': 'application/json',
          },

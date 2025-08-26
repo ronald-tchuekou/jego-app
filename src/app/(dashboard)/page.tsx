@@ -12,6 +12,12 @@ const DynamicCompanyChart = dynamic(() => import('@/features/admin-stats/compone
 const DynamicJobChart = dynamic(() => import('@/features/admin-stats/components/charts/job-chart'))
 const DynamicPostChart = dynamic(() => import('@/features/admin-stats/components/charts/post-chart'))
 
+// For company admin
+const DynamicCompanyAppointmentCount = dynamic(() => import('@/features/company-stats/components/appointment-count'))
+const DynamicCompanyJobApplicationCount = dynamic(() => import('@/features/company-stats/components/job-application-count'))
+const DynamicCompanyJobCount = dynamic(() => import('@/features/company-stats/components/job-count'))
+const DynamicCompanyPostCount = dynamic(() => import('@/features/company-stats/components/post-count'))
+
 export default async function Page() {
    return (
       <>
@@ -24,7 +30,10 @@ export default async function Page() {
                <DynamicPostCount />
             </ContentGuard>
             <ContentGuard role={UserRole.COMPANY_ADMIN}>
-               <p>Company admin content</p>
+               <DynamicCompanyAppointmentCount />
+               <DynamicCompanyJobApplicationCount />
+               <DynamicCompanyJobCount />
+               <DynamicCompanyPostCount />
             </ContentGuard>
             <ContentGuard role={UserRole.USER}>
                <p>User content</p>

@@ -14,7 +14,7 @@ const UserCount = () => {
    return (
       <Card className='@container/card'>
          <CardHeader>
-            <CardDescription>Total Utilisateurs</CardDescription>
+            <CardDescription className='text-lg text-foreground'>Total Utilisateurs</CardDescription>
             <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
                {data ?? '- - -'}
             </CardTitle>
