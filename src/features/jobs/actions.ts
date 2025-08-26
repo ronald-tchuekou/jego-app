@@ -16,7 +16,7 @@ export const getJobsAction = actionClient
          search: z.string().optional(),
          status: z.string().optional(),
          companyName: z.string().optional(),
-      })
+      }),
    )
    .action(async ({ parsedInput: { page, limit, search, status, companyName } }) => {
       try {
@@ -74,14 +74,15 @@ export const updateJobStatusAction = authenticatedActionClient
             throw new Error('Seuls les administrateurs peuvent modifier le statut des jobs')
          }
 
-         const job = status === JobStatus.OPEN 
-            ? await JobService.reopenOne(jobId, ctx.token)
-            : await JobService.closeOne(jobId, ctx.token)
-         
-         return { 
-            success: true, 
-            message: 'Statut du job modifié avec succès', 
-            job 
+         const job =
+            status === JobStatus.OPEN
+               ? await JobService.reopenOne(jobId, ctx.token)
+               : await JobService.closeOne(jobId, ctx.token)
+
+         return {
+            success: true,
+            message: 'Statut du job modifié avec succès',
+            job,
          }
       } catch (error) {
          console.error(error)
@@ -96,10 +97,10 @@ export const toggleJobStatusAction = authenticatedActionClient
    .action(async ({ parsedInput: { jobId }, ctx }) => {
       try {
          const job = await JobService.toggleStatus(jobId, ctx.token)
-         return { 
-            success: true, 
-            message: 'Statut du job modifié avec succès', 
-            job 
+         return {
+            success: true,
+            message: 'Statut du job modifié avec succès',
+            job,
          }
       } catch (error) {
          console.error(error)

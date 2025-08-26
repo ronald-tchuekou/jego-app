@@ -12,7 +12,7 @@ import { useAuth } from '../providers/auth'
 export function SiteHeader() {
    const pathName = usePathname()
    const { auth } = useAuth()
-   console.log(auth)
+
    const path = pathName.split('/')[1]
    const title = ROUTES.find((route) => route.url.split('/')[1] === path)?.title || 'Dashboard'
 
@@ -25,7 +25,7 @@ export function SiteHeader() {
                {auth?.user?.company?.name}
             </span>
          ) : null,
-      [auth]
+      [auth],
    )
 
    return (

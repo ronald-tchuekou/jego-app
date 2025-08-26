@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { userKey } from "@/lib/query-kye"
-import { useQuery } from "@tanstack/react-query"
-import { getUserCountAction } from "../actions"
+import { userKey } from '@/lib/query-kye'
+import { useQuery } from '@tanstack/react-query'
+import { getUserCountAction } from '../actions'
 
 export default function useGetUserCount() {
    const { data, isLoading } = useQuery({
-      queryKey: userKey.list({label: 'user-count'}),
+      queryKey: userKey.list({ label: 'user-count' }),
       async queryFn() {
          const { data, serverError, validationErrors } = await getUserCountAction()
 

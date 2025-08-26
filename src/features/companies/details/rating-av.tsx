@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Rating } from '@/components/ui/rating'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -30,4 +30,4 @@ const RatingAverage = ({ companyId }: Props) => {
    )
 }
 
-export default RatingAverage;
+export default RatingAverage

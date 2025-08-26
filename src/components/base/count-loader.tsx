@@ -1,6 +1,5 @@
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
-
+import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
+import { Skeleton } from '../ui/skeleton'
 
 export default function CountLoader() {
    return (

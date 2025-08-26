@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import MarkdownView from "react-showdown"
+import MarkdownView from 'react-showdown'
 
 type Props = {
    markdown: string

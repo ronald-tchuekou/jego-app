@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import CountLoader from '@/components/base/count-loader'
 import { Badge } from '@/components/ui/badge'

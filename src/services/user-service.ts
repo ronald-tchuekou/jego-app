@@ -128,7 +128,7 @@ const UserService = {
          newPassword: string
          confirmNewPassword: string
       },
-      token: string
+      token: string,
    ) {
       const { data, error } = await fetchHelper<{
          user: UserModel

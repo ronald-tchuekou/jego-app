@@ -2,7 +2,7 @@ import env from '@/lib/env/client'
 
 export default async function fetchHelper<T>(
    path: string,
-   options: RequestInit = {}
+   options: RequestInit = {},
 ): Promise<{ data: T | null; error: string | null; status: number }> {
    const url = `${env.NEXT_PUBLIC_API_URL}/v1${path}`
    console.log('url', url)
