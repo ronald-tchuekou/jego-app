@@ -1,6 +1,7 @@
 'use client'
 
 import { IconInput } from '@/components/base/icon-input'
+import { LocationMap } from '@/components/base/location-map'
 import { useAuth } from '@/components/providers/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -23,6 +24,11 @@ const EditCompanyLocationForm = () => {
       resolver: zodResolver(editCompanyLocationSchema),
       defaultValues: editCompanyLocationDefaultValues,
    })
+
+   const handleLocationSelect = (lat: number, lng: number) => {
+      form.setValue('lat', lat.toString())
+      form.setValue('lng', lng.toString())
+   }
 
    const handleSubmit = form.handleSubmit((data) => {
       const isSet = data.lat && data.lng
@@ -55,33 +61,54 @@ const EditCompanyLocationForm = () => {
             </CardHeader>
             <CardContent>
                <form onSubmit={handleSubmit}>
-                  <div className='grid grid-cols-2 gap-6'>
-                     <FormField
-                        control={form.control}
-                        name='lat'
-                        render={({ field }) => (
-                           <FormItem>
-                              <FormLabel>Latitude</FormLabel>
-                              <FormControl>
-                                 <IconInput {...field} icon={MapPinIcon} placeholder='Entrez la latitude' />
-                              </FormControl>
-                              <FormMessage />
-                           </FormItem>
-                        )}
-                     />
-                     <FormField
-                        control={form.control}
-                        name='lng'
-                        render={({ field }) => (
-                           <FormItem>
-                              <FormLabel>Longitude</FormLabel>
-                              <FormControl>
-                                 <IconInput {...field} icon={MapPinIcon} placeholder='Entrez la longitude' />
-                              </FormControl>
-                              <FormMessage />
-                           </FormItem>
-                        )}
-                     />
+                  <div className='space-y-6'>
+                     {/* Map Component */}
+                     <div>
+                        <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block'>
+                           Carte interactive
+                        </label>
+                        <LocationMap
+                           className='w-full'
+                           latitude={form.watch('lat') ? Number(form.watch('lat')) : undefined}
+                           longitude={form.watch('lng') ? Number(form.watch('lng')) : undefined}
+                           onLocationSelect={handleLocationSelect}
+                           height='600px'
+                           zoom={12}
+                        />
+                        <p className='text-xs text-muted-foreground mt-1'>
+                           Cliquez sur la carte pour sélectionner l&apos;emplacement de votre entreprise
+                        </p>
+                     </div>
+
+                     {/* Coordinate Input Fields */}
+                     <div className='grid grid-cols-2 gap-6'>
+                        <FormField
+                           control={form.control}
+                           name='lat'
+                           render={({ field }) => (
+                              <FormItem>
+                                 <FormLabel>Latitude</FormLabel>
+                                 <FormControl>
+                                    <IconInput {...field} icon={MapPinIcon} placeholder='Entrez la latitude' />
+                                 </FormControl>
+                                 <FormMessage />
+                              </FormItem>
+                           )}
+                        />
+                        <FormField
+                           control={form.control}
+                           name='lng'
+                           render={({ field }) => (
+                              <FormItem>
+                                 <FormLabel>Longitude</FormLabel>
+                                 <FormControl>
+                                    <IconInput {...field} icon={MapPinIcon} placeholder='Entrez la longitude' />
+                                 </FormControl>
+                                 <FormMessage />
+                              </FormItem>
+                           )}
+                        />
+                     </div>
                   </div>
 
                   <button className='hidden size-0 absolute' type='submit' />
