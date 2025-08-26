@@ -3,6 +3,7 @@ import { PostType } from '@/services/post-service'
 import { UserRole } from '@/services/user-service'
 import {
    IconBriefcase,
+   IconCalendar,
    IconChartBar,
    IconDashboard,
    IconListDetails,
@@ -20,6 +21,12 @@ export const ROUTES: NavMainItem[] = [
       title: 'Dashboard',
       url: '/',
       icon: IconDashboard,
+   },
+   {
+      title: 'Rendez-vous',
+      url: '/appointments',
+      icon: IconCalendar,
+      allowedRoles: [UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
    },
    {
       title: 'Annonces',
@@ -43,6 +50,12 @@ export const ROUTES: NavMainItem[] = [
       title: "Offres d'emploi",
       url: '/jobs',
       icon: IconBriefcase,
+   },
+   {
+      title: 'Candidatures',
+      url: '/applications',
+      icon: IconListDetails,
+      allowedRoles: [UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
    },
    {
       title: 'Paramètres',

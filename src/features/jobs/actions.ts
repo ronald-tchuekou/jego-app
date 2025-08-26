@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { deleteJobSchema, jobStatusSchema } from './schemas'
 
 // Action to get jobs with pagination and filters
-export const getJobsAction = actionClient
+export const getJobsAction = authenticatedActionClient
    .metadata({ actionName: 'getJobsAction' })
    .inputSchema(
       z.object({
@@ -16,9 +16,9 @@ export const getJobsAction = actionClient
          search: z.string().optional(),
          status: z.string().optional(),
          companyName: z.string().optional(),
-      }),
+      })
    )
-   .action(async ({ parsedInput: { page, limit, search, status, companyName } }) => {
+   .action(async ({ parsedInput: { page, limit, search, status, companyName }, ctx }) => {
       try {
          const filters: FilterQuery & {
             status?: JobStatus
@@ -33,6 +33,13 @@ export const getJobsAction = actionClient
 
          if (companyName && companyName !== 'all') {
             filters.companyName = companyName
+         }
+
+         if (
+            (ctx.user.role === UserRole.COMPANY_ADMIN || ctx.user.role === UserRole.COMPANY_AGENT) &&
+            ctx.user.companyId
+         ) {
+            filters.companyId = ctx.user.companyId
          }
 
          return JobService.getAll(filters)

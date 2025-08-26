@@ -3,11 +3,13 @@
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { ROUTES } from '@/lib/constants'
+import { getUserRoleLabel } from '@/lib/utils'
 import { Building } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useMemo } from 'react'
 import ThemeToggle from '../base/theme-toggle'
 import { useAuth } from '../providers/auth'
+import { Badge } from '../ui/badge'
 
 export function SiteHeader() {
    const pathName = usePathname()
@@ -25,7 +27,7 @@ export function SiteHeader() {
                {auth?.user?.company?.name}
             </span>
          ) : null,
-      [auth],
+      [auth]
    )
 
    return (
@@ -35,6 +37,7 @@ export function SiteHeader() {
             <Separator orientation='vertical' className='mx-2 data-[orientation=vertical]:h-4' />
             <h1 className='text-lg font-bold'>{CompanyName || title}</h1>
             <div className='ml-auto flex items-center gap-2'>
+               <Badge>{getUserRoleLabel(auth?.user?.role)}</Badge>
                <ThemeToggle />
             </div>
          </div>

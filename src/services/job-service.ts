@@ -30,8 +30,8 @@ export type JobModel = {
 }
 
 const JobService = {
-   async count(search: string = '') {
-      const { data, error } = await fetchHelper<{ count: number }>(`/jobs/count?search=${search}`, {
+   async count(companyId?: string) {
+      const { data, error } = await fetchHelper<{ count: number }>(`/jobs/count?companyId=${companyId || ''}`, {
          headers: {
             'Content-Type': 'application/json',
          },
@@ -42,8 +42,10 @@ const JobService = {
 
    async getAll(filter: FilterQuery & { status?: JobStatus; companyName?: string }) {
       const query = objectToQueryString(filter)
+      const companyId = filter.companyId
+      const withoutCompanyId = companyId ? `/company/${companyId}` : ''
 
-      const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(`/jobs?${query}`)
+      const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(`/jobs${withoutCompanyId}?${query}`)
       if (error) throw new Error(error)
       return data
    },

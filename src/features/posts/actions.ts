@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { deletePostSchema, postStatusSchema } from './schemas'
 
 // Action to get posts with pagination and filters
-export const getPostsAction = actionClient
+export const getPostsAction = authenticatedActionClient
    .metadata({ actionName: 'getPostsAction' })
    .inputSchema(
       z.object({
@@ -17,9 +17,9 @@ export const getPostsAction = actionClient
          category: z.string().optional(),
          type: z.string().optional(),
          status: z.string().optional(),
-      }),
+      })
    )
-   .action(async ({ parsedInput: { page, limit, search, category, type, status } }) => {
+   .action(async ({ parsedInput: { page, limit, search, category, type, status }, ctx }) => {
       try {
          const filters: FilterQuery & {
             category?: string
@@ -39,6 +39,13 @@ export const getPostsAction = actionClient
 
          if (status && status !== 'all') {
             filters.status = status
+         }
+
+         if (
+            (ctx.user.role === UserRole.COMPANY_ADMIN || ctx.user.role === UserRole.COMPANY_AGENT) &&
+            ctx.user.companyId
+         ) {
+            filters.companyId = ctx.user.companyId
          }
 
          return PostService.getAll(filters)

@@ -1,5 +1,3 @@
-'use client'
-
 import SearchInput from '@/components/base/search-input'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
 import { Button } from '@/components/ui/button'

@@ -81,3 +81,10 @@ export function getPostTypeLabel(type: PostType) {
          return '- - -'
    }
 }
+
+export function getUserRoleLabel(role?: UserRole | null) {
+   if (role === UserRole.ADMIN) return 'Administrateur'
+   if (role === UserRole.COMPANY_ADMIN) return 'Administrateur Entreprise'
+   if (role === UserRole.COMPANY_AGENT) return 'Agent Entreprise'
+   return 'Utilisateur'
+}

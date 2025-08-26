@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
 import { confirmLogout } from '@/lib/stores/logout-modal-store'
+import { getUserRoleLabel } from '@/lib/utils'
 import { IconDashboard, IconDotsVertical, IconLogout, IconUserCircle } from '@tabler/icons-react'
 import Link from 'next/link'
 import UserAvatar from '../base/user-avatar'
@@ -35,8 +36,10 @@ export function NavUser({ normal = false }: Props) {
                   >
                      <UserAvatar user={auth?.user} />
                      <div className='grid flex-1 text-left text-sm leading-tight'>
-                        <span className='truncate font-semibold'>{auth?.user.displayName}</span>
-                        <span className='text-muted-foreground truncate text-xs'>{auth?.user.email}</span>
+                        <span className='text-lg truncate font-semibold'>{auth?.user.displayName}</span>
+                        <span className='text-sm text-muted-foreground truncate'>
+                           {getUserRoleLabel(auth?.user?.role)}
+                        </span>
                      </div>
                      {!normal && <IconDotsVertical className='ml-auto size-4' />}
                   </SidebarMenuButton>
