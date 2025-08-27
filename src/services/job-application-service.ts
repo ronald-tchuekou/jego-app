@@ -26,13 +26,19 @@ router.get(':id', [JobApplicationsController, 'show'])
  */
 
 const JobApplicationService = {
-   async getAll(filter: FilterQuery) {
+   async getAll(filter: FilterQuery & { status?: JobApplicationStatus }, token: string) {
       const query = objectToQueryString(filter)
       const companyId = filter.companyId
       const withoutCompanyId = companyId ? `/company/${companyId}` : ''
 
-      const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(
-         `/job-applications${withoutCompanyId}?${query}`
+      const { data, error } = await fetchHelper<PaginateResponse<JobApplicationModel>>(
+         `/job-applications${withoutCompanyId}?${query}`,
+         {
+            headers: {
+               'Content-Type': 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+         }
       )
 
       if (error) throw new Error(error)
@@ -81,7 +87,7 @@ const JobApplicationService = {
    },
 
    async getById(id: string, token: string) {
-      const { data, error } = await fetchHelper<JobApplicationModel>(`/job-applications/${id}`, {
+      const { data, error } = await fetchHelper<{ data: JobApplicationModel }>(`/job-applications/${id}`, {
          headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -89,7 +95,8 @@ const JobApplicationService = {
       })
 
       if (error) throw new Error(error)
-      return data
+
+      return data?.data
    },
 
    async getByCompanyId(companyId: string, filter: FilterQuery, token: string) {
