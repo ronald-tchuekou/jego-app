@@ -1,5 +1,6 @@
 import fetchHelper from '@/lib/helpers/fetch-helper'
 import { objectToQueryString } from '@/lib/utils'
+import { JobApplicationModel } from './job-application-service'
 import { UserModel } from './user-service'
 
 export enum JobStatus {
@@ -27,6 +28,8 @@ export type JobModel = {
    createdAt: string
    updatedAt: string
    user: UserModel
+   applications: JobApplicationModel[]
+   applicationCount: number
 }
 
 const JobService = {

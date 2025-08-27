@@ -35,6 +35,20 @@ export default async function DashboardLayout({
       )
    }
 
+   if (auth.user.companyId && auth.user.company?.blockedAt) {
+      return (
+         <div className='flex flex-col items-center justify-center h-screen gap-6'>
+            <BanIcon className='size-32 text-destructive' />
+            <h1 className='text-2xl font-bold'>Votre entreprise a été bloquée</h1>
+            <p className='text-sm text-muted-foreground mb-5 max-w-lg text-center'>
+               Veuillez contacter l&apos;administrateur pour plus d&apos;informations. Ou bien vous vous connecter avec
+               un autre compte entreprise.
+            </p>
+            <ResetLoginButton />
+         </div>
+      )
+   }
+
    if (!allowedRoles.includes(auth.user.role)) {
       return (
          <div className='flex flex-col items-center justify-center h-screen gap-6'>
