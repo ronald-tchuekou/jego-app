@@ -1,10 +1,8 @@
 'use server'
 
-import { CHART_PERIODS } from '@/lib/constants'
 import { authenticatedActionClient } from '@/lib/safe-action'
+import JobApplicationService from '@/services/job-application-service'
 import JobService from '@/services/job-service'
-
-const date_enum = CHART_PERIODS.map((period) => period.value)
 
 export const getAppointmentCountAction = authenticatedActionClient
    .metadata({ actionName: 'getAppointmentCount' })
@@ -20,11 +18,16 @@ export const getAppointmentCountAction = authenticatedActionClient
 export const getApplicationCountAction = authenticatedActionClient
    .metadata({ actionName: 'getApplicationCount' })
    .action(async ({ ctx }) => {
-      // TODO: Implement application count
-      console.log(ctx)
+      const companyId = ctx.user.companyId
+
+      if (!companyId) {
+         throw new Error('Company ID is required')
+      }
+
+      const result = await JobApplicationService.getTotal({ companyId }, ctx.token)
 
       return {
-         count: 0,
+         count: result?.count ?? 0,
       }
    })
 

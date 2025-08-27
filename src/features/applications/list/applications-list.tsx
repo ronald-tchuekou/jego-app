@@ -4,12 +4,7 @@ import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import CustomPagination from '@/components/dashboard/custom-pagination'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { applicationKey } from '@/lib/query-kye'
-import { useQuery } from '@tanstack/react-query'
-import { useQueryState } from 'nuqs'
-import { useEffect } from 'react'
-import { toast } from 'sonner'
-import { getApplicationsAction } from '../actions'
+import useGetJobApplications from '../hooks/use-get-job-applications'
 import ApplicationItem from './application-item'
 
 const COLUMNS = [
@@ -22,51 +17,11 @@ const COLUMNS = [
 ]
 
 export default function ApplicationsList() {
-   // Pagination and filters state
-   const [status] = useQueryState('status')
-   const [page] = useQueryState('page')
-   const [limit] = useQueryState('limit')
-   const [search] = useQueryState('q')
+   const { data, isLoading } = useGetJobApplications()
 
-   // React Query for data fetching
-   const {
-      data: applicationsData,
-      isLoading,
-      error,
-   } = useQuery({
-      queryKey: applicationKey.list({
-         page: page ? parseInt(page) : 1,
-         limit: limit ? parseInt(limit) : 10,
-         search: search || undefined,
-         status: status || undefined,
-      }),
-      async queryFn({ queryKey }) {
-         const filters = JSON.parse(queryKey[2].filters)
-         const result = await getApplicationsAction(filters)
-
-         if (result?.serverError) {
-            throw new Error(result.serverError)
-         }
-
-         if (result?.validationErrors) {
-            throw new Error(result.validationErrors._errors?.join(', ') || 'Erreur lors du chargement des candidatures')
-         }
-
-         return result?.data
-      },
-      staleTime: 5 * 60 * 1000, // 5 minutes
-   })
-
-   const applications = applicationsData?.data || []
-   const totalCount = applicationsData?.meta.total || 0
-   const totalPages = applicationsData?.meta.lastPage || 1
-
-   // Show error toast if query fails
-   useEffect(() => {
-      if (error?.message) {
-         toast.error(error.message)
-      }
-   }, [error])
+   const applications = data?.data || []
+   const totalCount = data?.meta.total || 0
+   const totalPages = data?.meta.lastPage || 1
 
    return (
       <>

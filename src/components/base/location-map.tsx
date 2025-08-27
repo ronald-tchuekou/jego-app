@@ -45,7 +45,7 @@ const LocationMap = ({
       map.current = new mapboxgl.Map({
          container: mapContainer.current,
          style: theme.theme === 'dark' ? MAPBOX_MAP_STYLE.dark : MAPBOX_MAP_STYLE.light,
-         center: [longitude || 2.3522, latitude || 48.8566], // Default to Paris
+         center: [longitude || 9.704508529647455, latitude || 4.038541167352562], // Default to Douala
          zoom,
          interactive,
       })

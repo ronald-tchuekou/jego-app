@@ -8,7 +8,7 @@ import { DEFAULT_COMPANY_IMAGE } from '@/lib/constants'
 import env from '@/lib/env/client'
 import { formatDate } from '@/lib/utils'
 import { JobModel, JobStatus } from '@/services/job-service'
-import { Building, Calendar, MapPin } from 'lucide-react'
+import { Building, Calendar, MapPin, UsersIcon } from 'lucide-react'
 import Link from 'next/link'
 import JobItemActions from './job-item-actions'
 
@@ -52,6 +52,11 @@ const JobItem = ({ job }: Props) => {
                      {job.status === JobStatus.OPEN ? 'Ouvert' : 'Fermé'}
                   </Badge>
                   {isExpired && <Badge variant='destructive'>Expiré</Badge>}
+               </div>
+
+               <div className='flex items-center gap-2 text-sm text-muted-foreground'>
+                  <UsersIcon className='size-3 flex-none' />
+                  <span>{job.applicationCount} candidatures</span>
                </div>
 
                {/* Expiration date */}
