@@ -35,6 +35,12 @@ export default async function Page() {
                <DynamicCompanyJobCount />
                <DynamicCompanyPostCount />
             </ContentGuard>
+            <ContentGuard role={UserRole.COMPANY_AGENT}>
+               <DynamicCompanyAppointmentCount />
+               <DynamicCompanyJobApplicationCount />
+               <DynamicCompanyJobCount />
+               <DynamicCompanyPostCount />
+            </ContentGuard>
             <ContentGuard role={UserRole.USER}>
                <p>User content</p>
             </ContentGuard>

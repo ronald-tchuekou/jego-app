@@ -143,7 +143,7 @@ const JobApplicationService = {
 
    async getTotal(filter: FilterQuery, token: string) {
       const query = objectToQueryString(filter)
-      const { data, error } = await fetchHelper<PaginateResponse<JobModel>>(`/job-applications/count?${query}`, {
+      const { data, error } = await fetchHelper<{ count: number }>(`/job-applications/count?${query}`, {
          headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
