@@ -21,10 +21,9 @@ export function SiteHeader() {
    const CompanyName = useMemo(
       () =>
          auth?.user?.company?.name ? (
-            <span className='text-primary flex gap-2 items-center'>
-               {' '}
-               <Building className='size-5' />
-               {auth?.user?.company?.name}
+            <span className='text-primary grid grid-cols-8 gap-1 items-center'>
+               <Building className='size-5 flex-none col-span-2 sm:col-span-1' />
+               <span className='truncate col-span-6 sm:col-span-7'>{auth?.user?.company?.name}</span>
             </span>
          ) : null,
       [auth]

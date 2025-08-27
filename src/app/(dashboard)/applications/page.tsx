@@ -1,6 +1,5 @@
 import SearchInput from '@/components/base/search-input'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
-import ExportButton from '@/features/applications/components/export-button'
 import StatusFilter from '@/features/applications/list/status-filter'
 import dynamic from 'next/dynamic'
 
@@ -14,7 +13,7 @@ export default function ApplicationsPage() {
             <div className='flex items-center gap-2'>
                <SearchInput />
                <StatusFilter />
-               <ExportButton />
+               {/* <ExportButton /> */}
             </div>
          </DashboardTitle>
          {/* List */}

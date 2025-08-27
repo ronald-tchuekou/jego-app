@@ -1,15 +1,5 @@
 'use client'
 
-import {
-   AlertDialog,
-   AlertDialogAction,
-   AlertDialogCancel,
-   AlertDialogContent,
-   AlertDialogDescription,
-   AlertDialogFooter,
-   AlertDialogHeader,
-   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import {
    DropdownMenu,
@@ -19,47 +9,25 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { applicationKey } from '@/lib/query-kye'
 import { JobApplicationModel, JobApplicationStatus } from '@/services/job-application-service'
-import { useQueryClient } from '@tanstack/react-query'
-import { CheckCircle, Eye, FileText, LoaderIcon, MoreHorizontal, Trash2, XCircle } from 'lucide-react'
-import { useAction } from 'next-safe-action/hooks'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { CheckCircle, Eye, FileText, MoreHorizontal, Trash2, XCircle } from 'lucide-react'
+import Link from 'next/link'
+import { useRef } from 'react'
 import { toast } from 'sonner'
-import { deleteApplicationAction, updateApplicationStatusAction } from '../actions'
+import AlertDialogDeleteApplication, {
+   AlertDialogDeleteApplicationRef,
+} from '../components/alert-dialog-delete-application'
+import AlertDialogUpdateApplicationStatus, {
+   AlertDialogUpdateApplicationStatusRef,
+} from '../components/alert-dialog-update-status-application'
 
 type Props = {
    application: JobApplicationModel
 }
 
 const ApplicationActions = ({ application }: Props) => {
-   const router = useRouter()
-   const queryClient = useQueryClient()
-   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-
-   // Mutation for updating application status
-   const { execute: updateStatus, isPending: isUpdatingStatus } = useAction(updateApplicationStatusAction, {
-      onSuccess: () => {
-         toast.success('Statut de la candidature mis à jour avec succès')
-         queryClient.invalidateQueries({ queryKey: applicationKey.all })
-      },
-      onError: (error) => {
-         toast.error(error.error.serverError)
-      },
-   })
-
-   // Mutation for deleting application
-   const { execute: deleteApplication, isPending: isDeleting } = useAction(deleteApplicationAction, {
-      onSuccess: () => {
-         toast.success('Candidature supprimée avec succès')
-         queryClient.invalidateQueries({ queryKey: applicationKey.all })
-         setIsDeleteDialogOpen(false)
-      },
-      onError: (error) => {
-         toast.error(error.error.serverError)
-      },
-   })
+   const deleteDialogRef = useRef<AlertDialogDeleteApplicationRef>(null)
+   const updateStatusDialogRef = useRef<AlertDialogUpdateApplicationStatusRef>(null)
 
    const handleViewResume = () => {
       if (application.resumePath) {
@@ -69,30 +37,24 @@ const ApplicationActions = ({ application }: Props) => {
       }
    }
 
-   const handleViewDetails = () => {
-      router.push(`/applications/${application.id}`)
-   }
-
    return (
       <>
          <DropdownMenu>
             <DropdownMenuTrigger asChild>
-               <Button variant='ghost' className='h-8 w-8 p-0' disabled={isUpdatingStatus || isDeleting}>
+               <Button variant='ghost' className='h-8 w-8 p-0'>
                   <span className='sr-only'>Ouvrir le menu</span>
-                  {isUpdatingStatus || isDeleting ? (
-                     <LoaderIcon className='h-4 w-4 animate-spin' />
-                  ) : (
-                     <MoreHorizontal className='h-4 w-4' />
-                  )}
+                  <MoreHorizontal className='h-4 w-4' />
                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
                <DropdownMenuLabel>Actions</DropdownMenuLabel>
                <DropdownMenuSeparator />
 
-               <DropdownMenuItem onClick={handleViewDetails}>
-                  <Eye className='mr-2 h-4 w-4' />
-                  Voir les détails
+               <DropdownMenuItem asChild>
+                  <Link href={`/applications/${application.id}`}>
+                     <Eye className='mr-2 h-4 w-4' />
+                     Voir les détails
+                  </Link>
                </DropdownMenuItem>
 
                {application.resumePath && (
@@ -106,9 +68,7 @@ const ApplicationActions = ({ application }: Props) => {
 
                {application.status !== JobApplicationStatus.ACCEPTED && (
                   <DropdownMenuItem
-                     onClick={() =>
-                        updateStatus({ applicationId: application.id, status: JobApplicationStatus.ACCEPTED })
-                     }
+                     onClick={() => updateStatusDialogRef.current?.open(application, JobApplicationStatus.ACCEPTED)}
                   >
                      <CheckCircle className='mr-2 h-4 w-4 text-green-600' />
                      Accepter
@@ -117,9 +77,7 @@ const ApplicationActions = ({ application }: Props) => {
 
                {application.status !== JobApplicationStatus.REJECTED && (
                   <DropdownMenuItem
-                     onClick={() =>
-                        updateStatus({ applicationId: application.id, status: JobApplicationStatus.REJECTED })
-                     }
+                     onClick={() => updateStatusDialogRef.current?.open(application, JobApplicationStatus.REJECTED)}
                   >
                      <XCircle className='mr-2 h-4 w-4 text-red-600' />
                      Rejeter
@@ -128,9 +86,7 @@ const ApplicationActions = ({ application }: Props) => {
 
                {application.status !== JobApplicationStatus.PENDING && (
                   <DropdownMenuItem
-                     onClick={() =>
-                        updateStatus({ applicationId: application.id, status: JobApplicationStatus.PENDING })
-                     }
+                     onClick={() => updateStatusDialogRef.current?.open(application, JobApplicationStatus.PENDING)}
                   >
                      <Eye className='mr-2 h-4 w-4 text-yellow-600' />
                      Mettre en attente
@@ -139,35 +95,15 @@ const ApplicationActions = ({ application }: Props) => {
 
                <DropdownMenuSeparator />
 
-               <DropdownMenuItem
-                  className='text-red-600 hover:text-red-700'
-                  onClick={() => setIsDeleteDialogOpen(true)}
-               >
-                  <Trash2 className='mr-2 h-4 w-4' />
+               <DropdownMenuItem onClick={() => deleteDialogRef.current?.open(application)}>
+                  <Trash2 className='mr-2 h-4 w-4 text-destructive' />
                   Supprimer
                </DropdownMenuItem>
             </DropdownMenuContent>
          </DropdownMenu>
 
-         <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-            <AlertDialogContent>
-               <AlertDialogHeader>
-                  <AlertDialogTitle>Êtes-vous sûr de vouloir supprimer cette candidature ?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                     Cette action est irréversible. La candidature sera définitivement supprimée de la base de données.
-                  </AlertDialogDescription>
-               </AlertDialogHeader>
-               <AlertDialogFooter>
-                  <AlertDialogCancel>Annuler</AlertDialogCancel>
-                  <AlertDialogAction
-                     onClick={() => deleteApplication({ applicationId: application.id })}
-                     className='bg-red-600 hover:bg-red-700'
-                  >
-                     Supprimer
-                  </AlertDialogAction>
-               </AlertDialogFooter>
-            </AlertDialogContent>
-         </AlertDialog>
+         <AlertDialogDeleteApplication ref={deleteDialogRef} />
+         <AlertDialogUpdateApplicationStatus ref={updateStatusDialogRef} />
       </>
    )
 }
