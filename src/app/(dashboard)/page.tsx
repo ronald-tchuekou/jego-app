@@ -17,6 +17,7 @@ const DynamicCompanyAppointmentCount = dynamic(() => import('@/features/company-
 const DynamicCompanyJobApplicationCount = dynamic(() => import('@/features/company-stats/components/job-application-count'))
 const DynamicCompanyJobCount = dynamic(() => import('@/features/company-stats/components/job-count'))
 const DynamicCompanyPostCount = dynamic(() => import('@/features/company-stats/components/post-count'))
+const DynamicApplicationsList = dynamic(() => import('@/features/applications/list/applications-list'))
 
 export default async function Page() {
    return (
@@ -50,6 +51,21 @@ export default async function Page() {
             <DynamicCompanyChart />
             <DynamicJobChart />
             <DynamicPostChart />
+         </ContentGuard>
+         <ContentGuard role={UserRole.COMPANY_ADMIN}>
+            <div className='space-y-2 text-lg font-medium'>
+               <h2>Candidatures récentes</h2>
+               <DynamicApplicationsList justRecent />
+            </div>
+         </ContentGuard>
+         <ContentGuard role={UserRole.COMPANY_AGENT}>
+            <div className='space-y-2 text-lg font-medium'>
+               <h2>Candidatures récentes</h2>
+               <DynamicApplicationsList justRecent />
+            </div>
+         </ContentGuard>
+         <ContentGuard role={UserRole.USER}>
+            <p>User content</p>
          </ContentGuard>
       </>
    )

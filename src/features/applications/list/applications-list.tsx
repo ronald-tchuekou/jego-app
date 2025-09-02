@@ -16,8 +16,12 @@ const COLUMNS = [
    { name: '', width: 50 },
 ]
 
-export default function ApplicationsList() {
-   const { data, isLoading } = useGetJobApplications()
+type Props = {
+   justRecent?: boolean
+}
+
+export default function ApplicationsList({ justRecent }: Props) {
+   const { data, isLoading } = useGetJobApplications({ justRecent })
 
    const applications = data?.data || []
    const totalCount = data?.meta.total || 0
@@ -58,7 +62,7 @@ export default function ApplicationsList() {
             </Table>
          </div>
 
-         <CustomPagination totalCount={totalCount} totalPages={totalPages} label='candidatures' />
+         {!justRecent && <CustomPagination totalCount={totalCount} totalPages={totalPages} label='candidatures' />}
       </>
    )
 }

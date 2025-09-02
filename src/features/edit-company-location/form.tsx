@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { cn } from '@/lib/utils'
+import { UserRole } from '@/services/user-service'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon, MapPinIcon } from 'lucide-react'
 import { useEffect } from 'react'
@@ -17,6 +18,7 @@ import useUpdateCompanyLocation from './use-update-company-location'
 const EditCompanyLocationForm = () => {
    const { auth } = useAuth()
    const company = auth?.user.company
+   const canEdit = auth?.user.role === UserRole.COMPANY_ADMIN
 
    const { updateCompanyLocation, isPending } = useUpdateCompanyLocation()
 
@@ -68,6 +70,7 @@ const EditCompanyLocationForm = () => {
                            Carte interactive
                         </label>
                         <LocationMap
+                           interactive={canEdit}
                            className='w-full'
                            latitude={form.watch('lat') ? Number(form.watch('lat')) : undefined}
                            longitude={form.watch('lng') ? Number(form.watch('lng')) : undefined}
@@ -89,7 +92,12 @@ const EditCompanyLocationForm = () => {
                               <FormItem>
                                  <FormLabel>Latitude</FormLabel>
                                  <FormControl>
-                                    <IconInput {...field} icon={MapPinIcon} placeholder='Entrez la latitude' />
+                                    <IconInput
+                                       {...field}
+                                       icon={MapPinIcon}
+                                       placeholder='Entrez la latitude'
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -102,7 +110,12 @@ const EditCompanyLocationForm = () => {
                               <FormItem>
                                  <FormLabel>Longitude</FormLabel>
                                  <FormControl>
-                                    <IconInput {...field} icon={MapPinIcon} placeholder='Entrez la longitude' />
+                                    <IconInput
+                                       {...field}
+                                       icon={MapPinIcon}
+                                       placeholder='Entrez la longitude'
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -116,7 +129,7 @@ const EditCompanyLocationForm = () => {
             </CardContent>
             <CardFooter>
                <Button
-                  disabled={isPending}
+                  disabled={isPending || !canEdit}
                   onClick={handleSubmit}
                   className={cn('relative', {
                      'opacity-50': isPending,

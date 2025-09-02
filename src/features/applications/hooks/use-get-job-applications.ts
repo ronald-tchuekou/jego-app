@@ -7,7 +7,7 @@ import { useEffect } from "react"
 import { toast } from "sonner"
 import { getApplicationsAction } from "../actions"
 
-function useGetJobApplications() {
+function useGetJobApplications(options?: { justRecent?: boolean }) {
    const [status] = useQueryState('status')
    const [page] = useQueryState('page')
    const [limit] = useQueryState('limit')
@@ -16,7 +16,7 @@ function useGetJobApplications() {
    const { data, isLoading, error } = useQuery({
       queryKey: applicationKey.list({
          page: page ? parseInt(page) : 1,
-         limit: limit ? parseInt(limit) : 10,
+         limit: options?.justRecent ? 5 : limit ? parseInt(limit) : 10,
          search: search || undefined,
          status: status || undefined,
       }),
