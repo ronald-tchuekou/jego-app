@@ -3,7 +3,9 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import CustomPagination from '@/components/dashboard/custom-pagination'
+import { useAuth } from '@/components/providers/auth'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { UserRole } from '@/services/user-service'
 import useGetAppointments from '../hooks/use-get-appointments'
 import AppointmentItem from './appointment-item'
 
@@ -22,6 +24,8 @@ type Props = {
 }
 
 export default function AppointmentsList({ justRecent }: Props) {
+   const { auth } = useAuth()
+   const isAdmin = auth?.user?.role === UserRole.ADMIN
    const { data, isLoading } = useGetAppointments({ justRecent })
 
    const appointments = data?.data || []
@@ -34,29 +38,35 @@ export default function AppointmentsList({ justRecent }: Props) {
             <Table>
                <TableHeader>
                   <TableRow>
-                     {COLUMNS.map((column) => (
-                        <TableHead key={column.name} style={{ width: column.width }}>
-                           {column.name}
-                        </TableHead>
-                     ))}
+                     {COLUMNS.map((column) =>
+                        column.name !== 'Entreprise' ? (
+                           <TableHead key={column.name} style={{ width: column.width }}>
+                              {column.name}
+                           </TableHead>
+                        ) : isAdmin ? (
+                           <TableHead key={column.name} style={{ width: column.width }}>
+                              {column.name}
+                           </TableHead>
+                        ) : null
+                     )}
                   </TableRow>
                </TableHeader>
                <TableBody>
                   {isLoading ? (
                      <TableRow>
-                        <TableCell colSpan={COLUMNS.length}>
+                        <TableCell colSpan={isAdmin ? COLUMNS.length : COLUMNS.length - 1}>
                            <LoaderContent />
                         </TableCell>
                      </TableRow>
                   ) : appointments.length === 0 ? (
                      <TableRow>
-                        <TableCell colSpan={COLUMNS.length}>
+                        <TableCell colSpan={isAdmin ? COLUMNS.length : COLUMNS.length - 1}>
                            <EmptyContent text='Aucun rendez-vous disponible dans votre base de données.' />
                         </TableCell>
                      </TableRow>
                   ) : (
                      appointments.map((appointment) => (
-                        <AppointmentItem key={appointment.id} appointment={appointment} />
+                        <AppointmentItem key={appointment.id} appointment={appointment} isAdmin={isAdmin} />
                      ))
                   )}
                </TableBody>

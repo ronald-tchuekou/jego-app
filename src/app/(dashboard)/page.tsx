@@ -18,6 +18,7 @@ const DynamicCompanyJobApplicationCount = dynamic(() => import('@/features/compa
 const DynamicCompanyJobCount = dynamic(() => import('@/features/company-stats/components/job-count'))
 const DynamicCompanyPostCount = dynamic(() => import('@/features/company-stats/components/post-count'))
 const DynamicApplicationsList = dynamic(() => import('@/features/applications/list/applications-list'))
+const DynamicAppointmentsList = dynamic(() => import('@/features/company-appointments/list/appointments-list'))
 
 export default async function Page() {
    return (
@@ -62,6 +63,10 @@ export default async function Page() {
             <div className='space-y-2 text-lg font-medium'>
                <h2>Candidatures récentes</h2>
                <DynamicApplicationsList justRecent />
+            </div>
+            <div className='space-y-2 text-lg font-medium'>
+               <h2>Rendez-vous récents</h2>
+               <DynamicAppointmentsList justRecent />
             </div>
          </ContentGuard>
          <ContentGuard role={UserRole.USER}>
