@@ -26,7 +26,7 @@ export const ROUTES: NavMainItem[] = [
       title: 'Rendez-vous',
       url: '/appointments',
       icon: IconCalendar,
-      allowedRoles: [UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
+      allowedRoles: [UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT, UserRole.ADMIN],
    },
    {
       title: 'Annonces',
