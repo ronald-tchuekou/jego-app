@@ -6,9 +6,8 @@ import JobService from '@/services/job-service'
 
 export const getAppointmentCountAction = authenticatedActionClient
    .metadata({ actionName: 'getAppointmentCount' })
-   .action(async ({ ctx }) => {
+   .action(async ({}) => {
       // TODO: Implement appointment count
-      console.log(ctx)
 
       return {
          count: 0,
@@ -31,16 +30,13 @@ export const getApplicationCountAction = authenticatedActionClient
       }
    })
 
-export const getPostCountAction = authenticatedActionClient
-   .metadata({ actionName: 'getPostCount' })
-   .action(async ({ ctx }) => {
-      // TODO: Implement post count
-      console.log(ctx)
+export const getPostCountAction = authenticatedActionClient.metadata({ actionName: 'getPostCount' }).action(async ({}) => {
+   // TODO: Implement post count
 
-      return {
-         count: 0,
-      }
-   })
+   return {
+      count: 0,
+   }
+})
 
 export const getJobCountAction = authenticatedActionClient
    .metadata({ actionName: 'getJobCount' })

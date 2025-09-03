@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
+import { UserRole } from '@/services/user-service'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon } from 'lucide-react'
 import { useEffect } from 'react'
@@ -18,6 +19,7 @@ import useUpdateCompanyInfo from './use-update-company-info'
 const EditCompanyInfoForm = () => {
    const { auth } = useAuth()
    const company = auth?.user.company
+   const canEdit = auth?.user.role === UserRole.COMPANY_ADMIN
 
    const { updateCompany, isPending } = useUpdateCompanyInfo()
 
@@ -76,7 +78,7 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Nom de l&apos;entreprise *</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='Nom de votre entreprise' {...field} />
+                                    <Input placeholder='Nom de votre entreprise' {...field} readOnly={!canEdit} />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -89,7 +91,12 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Email</FormLabel>
                                  <FormControl>
-                                    <Input type='email' placeholder='contact@entreprise.com' {...field} />
+                                    <Input
+                                       type='email'
+                                       placeholder='contact@entreprise.com'
+                                       {...field}
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -102,7 +109,7 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Téléphone</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='+237 623 456 789' {...field} />
+                                    <Input placeholder='+237 623 456 789' {...field} readOnly={!canEdit} />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -115,7 +122,7 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Site web</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='https://www.entreprise.com' {...field} />
+                                    <Input placeholder='https://www.entreprise.com' {...field} readOnly={!canEdit} />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -135,7 +142,7 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Adresse</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='123 Rue de la Paix' {...field} />
+                                    <Input placeholder='123 Rue de la Paix' {...field} readOnly={!canEdit} />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -149,7 +156,7 @@ const EditCompanyInfoForm = () => {
                                  <FormItem>
                                     <FormLabel>Ville</FormLabel>
                                     <FormControl>
-                                       <Input placeholder='Paris' {...field} />
+                                       <Input placeholder='Paris' {...field} readOnly={!canEdit} />
                                     </FormControl>
                                     <FormMessage />
                                  </FormItem>
@@ -162,7 +169,7 @@ const EditCompanyInfoForm = () => {
                                  <FormItem>
                                     <FormLabel>État/Région</FormLabel>
                                     <FormControl>
-                                       <Input placeholder='Île-de-France' {...field} />
+                                       <Input placeholder='Île-de-France' {...field} readOnly={!canEdit} />
                                     </FormControl>
                                     <FormMessage />
                                  </FormItem>
@@ -175,7 +182,7 @@ const EditCompanyInfoForm = () => {
                                  <FormItem>
                                     <FormLabel>Code postal</FormLabel>
                                     <FormControl>
-                                       <Input placeholder='75001' {...field} />
+                                       <Input placeholder='75001' {...field} readOnly={!canEdit} />
                                     </FormControl>
                                     <FormMessage />
                                  </FormItem>
@@ -189,7 +196,7 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Pays</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='France' {...field} />
+                                    <Input placeholder='France' {...field} readOnly={!canEdit} />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -212,6 +219,7 @@ const EditCompanyInfoForm = () => {
                                     placeholder='Décrivez votre entreprise, ses services et sa mission...'
                                     className='min-h-[120px] resize-none'
                                     {...field}
+                                    readOnly={!canEdit}
                                  />
                               </FormControl>
                               <FormMessage />
@@ -231,7 +239,11 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Facebook</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='https://www.facebook.com/entreprise' {...field} />
+                                    <Input
+                                       placeholder='https://www.facebook.com/entreprise'
+                                       {...field}
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -244,7 +256,11 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Instagram</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='https://www.instagram.com/entreprise' {...field} />
+                                    <Input
+                                       placeholder='https://www.instagram.com/entreprise'
+                                       {...field}
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -257,7 +273,11 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>Twitter</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='https://www.twitter.com/entreprise' {...field} />
+                                    <Input
+                                       placeholder='https://www.twitter.com/entreprise'
+                                       {...field}
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -270,7 +290,11 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>LinkedIn</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='https://www.linkedin.com/company/entreprise' {...field} />
+                                    <Input
+                                       placeholder='https://www.linkedin.com/company/entreprise'
+                                       {...field}
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -283,7 +307,11 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>YouTube</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='https://www.youtube.com/channel/entreprise' {...field} />
+                                    <Input
+                                       placeholder='https://www.youtube.com/channel/entreprise'
+                                       {...field}
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -296,7 +324,11 @@ const EditCompanyInfoForm = () => {
                               <FormItem>
                                  <FormLabel>TikTok</FormLabel>
                                  <FormControl>
-                                    <Input placeholder='https://www.tiktok.com/@entreprise' {...field} />
+                                    <Input
+                                       placeholder='https://www.tiktok.com/@entreprise'
+                                       {...field}
+                                       readOnly={!canEdit}
+                                    />
                                  </FormControl>
                                  <FormMessage />
                               </FormItem>
@@ -309,7 +341,7 @@ const EditCompanyInfoForm = () => {
             </CardContent>
             <CardFooter>
                <Button
-                  disabled={isPending}
+                  disabled={isPending || !canEdit}
                   onClick={handleSubmit}
                   className={cn('relative', {
                      'opacity-50': isPending,

@@ -1,6 +1,7 @@
 'use client'
 
 import { IconInput } from '@/components/base/icon-input'
+import { useAuth } from '@/components/providers/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -14,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { BuildingIcon, FileText, LinkIcon, LoaderIcon, MailIcon, MapPinIcon, PhoneIcon } from 'lucide-react'
 import { DateTime } from 'luxon'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { createJobFormSchema, defaultCreateJobFormValue, type CreateJobFormSchema } from './schema'
 import useEditJob from './use-edit-job'
@@ -23,6 +25,8 @@ type Props = {
 }
 
 export default function CreateJobForm({ job }: Props) {
+   const { auth } = useAuth()
+   const company = auth?.user?.company
    const { createJob, updateJob, isLoading } = useEditJob()
    const router = useRouter()
 
@@ -56,6 +60,24 @@ export default function CreateJobForm({ job }: Props) {
          createJob(body)
       }
    })
+
+   useEffect(() => {
+      if (company && !job) {
+         form.reset({
+            ...defaultCreateJobFormValue,
+            companyName: company.name,
+            companyLogo: company.logo || undefined,
+            companyWebsite: company.website || '',
+            companyEmail: company.email || '',
+            companyPhone: company.phone,
+            companyAddress: company.address || '',
+            companyCity: company.city || '',
+            companyState: company.state || '',
+            companyZip: company.zipCode || '',
+            companyCountry: company.country || '',
+         })
+      }
+   }, [company, form, job])
 
    return (
       <Card>
