@@ -25,41 +25,29 @@ export default async function Page() {
       <>
          <HomeDashboardTitle />
          <div className='*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-5 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4'>
-            <ContentGuard role={UserRole.ADMIN}>
+            <ContentGuard roles={[UserRole.ADMIN]}>
                <DynamicUserCount />
                <DynamicCompanyCount />
                <DynamicJobCount />
                <DynamicPostCount />
             </ContentGuard>
-            <ContentGuard role={UserRole.COMPANY_ADMIN}>
+            <ContentGuard roles={[UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT]}>
                <DynamicCompanyAppointmentCount />
                <DynamicCompanyJobApplicationCount />
                <DynamicCompanyJobCount />
                <DynamicCompanyPostCount />
             </ContentGuard>
-            <ContentGuard role={UserRole.COMPANY_AGENT}>
-               <DynamicCompanyAppointmentCount />
-               <DynamicCompanyJobApplicationCount />
-               <DynamicCompanyJobCount />
-               <DynamicCompanyPostCount />
-            </ContentGuard>
-            <ContentGuard role={UserRole.USER}>
+            <ContentGuard roles={[UserRole.USER]}>
                <p>User content</p>
             </ContentGuard>
          </div>
-         <ContentGuard role={UserRole.ADMIN}>
+         <ContentGuard roles={[UserRole.ADMIN]}>
             <DynamicUserChart />
             <DynamicCompanyChart />
             <DynamicJobChart />
             <DynamicPostChart />
          </ContentGuard>
-         <ContentGuard role={UserRole.COMPANY_ADMIN}>
-            <div className='space-y-2 text-lg font-medium'>
-               <h2>Candidatures récentes</h2>
-               <DynamicApplicationsList justRecent />
-            </div>
-         </ContentGuard>
-         <ContentGuard role={UserRole.COMPANY_AGENT}>
+         <ContentGuard roles={[UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT]}>
             <div className='space-y-2 text-lg font-medium'>
                <h2>Candidatures récentes</h2>
                <DynamicApplicationsList justRecent />
@@ -69,7 +57,7 @@ export default async function Page() {
                <DynamicAppointmentsList justRecent />
             </div>
          </ContentGuard>
-         <ContentGuard role={UserRole.USER}>
+         <ContentGuard roles={[UserRole.USER]}>
             <p>User content</p>
          </ContentGuard>
       </>

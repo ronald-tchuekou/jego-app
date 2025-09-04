@@ -6,27 +6,23 @@ import { Calendar, CalendarCheck, CalendarX, Clock } from 'lucide-react'
 const statusConfig = {
    [AppointmentStatus.PENDING]: {
       label: 'En attente',
-      variant: 'secondary' as const,
       icon: Clock,
-      className: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100',
+      className: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100 border-yellow-300',
    },
    [AppointmentStatus.CONFIRMED]: {
       label: 'Confirmé',
-      variant: 'secondary' as const,
       icon: CalendarCheck,
-      className: 'bg-blue-100 text-blue-700 hover:bg-blue-100',
+      className: 'bg-blue-100 text-blue-700 hover:bg-blue-100 border-blue-300',
    },
    [AppointmentStatus.CANCELLED]: {
       label: 'Annulé',
-      variant: 'secondary' as const,
       icon: CalendarX,
-      className: 'bg-red-100 text-red-700 hover:bg-red-100',
+      className: 'bg-red-100 text-red-700 hover:bg-red-100 border-red-300',
    },
    [AppointmentStatus.COMPLETED]: {
       label: 'Terminé',
-      variant: 'secondary' as const,
       icon: Calendar,
-      className: 'bg-green-100 text-green-700 hover:bg-green-100',
+      className: 'bg-green-100 text-green-700 hover:bg-green-100 border-green-300',
    },
 }
 
@@ -40,7 +36,7 @@ export default function AppointmentStatusLabel({ status, showIcon = true }: Prop
    const Icon = config.icon
 
    return (
-      <Badge variant={config.variant} className={cn('gap-1', config.className)}>
+      <Badge variant={'outline'} className={cn('gap-1', config.className)}>
          {showIcon && <Icon className='size-3' />}
          {config.label}
       </Badge>
