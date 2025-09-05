@@ -41,6 +41,7 @@ export default function LoginForm() {
 
    return (
       <Card>
+         <div className='h-1' />
          <CardHeader className='text-center'>
             <CardTitle>Connectez-vous à votre compte</CardTitle>
             <CardDescription>Entrez vos identifiants pour accéder à votre compte</CardDescription>
@@ -91,15 +92,6 @@ export default function LoginForm() {
                   </Button>
                </form>
             </Form>
-
-            <div className='text-center text-sm text-muted-foreground mb-5'>
-               <p>
-                  Vous n&apos;avez pas de compte ?{' '}
-                  <Link href='/auth/register' className='font-medium text-primary hover:underline transition-colors'>
-                     S&apos;inscrire
-                  </Link>
-               </p>
-            </div>
          </CardContent>
       </Card>
    )
