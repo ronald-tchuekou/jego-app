@@ -69,7 +69,7 @@ const CompanyReviewService = {
                'Content-Type': 'application/json',
                Authorization: `Bearer ${token}`,
             },
-         }
+         },
       )
       if (error) throw new Error(error)
       return data?.data ?? null
@@ -81,7 +81,7 @@ const CompanyReviewService = {
             headers: {
                'Content-Type': 'application/json',
             },
-         }
+         },
       )
       if (error) throw new Error(error)
       return data?.data ?? null

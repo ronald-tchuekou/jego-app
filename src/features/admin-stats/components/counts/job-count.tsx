@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import CountLoader from '@/components/base/count-loader'
 import { Badge } from '@/components/ui/badge'
@@ -14,7 +14,7 @@ const JobCount = () => {
    return (
       <Card className='@container/card'>
          <CardHeader>
-            <CardDescription>Total Offres d&apos;Emploi</CardDescription>
+            <CardDescription className='text-lg text-foreground'>Total Offres d&apos;Emploi</CardDescription>
             <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
                {data ?? '- - -'}
             </CardTitle>

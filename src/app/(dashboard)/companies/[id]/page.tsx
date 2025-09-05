@@ -1,10 +1,7 @@
-import LoaderContent from '@/components/base/loader-content'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
 import dynamic from 'next/dynamic'
 
-const DynamicCompanyDetails = dynamic(() => import('@/features/companies/details/company-details'), {
-   loading: () => <LoaderContent />,
-})
+const DynamicCompanyDetails = dynamic(() => import('@/features/companies/details/company-details'))
 
 interface CompanyDetailPageProps {
    params: Promise<{

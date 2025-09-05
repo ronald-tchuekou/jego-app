@@ -2,12 +2,10 @@ import { AppSidebar } from '@/components/dashboard/app-sidebar'
 import { SiteHeader } from '@/components/dashboard/site-header'
 import ResetLoginButton from '@/components/modals/logout-modal/reset-login-button'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
-import { AUTH_COOKIE_NAME } from '@/lib/constants'
-import { Auth } from '@/services/auth-service'
+import { getAuth } from '@/lib/helpers/auth-helper'
 import { UserRole } from '@/services/user-service'
 import '@/styles/style.css'
 import { BanIcon } from 'lucide-react'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardLayout({
@@ -15,15 +13,13 @@ export default async function DashboardLayout({
 }: Readonly<{
    children: React.ReactNode
 }>) {
-   const cookieStore = await cookies()
-   const authKey = cookieStore.get(AUTH_COOKIE_NAME)?.value
+   const auth = await getAuth()
 
-   if (!authKey) {
+   if (!auth) {
       return redirect('/auth/login')
    }
 
-   const allowedRoles = [UserRole.ADMIN, UserRole.USER, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT]
-   const auth = JSON.parse(authKey) as Auth
+   const allowedRoles = [UserRole.ADMIN, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT]
 
    if (auth.user.blockedAt) {
       return (
@@ -39,13 +35,29 @@ export default async function DashboardLayout({
       )
    }
 
+   if (auth.user.companyId && auth.user.company?.blockedAt) {
+      return (
+         <div className='flex flex-col items-center justify-center h-screen gap-6'>
+            <BanIcon className='size-32 text-destructive' />
+            <h1 className='text-2xl font-bold'>Votre entreprise a été bloquée</h1>
+            <p className='text-sm text-muted-foreground mb-5 max-w-lg text-center'>
+               Veuillez contacter l&apos;administrateur pour plus d&apos;informations. Ou bien vous vous connecter avec
+               un autre compte entreprise.
+            </p>
+            <ResetLoginButton />
+         </div>
+      )
+   }
+
    if (!allowedRoles.includes(auth.user.role)) {
       return (
          <div className='flex flex-col items-center justify-center h-screen gap-6'>
             <BanIcon className='size-32 text-destructive' />
-            <h1 className='text-2xl font-bold'>Vous n&apos;avez pas accès à cette page</h1>
+            <h1 className='text-2xl font-bold'>
+               Vous ne pouvez pas accéder à cette version de l&apos;application avec ce compte.
+            </h1>
             <p className='text-sm text-muted-foreground mb-5 max-w-lg text-center'>
-               Veuillez contacter l&apos;administrateur pour obtenir un accès
+               Veuillez vous connecter avec autre compte ou contacter l&apos;administrateur pour obtenir un accès
             </p>
             <ResetLoginButton />
          </div>

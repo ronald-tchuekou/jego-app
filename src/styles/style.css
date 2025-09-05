@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -43,10 +44,10 @@
    --radius-lg: var(--radius);
    --radius-xl: calc(var(--radius) + 4px);
    --radius: 0.725rem;
-   --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
+   --tracking-tighter: calc(var(--tracking-normal) - 0.04em);
    --tracking-tight: calc(var(--tracking-normal) - 0.025em);
    --tracking-wide: calc(var(--tracking-normal) + 0.025em);
-   --tracking-wider: calc(var(--tracking-normal) + 0.05em);
+   --tracking-wider: calc(var(--tracking-normal) + 0.04em);
    --tracking-widest: calc(var(--tracking-normal) + 0.1em);
    --tracking-normal: var(--tracking-normal);
    --shadow-2xl: var(--shadow-2xl);
@@ -121,7 +122,7 @@
    --shadow-spread: -4px;
    --shadow-offset-x: 0px;
    --shadow-offset-y: 3.5px;
-   --letter-spacing: 0.05em;
+   --letter-spacing: 0.04em;
    --spacing: 0.25rem;
    --shadow-2xs: 0px 3.5px 10px -4px hsl(0 0% 0% / 0.04);
    --shadow-xs: 0px 3.5px 10px -4px hsl(0 0% 0% / 0.04);
@@ -131,7 +132,7 @@
    --shadow-lg: 0px 3.5px 10px -4px hsl(0 0% 0% / 0.08), 0px 4px 6px -5px hsl(0 0% 0% / 0.08);
    --shadow-xl: 0px 3.5px 10px -4px hsl(0 0% 0% / 0.08), 0px 8px 10px -5px hsl(0 0% 0% / 0.08);
    --shadow-2xl: 0px 3.5px 10px -4px hsl(0 0% 0% / 0.2);
-   --tracking-normal: 0.05em;
+   --tracking-normal: 0.04em;
 }
 
 .dark {
@@ -177,7 +178,7 @@
    --shadow-spread: -4px;
    --shadow-offset-x: 0px;
    --shadow-offset-y: 3.5px;
-   --letter-spacing: 0.05em;
+   --letter-spacing: 0.04em;
    --spacing: 0.25rem;
    --shadow-2xs: 0px 3.5px 10px -4px hsl(0 0% 0% / 0.04);
    --shadow-xs: 0px 3.5px 10px -4px hsl(0 0% 0% / 0.04);

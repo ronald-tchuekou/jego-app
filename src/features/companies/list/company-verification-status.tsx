@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { companyKey } from '@/lib/query-kye'
 import { CompanyModel } from '@/services/company-service'
 import { useQueryClient } from '@tanstack/react-query'
@@ -20,7 +20,7 @@ const CompanyVerificationStatus = ({ company }: Props) => {
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: companyKey.all })
          toast.success(
-            !company.verifiedAt ? 'Entreprise approuvée avec succès' : 'Entreprise non approuvée avec succès'
+            !company.verifiedAt ? 'Entreprise approuvée avec succès' : 'Entreprise non approuvée avec succès',
          )
       },
       onError: ({ error }) => {

@@ -1,16 +1,10 @@
-import LoaderContent from '@/components/base/loader-content'
 import SearchInput from '@/components/base/search-input'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
 import CompanyStatusFilter from '@/features/companies/list/company-status-filter'
 import dynamic from 'next/dynamic'
 
-const DynamicCompaniesList = dynamic(() => import('@/features/companies/list/companies-list'), {
-   loading: () => <LoaderContent />,
-})
-
-const DynamicCategoryFilter = dynamic(() => import('@/features/companies/list/category-filter'), {
-   loading: () => <LoaderContent />,
-})
+const DynamicCompaniesList = dynamic(() => import('@/features/companies/list/companies-list'))
+const DynamicCategoryFilter = dynamic(() => import('@/features/companies/list/category-filter'))
 
 export default function CompaniesPage() {
    return (

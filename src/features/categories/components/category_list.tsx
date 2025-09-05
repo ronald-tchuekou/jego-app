@@ -12,7 +12,7 @@ import { useQueryState } from 'nuqs'
 import { useRef } from 'react'
 import { getCategoriesAction } from '../actions'
 import DeleteCategoryButton from './delete-category-button'
-import EditCategoryModal, { EditCategoryModalRef } from './edit-category-modal/idnex'
+import EditCategoryModal, { EditCategoryModalRef } from './edit-category-modal'
 
 const CategoryList = () => {
    const editCategoryModalRef = useRef<EditCategoryModalRef>(null)
@@ -71,7 +71,7 @@ const CategoryList = () => {
                <div key={category.id} className='flex-1 bg-card border rounded-md p-4 relative'>
                   <div className='flex items-center space-x-2'>
                      <AwardIcon className='size-5 text-primary' />
-                     <Label className='font-medium line-clamp-1'>{category.name}</Label>
+                     <Label className='font-bold line-clamp-1'>{category.name}</Label>
                   </div>
                   <p className='text-sm text-muted-foreground line-clamp-2 mt-1'>{category.description}</p>
                   <div className={'absolute top-1 right-1 bg-card flex'}>

@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { postKey } from "@/lib/query-kye"
-import { useQuery } from "@tanstack/react-query"
-import { getPostCountAction } from "../actions"
+import { postKey } from '@/lib/query-kye'
+import { useQuery } from '@tanstack/react-query'
+import { getPostCountAction } from '../actions'
 
 export default function useGetPostCount() {
    const { data, isLoading } = useQuery({

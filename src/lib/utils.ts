@@ -55,7 +55,7 @@ export function formatDate(date: string | null) {
    if (!date) return 'Jamais'
    return Intl.DateTimeFormat('fr-FR', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
    }).format(new Date(date))
 }
@@ -80,4 +80,11 @@ export function getPostTypeLabel(type: PostType) {
       default:
          return '- - -'
    }
+}
+
+export function getUserRoleLabel(role?: UserRole | null) {
+   if (role === UserRole.ADMIN) return 'Administrateur'
+   if (role === UserRole.COMPANY_ADMIN) return 'Administrateur Entreprise'
+   if (role === UserRole.COMPANY_AGENT) return 'Agent Entreprise'
+   return 'Utilisateur'
 }

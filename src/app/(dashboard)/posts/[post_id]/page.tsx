@@ -1,10 +1,7 @@
-import LoaderContent from '@/components/base/loader-content'
 import { DashboardTitle } from '@/components/dashboard/dashboard-title'
 import dynamic from 'next/dynamic'
 
-const DynamicPostDetails = dynamic(() => import('@/features/posts/details/post-details'), {
-   loading: () => <LoaderContent />,
-})
+const DynamicPostDetails = dynamic(() => import('@/features/posts/details/post-details'))
 
 export default async function Page({ params }: { params: Promise<{ post_id: string }> }) {
    const { post_id } = await params

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import ChartLoader from '@/components/base/chart-loader'
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'

@@ -33,15 +33,17 @@ export const getCompanyCountAction = authenticatedActionClient
 export const getPostCountAction = authenticatedActionClient
    .metadata({ actionName: 'getPostCount' })
    .action(async ({ ctx }) => {
-      const result = await PostService.count(ctx.token)
+      const companyId = ctx.user.companyId
+      const result = await PostService.count(ctx.token, companyId || '')
 
       return {
          count: result,
       }
    })
 
-export const getJobCountAction = authenticatedActionClient.metadata({ actionName: 'getJobCount' }).action(async () => {
-   const result = await JobService.count()
+export const getJobCountAction = authenticatedActionClient.metadata({ actionName: 'getJobCount' }).action(async ({ ctx }) => {
+   const companyId = ctx.user.companyId
+   const result = await JobService.count(companyId || '')
 
    return {
       count: result,
@@ -132,4 +134,3 @@ export const getJobChartDataAction = authenticatedActionClient
 
       return result
    })
-   

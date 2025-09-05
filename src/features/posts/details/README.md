@@ -5,9 +5,12 @@ This folder contains components for displaying detailed views of posts for both 
 ## Components
 
 ### `PostDetails`
-The main wrapper component that automatically determines whether to show the user or admin view based on the current user's role.
+
+The main wrapper component that automatically determines whether to show the user or admin view based on the current
+user's role.
 
 **Props:**
+
 - `post: PostModel | null` - The post to display
 - `loading?: boolean` - Loading state
 - `error?: string` - Error message to display
@@ -16,9 +19,11 @@ The main wrapper component that automatically determines whether to show the use
 - `onStatusChange?: (status: string) => void` - Callback for status changes (admin only)
 
 ### `PostDetailsUser`
+
 User-focused view that displays post content in a clean, readable format.
 
 **Features:**
+
 - Responsive design optimized for mobile and desktop
 - Clean typography with proper content spacing
 - Author information section
@@ -26,9 +31,11 @@ User-focused view that displays post content in a clean, readable format.
 - Image display with loading states
 
 ### `PostDetailsAdmin`
+
 Admin view with additional management features and detailed metadata.
 
 **Features:**
+
 - All features from user view
 - Admin action panel with status management
 - Detailed user information sidebar
@@ -37,9 +44,11 @@ Admin view with additional management features and detailed metadata.
 - Edit, delete, and status change actions
 
 ### `PostDetailsPage`
+
 Complete page component that handles all the business logic for post details.
 
 **Features:**
+
 - Authentication checks
 - Permission validation
 - Action handling (edit, delete, status change)
@@ -48,14 +57,16 @@ Complete page component that handles all the business logic for post details.
 - Navigation management
 
 ### `useCanViewPost`
+
 Hook to determine if the current user can view a specific post based on its status and user permissions.
 
 **Rules:**
+
 - Published posts: visible to everyone
 - Draft/Archived posts: only visible to:
-  - The post author
-  - Administrators
-  - Company agents (for posts from their company)
+   - The post author
+   - Administrators
+   - Company agents (for posts from their company)
 
 ## Usage Examples
 
@@ -66,16 +77,16 @@ import { PostDetailsPage } from '@/features/posts/details'
 import PostService from '@/services/post-service'
 
 export default async function PostPage({ params }: { params: { id: string } }) {
-  let post = null
-  let error = null
+   let post = null
+   let error = null
 
-  try {
-    post = await PostService.getById(params.id)
-  } catch (err) {
-    error = err instanceof Error ? err.message : 'Failed to load post'
-  }
+   try {
+      post = await PostService.getById(params.id)
+   } catch (err) {
+      error = err instanceof Error ? err.message : 'Failed to load post'
+   }
 
-  return <PostDetailsPage post={post} error={error} />
+   return <PostDetailsPage post={post} error={error} />
 }
 ```
 
@@ -86,28 +97,21 @@ import { PostDetails } from '@/features/posts/details'
 import { useRouter } from 'next/navigation'
 
 function MyPostComponent({ post }: { post: PostModel }) {
-  const router = useRouter()
+   const router = useRouter()
 
-  const handleEdit = () => {
-    router.push(`/posts/edit/${post.id}`)
-  }
+   const handleEdit = () => {
+      router.push(`/posts/edit/${post.id}`)
+   }
 
-  const handleDelete = () => {
-    // Handle delete logic
-  }
+   const handleDelete = () => {
+      // Handle delete logic
+   }
 
-  const handleStatusChange = (status: string) => {
-    // Handle status change logic
-  }
+   const handleStatusChange = (status: string) => {
+      // Handle status change logic
+   }
 
-  return (
-    <PostDetails
-      post={post}
-      onEdit={handleEdit}
-      onDelete={handleDelete}
-      onStatusChange={handleStatusChange}
-    />
-  )
+   return <PostDetails post={post} onEdit={handleEdit} onDelete={handleDelete} onStatusChange={handleStatusChange} />
 }
 ```
 
@@ -120,22 +124,22 @@ import { deletePostAction, updatePostStatusAction } from '@/features/posts/detai
 import { useAction } from 'next-safe-action/hooks'
 
 function usePostActions(postId: string) {
-  const { execute: deletePost } = useAction(deletePostAction, {
-    onSuccess: () => {
-      // Handle success
-    }
-  })
+   const { execute: deletePost } = useAction(deletePostAction, {
+      onSuccess: () => {
+         // Handle success
+      },
+   })
 
-  const { execute: updateStatus } = useAction(updatePostStatusAction, {
-    onSuccess: () => {
-      // Handle success
-    }
-  })
+   const { execute: updateStatus } = useAction(updatePostStatusAction, {
+      onSuccess: () => {
+         // Handle success
+      },
+   })
 
-  return {
-    deletePost: () => deletePost({ postId }),
-    updateStatus: (status: string) => updateStatus({ postId, status })
-  }
+   return {
+      deletePost: () => deletePost({ postId }),
+      updateStatus: (status: string) => updateStatus({ postId, status }),
+   }
 }
 ```
 

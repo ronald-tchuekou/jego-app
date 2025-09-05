@@ -11,13 +11,7 @@ interface RatingProps {
    className?: string
 }
 
-export function Rating({
-   value,
-   maxRating = 5,
-   size = 'md',
-   showValue = false,
-   className,
-}: RatingProps) {
+export function Rating({ value, maxRating = 5, size = 'md', showValue = false, className }: RatingProps) {
    const clampedValue = Math.max(0, Math.min(maxRating, value))
 
    const sizeClasses = {
@@ -64,9 +58,7 @@ export function Rating({
          </div>
 
          {showValue && (
-            <span
-               className={cn('font-medium transition-colors duration-300', textSizeClasses[size])}
-            >
+            <span className={cn('font-medium transition-colors duration-300', textSizeClasses[size])}>
                {clampedValue.toFixed(1)}/5
             </span>
          )}

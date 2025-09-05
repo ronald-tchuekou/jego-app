@@ -31,7 +31,7 @@ export type CompanyModel = {
    verifiedAt: string | null
    blockedAt: string | null
    location: { lat: number; lng: number } | null
-   daily_program: Record<DAY_FOR_PROGRAM, { open: string; close: string }> | null
+   dailyProgram: Record<DAY_FOR_PROGRAM, { open?: string; close?: string }> | null
    createdAt: string
    updatedAt: string
    posts: PostModel[]
@@ -75,7 +75,7 @@ const CompanyService = {
       if (error) throw new Error(error)
       return data?.data ?? null
    },
-   async create(body: CompanyModel) {
+   async create(body: Partial<CompanyModel>) {
       const { data, error } = await fetchHelper<{ data: CompanyModel }>('/companies', {
          method: 'POST',
          body: JSON.stringify(body),
@@ -86,7 +86,7 @@ const CompanyService = {
       if (error) throw new Error(error)
       return data?.data ?? null
    },
-   async update(id: string, body: CompanyModel, token: string) {
+   async update(id: string, body: Partial<CompanyModel>, token: string) {
       const { data, error } = await fetchHelper<{ data: CompanyModel }>(`/companies/${id}`, {
          method: 'PUT',
          body: JSON.stringify(body),

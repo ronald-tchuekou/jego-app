@@ -1,12 +1,13 @@
-"use client"
+'use client'
 
-import { UserRole } from "@/services/user-service"
-import { useAuth } from "../providers/auth"
+import { UserRole } from '@/services/user-service'
+import { useAuth } from '../providers/auth'
 
-export default function ContentGuard({children, role}: {children: React.ReactNode, role: UserRole}) {
-   const {auth} = useAuth()
+export default function ContentGuard({ children, roles }: { children: React.ReactNode; roles: UserRole[] }) {
+   const { auth } = useAuth()
+   const role = auth?.user?.role
 
-   if (auth?.user?.role !== role) return null
+   if (!role || (role && !roles.includes(role))) return null
 
    return children
 }
