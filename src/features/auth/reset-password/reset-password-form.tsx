@@ -43,6 +43,7 @@ export default function ResetPasswordForm() {
 
    return (
       <Card>
+         <div className='h-1' />
          <CardHeader className='text-center'>
             <CardTitle>Créer un nouveau mot de passe</CardTitle>
             <CardDescription>Assurez-vous que votre nouveau mot de passe est fort et sécurisé</CardDescription>

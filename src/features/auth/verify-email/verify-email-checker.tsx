@@ -33,16 +33,17 @@ export default function VerifyEmailChecker({ token, userId }: Props) {
 
    return (
       <Card>
+         <div className='h-1' />
          <CardHeader className='text-center'>
             <CardTitle className='text-xl'>Vérification de l&apos;e-mail</CardTitle>
             <CardDescription>
                {isPending
                   ? 'Vérification de votre adresse e-mail en cours...'
                   : data?.success
-                    ? 'Vérification réussie'
-                    : error
-                      ? 'Erreur de vérification'
-                      : 'Lien invalide'}
+                  ? 'Vérification réussie'
+                  : error
+                  ? 'Erreur de vérification'
+                  : 'Lien invalide'}
             </CardDescription>
          </CardHeader>
 

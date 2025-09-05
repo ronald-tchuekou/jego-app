@@ -1,12 +1,14 @@
 'use client'
 
 import UserAvatar from '@/components/base/user-avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { TableCell, TableRow } from '@/components/ui/table'
+import { DEFAULT_COMPANY_IMAGE } from '@/lib/constants'
+import env from '@/lib/env/client'
 import { cn } from '@/lib/utils'
 import { CompanyAppointmentRequestModel } from '@/services/company-appointment-request-service'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import Image from 'next/image'
 import AppointmentStatusLabel from '../components/appointment-status-label'
 import AppointmentActions from './appointment-actions'
 
@@ -18,6 +20,11 @@ type Props = {
 export default function AppointmentItem({ appointment, isAdmin }: Props) {
    const formattedDate = format(new Date(appointment.date), 'dd MMM yyyy', { locale: fr })
    const formattedCreatedAt = format(new Date(appointment.createdAt), 'dd MMM yyyy', { locale: fr })
+
+   const initials = appointment.company?.name.charAt(0).toUpperCase()
+   const companyLogo = appointment.company?.logo
+      ? `${env.NEXT_PUBLIC_API_URL}/v1/${appointment.company?.logo}`
+      : DEFAULT_COMPANY_IMAGE
 
    return (
       <TableRow className={cn(!appointment.isRead && 'bg-muted/30')}>
@@ -37,23 +44,14 @@ export default function AppointmentItem({ appointment, isAdmin }: Props) {
             <TableCell>
                <div className='flex items-center gap-3'>
                   <div className='size-10 rounded-lg overflow-hidden bg-muted flex items-center justify-center'>
-                     {appointment.company?.logo ? (
-                        <Image
-                           src={appointment.company.logo}
-                           alt={appointment.company.name}
-                           className='size-full object-cover'
-                           width={48}
-                           height={48}
-                        />
-                     ) : (
-                        <span className='text-xs font-medium'>
-                           {appointment.company?.name?.charAt(0).toUpperCase()}
-                        </span>
-                     )}
+                     <Avatar className='size-10'>
+                        <AvatarImage src={companyLogo} alt={appointment.company?.name} />
+                        <AvatarFallback className='text-xs'>{initials}</AvatarFallback>
+                     </Avatar>
                   </div>
                   <div>
                      <p className='font-medium text-sm'>{appointment.company?.name}</p>
-                     <p className='text-xs text-muted-foreground'>{appointment.company?.city}</p>
+                     <p className='text-xs text-muted-foreground'>{appointment.company?.email}</p>
                   </div>
                </div>
             </TableCell>

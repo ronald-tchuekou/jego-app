@@ -19,7 +19,7 @@ export default async function DashboardLayout({
       return redirect('/auth/login')
    }
 
-   const allowedRoles = [UserRole.ADMIN, UserRole.USER, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT]
+   const allowedRoles = [UserRole.ADMIN, UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT]
 
    if (auth.user.blockedAt) {
       return (
@@ -53,9 +53,11 @@ export default async function DashboardLayout({
       return (
          <div className='flex flex-col items-center justify-center h-screen gap-6'>
             <BanIcon className='size-32 text-destructive' />
-            <h1 className='text-2xl font-bold'>Vous n&apos;avez pas accès à cette page</h1>
+            <h1 className='text-2xl font-bold'>
+               Vous ne pouvez pas accéder à cette version de l&apos;application avec ce compte.
+            </h1>
             <p className='text-sm text-muted-foreground mb-5 max-w-lg text-center'>
-               Veuillez contacter l&apos;administrateur pour obtenir un accès
+               Veuillez vous connecter avec autre compte ou contacter l&apos;administrateur pour obtenir un accès
             </p>
             <ResetLoginButton />
          </div>

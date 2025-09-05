@@ -41,6 +41,7 @@ export default function ForgotPassForm() {
 
    return (
       <Card>
+         <div className='h-1' />
          {isCompleted ? (
             <>
                <CardHeader className='text-center'>
