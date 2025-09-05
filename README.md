@@ -14,7 +14,7 @@
 
 ## 🚀 Overview
 
-Jego App is a comprehensive Next.js application designed for managing job postings, company appointments, and business operations. The platform supports multiple user roles including administrators, company admins, company agents, and regular users, each with specific permissions and dashboards.
+Jego App is a comprehensive Next.js application designed for managing job postings, company appointments, and business operations. The platform supports multiple user roles including administrators, company admins and company agents, each with specific permissions and dashboards.
 
 ## 🛠 Tech Stack
 
@@ -64,11 +64,6 @@ Jego App is a comprehensive Next.js application designed for managing job postin
   - Set location and map coordinates
   - Configure business hours
   - Upload company logo and images
-
-### For Regular Users
-- **Profile Management**: Update personal information and avatar
-- **Job Applications**: Apply to job postings
-- **Appointment Booking**: Request appointments with companies
 
 ### Common Features
 - **Authentication**: Secure login, registration, and password recovery
@@ -163,24 +158,17 @@ The application implements a role-based access control (RBAC) system with four d
    - View appointments and applications
    - Cannot modify company settings
 
-4. **USER** (`user`)
-   - Basic user features
-   - Profile management
-   - Job applications
-
 ### Authentication Flow
 
-1. **Registration**: Users register with email and password
-2. **Email Verification**: Verification link sent to email
-3. **Login**: JWT-based authentication with 14-day cookie expiration
-4. **Password Recovery**: Reset password via email link
-5. **Session Management**: Automatic token refresh and validation
+1. **Login**: JWT-based authentication with 14-day cookie expiration
+2. **Password Recovery**: Reset password via email link
+3. **Session Management**: Automatic token refresh and validation
 
 ## 🔧 Environment Setup
 
 ### Required Environment Variables
 
-Create a `.env.local` file based on `.enxample.env`:
+Create a `.env` file based on `.enxample.env`:
 
 ```env
 # Application Environment
@@ -214,16 +202,16 @@ The application uses `@t3-oss/env-nextjs` for runtime environment validation:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/jego-app.git
+git clone https://github.com/ronald-tchuekou/jego-app.git
 cd jego-app
 
 # Install dependencies
 pnpm install
 
 # Copy environment variables
-cp .enxample.env .env.local
+cp .enxample.env .env
 
-# Update .env.local with your configuration
+# Update .env with your configuration
 ```
 
 ### Running the Development Server
@@ -359,7 +347,7 @@ Size: 10Gi
 ### Post-Deployment Checklist
 
 - [ ] Verify all environment variables are set correctly
-- [ ] Test authentication flow (login, register, password reset)
+- [ ] Test authentication flow (login, password reset)
 - [ ] Check Mapbox integration for location features
 - [ ] Verify file uploads are working
 - [ ] Test email notifications
@@ -376,8 +364,6 @@ The application connects to a backend API at the URL specified in `NEXT_PUBLIC_A
 ```
 /auth
   /login            - POST - User authentication
-  /register         - POST - User registration
-  /verify-email     - POST - Email verification
   /logout           - POST - User logout
   /forgot-password  - POST - Password recovery
   /reset-password   - POST - Password reset
