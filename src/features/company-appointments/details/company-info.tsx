@@ -1,9 +1,13 @@
 'use client'
 
+import { useAuth } from '@/components/providers/auth'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { DEFAULT_COMPANY_IMAGE } from '@/lib/constants'
+import env from '@/lib/env/client'
 import { CompanyAppointmentRequestModel } from '@/services/company-appointment-request-service'
-import { Building2, Globe, MapPin, Phone } from 'lucide-react'
-import Image from 'next/image'
+import { UserRole } from '@/services/user-service'
+import { Globe, MapPin, Phone } from 'lucide-react'
 import Link from 'next/link'
 
 type Props = {
@@ -12,6 +16,15 @@ type Props = {
 
 export default function CompanyInfo({ appointment }: Props) {
    const { company } = appointment
+   const { auth } = useAuth()
+   const isAdmin = auth?.user?.role === UserRole.ADMIN
+
+   const initials = appointment.company?.name.charAt(0).toUpperCase()
+   const companyLogo = appointment.company?.logo
+      ? `${env.NEXT_PUBLIC_API_URL}/v1/${appointment.company?.logo}`
+      : DEFAULT_COMPANY_IMAGE
+
+   if (!isAdmin) return null
 
    return (
       <Card>
@@ -21,17 +34,10 @@ export default function CompanyInfo({ appointment }: Props) {
          <CardContent className='space-y-4'>
             <div className='flex items-center gap-3'>
                <div className='size-12 rounded-lg overflow-hidden bg-muted flex items-center justify-center'>
-                  {company?.logo ? (
-                     <Image
-                        src={company.logo}
-                        alt={company.name}
-                        className='size-full object-cover'
-                        width={48}
-                        height={48}
-                     />
-                  ) : (
-                     <Building2 className='size-6 text-muted-foreground' />
-                  )}
+                  <Avatar className='size-10'>
+                     <AvatarImage src={companyLogo} alt={appointment.company?.name} />
+                     <AvatarFallback className='text-xs'>{initials}</AvatarFallback>
+                  </Avatar>
                </div>
                <div>
                   <p className='font-medium'>{company?.name}</p>

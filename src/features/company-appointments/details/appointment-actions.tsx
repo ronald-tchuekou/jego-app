@@ -23,10 +23,7 @@ export default function AppointmentActions({ appointment }: Props) {
    const deleteDialogRef = useRef<AlertDialogDeleteAppointmentRef>(null)
    const updateStatusDialogRef = useRef<AlertDialogUpdateStatusAppointmentRef>(null)
 
-   const canManageAppointment = 
-      user?.role === UserRole.ADMIN || 
-      user?.role === UserRole.COMPANY_ADMIN || 
-      user?.role === UserRole.COMPANY_AGENT
+   const canManageAppointment = user?.role === UserRole.COMPANY_ADMIN || user?.role === UserRole.COMPANY_AGENT
 
    if (!canManageAppointment) return null
 
