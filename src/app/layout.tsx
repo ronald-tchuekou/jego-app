@@ -4,12 +4,12 @@ import { getAuth } from '@/lib/helpers/auth-helper'
 import '@/styles/style.css'
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
-import { Roboto } from 'next/font/google'
+// import { Roboto } from 'next/font/google'
 
-const roboto = Roboto({
-   subsets: ['latin'],
-   weight: ['400', '500', '600', '700'],
-})
+// const roboto = Roboto({
+//    subsets: ['latin'],
+//    weight: ['400', '500', '600', '700'],
+// })
 
 export const metadata: Metadata = {
    title: {
@@ -30,7 +30,7 @@ export default async function RootLayout({
 
    return (
       <html lang='fr'>
-         <body className={`antialiased ${roboto.className}`}>
+         <body className={`antialiased`}>
             <AppProviders auth={auth}>
                {children}
                <Toaster richColors position='top-center' duration={6000} />

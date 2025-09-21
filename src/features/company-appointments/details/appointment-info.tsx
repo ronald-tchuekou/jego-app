@@ -38,7 +38,7 @@ export default function AppointmentInfo({ appointment }: Props) {
 
             <div className='space-y-2'>
                <h4 className='text-sm font-medium'>Message</h4>
-               <div className='rounded-lg bg-muted p-4'>
+               <div className='py-4'>
                   <ViewAsMarkdown markdown={appointment.content} />
                </div>
             </div>
