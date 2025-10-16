@@ -1,6 +1,6 @@
 import { PostType } from '@/services/post-service'
 import { UserRole } from '@/services/user-service'
-import { clsx, type ClassValue } from 'clsx'
+import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
@@ -87,4 +87,17 @@ export function getUserRoleLabel(role?: UserRole | null) {
    if (role === UserRole.COMPANY_ADMIN) return 'Administrateur Entreprise'
    if (role === UserRole.COMPANY_AGENT) return 'Agent Entreprise'
    return 'Utilisateur'
+}
+
+export function fmtMsgTime(d: string | Date) {
+   const t = new Date(d).getTime()
+   const n = Date.now()
+   const s = Math.floor((n - t) / 1000)
+   if (s < 60) return 'À l’instant'
+   if (s < 3600) return `Y'a ${Math.floor(s / 60)} min`
+   if (s < 86400) return `y'a ${Math.floor(s / 3600)} h`
+   if (s < 172800) return 'Hier'
+   if (s < 2592000) return `Y'a ${Math.floor(s / 86400)} js`
+   const date = new Date(d)
+   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
 }

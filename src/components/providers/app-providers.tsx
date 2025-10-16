@@ -4,6 +4,7 @@ import { JSX, ReactNode } from 'react'
 import { AuthProvider } from './auth'
 import QueryProviders from './query-provider'
 import { ThemeProvider } from './theme-provider'
+import { TransmitProvider } from '@/components/providers/transmit-provider'
 
 type Props = { children: ReactNode; auth: Auth | null }
 type Provider = (p: Props) => JSX.Element
@@ -27,4 +28,4 @@ export const composeProviders = (...p: Provider[]) =>
    )
 
 // USE CASE
-export const AppProviders = composeProviders(ThemeProvider, QueryProviders, AuthProvider, NuqsAdapter)
+export const AppProviders = composeProviders(ThemeProvider, QueryProviders, AuthProvider, NuqsAdapter, TransmitProvider)
