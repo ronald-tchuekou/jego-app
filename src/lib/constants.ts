@@ -2,6 +2,7 @@ import { NavMainItem } from '@/components/dashboard/nav-main'
 import { PostType } from '@/services/post-service'
 import { UserRole } from '@/services/user-service'
 import {
+   IconBrandHipchat,
    IconBriefcase,
    IconCalendar,
    IconChartBar,
@@ -27,6 +28,12 @@ export const ROUTES: NavMainItem[] = [
       url: '/appointments',
       icon: IconCalendar,
       allowedRoles: [UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT, UserRole.ADMIN],
+   },
+   {
+      title: 'Chat',
+      url: '/chat',
+      icon: IconBrandHipchat,
+      allowedRoles: [UserRole.COMPANY_ADMIN, UserRole.COMPANY_AGENT],
    },
    {
       title: 'Annonces',
