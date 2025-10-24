@@ -1,25 +1,28 @@
 'use client'
 
+import { useAuth } from '@/components/providers/auth'
 import { companyKey } from '@/lib/query-kye'
+import JobApplicationService from '@/services/job-application-service'
 import { useQuery } from '@tanstack/react-query'
-import { getApplicationCountAction } from '../actions'
 
 export default function useGetApplicationCount() {
+   const { auth } = useAuth()
+
    const { data, isLoading } = useQuery({
       queryKey: companyKey.list({ label: 'application-count' }),
       async queryFn() {
-         const { data, serverError, validationErrors } = await getApplicationCountAction()
-
-         if (serverError) {
-            throw new Error(serverError)
+         if (!auth?.token) {
+            throw new Error('Not authenticated')
          }
 
-         if (validationErrors?.formErrors) {
-            throw new Error(validationErrors.formErrors.join(', '))
+         if (!auth.user?.companyId) {
+            throw new Error('Company ID is required')
          }
 
-         return data?.count || 0
+         const result = await JobApplicationService.getTotal({ companyId: auth.user.companyId }, auth.token)
+         return result?.count || 0
       },
+      enabled: !!auth?.token && !!auth.user?.companyId,
    })
 
    return { data, isLoading }

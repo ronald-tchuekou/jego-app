@@ -3,15 +3,19 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import CustomPagination from '@/components/dashboard/custom-pagination'
+import { useAuth } from '@/components/providers/auth'
 import { postKey } from '@/lib/query-kye'
+import PostService from '@/services/post-service'
+import { UserRole } from '@/services/user-service'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { getPostsAction } from '../actions'
 import PostItem from './post-item'
 
 function PostsList() {
+   const { auth } = useAuth()
+
    // Pagination and filters state
    const [type] = useQueryState('type')
    const [status] = useQueryState('status')
@@ -32,17 +36,34 @@ function PostsList() {
          type: type || undefined,
          status: status || undefined,
       }),
-      async queryFn({ queryKey }) {
-         const filters = JSON.parse(queryKey[2].filters)
-         const result = await getPostsAction(filters)
-
-         if (result?.serverError) {
-            throw new Error(result.serverError)
+      async queryFn() {
+         const filters: FilterQuery & {
+            category?: string
+            type?: string
+            status?: string
+            companyId?: string
+         } = {
+            page: page ? parseInt(page) : 1,
+            limit: limit ? parseInt(limit) : 20,
          }
 
-         return result?.data
+         if (search) filters.search = search
+         if (type && type !== 'all') filters.type = type
+         if (status && status !== 'all') filters.status = status
+
+         if (
+            auth?.user &&
+            (auth.user.role === UserRole.COMPANY_ADMIN || auth.user.role === UserRole.COMPANY_AGENT) &&
+            auth.user.companyId
+         ) {
+            filters.companyId = auth.user.companyId
+         }
+
+         const result = await PostService.getAll(filters)
+         return result
       },
       staleTime: 5 * 60 * 1000, // 5 minutes
+      enabled: !!auth,
    })
 
    const posts = postsData?.data || []

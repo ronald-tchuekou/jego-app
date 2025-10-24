@@ -1,22 +1,10 @@
 'use server'
 
-import { actionClient, authenticatedActionClient } from '@/lib/safe-action'
+import { authenticatedActionClient } from '@/lib/safe-action'
 import { getSlug } from '@/lib/utils'
 import CategoryService from '@/services/category-service'
 import { z } from 'zod'
 
-export const getCategoriesAction = actionClient
-   .metadata({ actionName: 'get-categories' })
-   .inputSchema(
-      z.object({
-         search: z.string().optional(),
-         limit: z.number().optional(),
-         page: z.number().optional(),
-      }),
-   )
-   .action(async ({ parsedInput }) => {
-      return CategoryService.getAll(parsedInput)
-   })
 
 export const deleteCategoryAction = authenticatedActionClient
    .metadata({ actionName: 'delete-category' })

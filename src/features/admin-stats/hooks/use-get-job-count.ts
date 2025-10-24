@@ -1,25 +1,24 @@
 'use client'
 
+import { useAuth } from '@/components/providers/auth'
 import { jobKey } from '@/lib/query-kye'
+import JobService from '@/services/job-service'
 import { useQuery } from '@tanstack/react-query'
-import { getJobCountAction } from '../actions'
 
 export default function useGetJobCount() {
+   const { auth } = useAuth()
+
    const { data, isLoading } = useQuery({
       queryKey: jobKey.list({ label: 'job-count' }),
       async queryFn() {
-         const { data, serverError, validationErrors } = await getJobCountAction()
-
-         if (serverError) {
-            throw new Error(serverError)
+         if (!auth?.user?.companyId) {
+            throw new Error('Company ID not found')
          }
 
-         if (validationErrors?.formErrors) {
-            throw new Error(validationErrors.formErrors.join(', '))
-         }
-
-         return data?.count || 0
+         const count = await JobService.count(auth.user.companyId)
+         return count || 0
       },
+      enabled: !!auth?.user?.companyId,
    })
 
    return { data, isLoading }

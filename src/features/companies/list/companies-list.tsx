@@ -5,11 +5,11 @@ import LoaderContent from '@/components/base/loader-content'
 import CustomPagination from '@/components/dashboard/custom-pagination'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { companyKey } from '@/lib/query-kye'
+import CompanyService from '@/services/company-service'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { getCompaniesAction } from '../actions'
 import CompanyItem from './company-item'
 
 const COLUMNS = [
@@ -44,15 +44,23 @@ export default function CompaniesList() {
          categoryId: categoryId || undefined,
          status: status ? (status === 'active' ? 'active' : 'blocked') : undefined,
       }),
-      async queryFn({ queryKey }) {
-         const filters = JSON.parse(queryKey[2].filters)
-         const result = await getCompaniesAction(filters)
-
-         if (result?.serverError) {
-            throw new Error(result.serverError)
+      async queryFn() {
+         const filters: FilterQuery & {
+            categoryId?: string
+            status?: 'active' | 'blocked'
+         } = {
+            page: page ? parseInt(page) : 1,
+            limit: limit ? parseInt(limit) : 10,
          }
 
-         return result?.data
+         if (search) filters.search = search
+         if (categoryId && categoryId !== 'all') filters.categoryId = categoryId
+         if (status && status !== 'all') {
+            filters.status = status === 'blocked' ? 'blocked' : 'active'
+         }
+
+         const result = await CompanyService.getAll(filters)
+         return result
       },
       staleTime: 5 * 60 * 1000, // 5 minutes
    })
