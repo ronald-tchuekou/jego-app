@@ -1,6 +1,7 @@
 'use client'
 
-import { ImageWithLoading } from '@/components/base/image-with-loading'
+import PostImage from '@/components/base/post-image'
+import PostVideo from '@/components/base/post-video'
 import UserAvatar from '@/components/base/user-avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -20,6 +21,10 @@ type Post = {
 
 export function PostDetailsAdmin({ post }: Post) {
    const deletePostModalRef = useRef<{ open: VoidFunction }>(null)
+
+   const mediaType = post.mediaType
+   const medias = post.medias
+
    const getRoleColor = (role: string) => {
       switch (role) {
          case 'admin':
@@ -102,17 +107,13 @@ export function PostDetailsAdmin({ post }: Post) {
                   </CardHeader>
 
                   {/* Image Section */}
-                  {!!post.image && (
+                  {medias.length > 0 && (
                      <CardContent className='pt-0'>
-                        <div className='relative aspect-video w-full overflow-hidden rounded-lg border'>
-                           <ImageWithLoading
-                              src={post.image}
-                              alt={post.title}
-                              fill
-                              className='object-contain bg-accent'
-                              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw'
-                           />
-                        </div>
+                        {/* For images */}
+                        {mediaType === 'image' && <PostImage images={medias} />}
+
+                        {/* For videos */}
+                        {mediaType === 'video' && <PostVideo videoPaths={medias} />}
                      </CardContent>
                   )}
 

@@ -1,19 +1,21 @@
 'use client'
 
-import { IconInput } from '@/components/base/icon-input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
-import FileUploader from '@/features/posts/edit-form/upload-post-image'
-import { cn } from '@/lib/utils'
+import { FileType } from '@/lib/helper-types'
+import { cn, compactNumber, MAX_FILE_SIZE } from '@/lib/utils'
 import { PostModel, PostType } from '@/services/post-service'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FileText, LoaderIcon, TagIcon } from 'lucide-react'
+import { LoaderIcon, TagIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { createPostFormSchema, defaultCreatePostFormValue, type CreatePostFormSchema } from './schema'
+import SelectImage, { SelectImageRef } from './select-image'
 import useEditPost from './use-edit-post'
 
 type Props = {
@@ -21,6 +23,8 @@ type Props = {
 }
 
 export default function CreatePostForm({ post }: Props) {
+   const selectImageRef = useRef<SelectImageRef>(null)
+
    const { createPost, updatePost, isLoading } = useEditPost()
    const router = useRouter()
 
@@ -31,7 +35,25 @@ export default function CreatePostForm({ post }: Props) {
               title: post.title,
               description: post.description,
               type: post.type,
-              image: post.image || undefined,
+              mediaType: post.mediaType || undefined,
+              medias: post.medias
+                 ? post.medias.map((media) => ({
+                      name: media.name,
+                      type: media.type,
+                      url: media.url,
+                      size: media.size,
+                      thumbnailUrl: media.thumbnailUrl || undefined,
+                      alt: media.alt || undefined,
+                      metadata: media.metadata
+                         ? {
+                              width: media.metadata.width || undefined,
+                              height: media.metadata.height || undefined,
+                              duration: media.metadata.duration || undefined,
+                              aspectRatio: media.metadata.aspectRatio || undefined,
+                           }
+                         : undefined,
+                   }))
+                 : undefined,
               category: post.category,
            }
          : defaultCreatePostFormValue,
@@ -45,27 +67,14 @@ export default function CreatePostForm({ post }: Props) {
       }
    })
 
+   const mediaType = form.watch('mediaType')
+
    return (
       <Card>
          <CardContent>
             <Form {...form}>
                <form onSubmit={onSubmit} className='space-y-10'>
                   <div className='grid gap-4'>
-                     <FormField
-                        control={form.control}
-                        name='image'
-                        render={({ field }) => (
-                           <FormItem>
-                              <FormLabel className='text-sm font-medium'>
-                                 Image à joindre sur le post (maximum une image, facultatif)
-                              </FormLabel>
-                              <FormControl>
-                                 <FileUploader value={field.value} onValueChange={field.onChange} />
-                              </FormControl>
-                           </FormItem>
-                        )}
-                     />
-
                      <FormField
                         control={form.control}
                         name='type'
@@ -90,22 +99,62 @@ export default function CreatePostForm({ post }: Props) {
                            </FormItem>
                         )}
                      />
+                     <FormField
+                        control={form.control}
+                        name='mediaType'
+                        render={({ field }) => (
+                           <FormItem>
+                              <FormLabel className='text-sm font-medium'>Type de média</FormLabel>
+                              <Tabs
+                                 value={field.value}
+                                 onValueChange={(val) => {
+                                    field.onChange(val)
+                                    selectImageRef.current?.resetFiles()
+                                 }}
+                              >
+                                 <TabsList className='bg-background border'>
+                                    <TabsTrigger value='image' className='px-4'>
+                                       Images
+                                    </TabsTrigger>
+                                    <TabsTrigger value='video' className='px-4'>
+                                       Video
+                                    </TabsTrigger>
+                                 </TabsList>
+                              </Tabs>
+                              <FormMessage />
+                           </FormItem>
+                        )}
+                     />
 
                      <FormField
                         control={form.control}
-                        name='title'
+                        name='medias'
                         render={({ field }) => (
                            <FormItem>
-                              <FormLabel className='text-sm font-medium'>Titre</FormLabel>
+                              <FormLabel className='text-sm font-medium'>
+                                 Image à joindre sur le post (nombre de fichier au maximum{' '}
+                                 {mediaType === 'image' ? 5 : 1})
+                              </FormLabel>
                               <FormControl>
-                                 <IconInput
-                                    {...field}
-                                    type='text'
-                                    placeholder='Entrez le titre du post'
-                                    icon={FileText}
+                                 <SelectImage
+                                    ref={selectImageRef}
+                                    value={field.value || []}
+                                    onValueChange={field.onChange}
+                                    allowedTypes={[mediaType === 'image' ? FileType.IMAGE : FileType.VIDEO]}
+                                    title={
+                                       mediaType === 'image'
+                                          ? 'Image à joindre sur le post (maximum une image, facultatif)'
+                                          : 'Video à joindre sur le post (maximum une video, facultatif)'
+                                    }
+                                    message={
+                                       mediaType === 'image'
+                                          ? `Supportés: Images (max ${compactNumber(MAX_FILE_SIZE)}o par fichier)`
+                                          : `Supportés: Videos (max ${compactNumber(MAX_FILE_SIZE)}o par fichier)`
+                                    }
+                                    maxFiles={mediaType === 'image' ? 5 : 1}
+                                    className='max-w-xl'
                                  />
                               </FormControl>
-                              <FormMessage />
                            </FormItem>
                         )}
                      />

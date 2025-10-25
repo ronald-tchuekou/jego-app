@@ -8,6 +8,7 @@ import { useState } from 'react'
 type Props = {
    src: string
    alt: string
+   style?: React.CSSProperties
    className?: string
    fill?: boolean
    sizes?: string
@@ -15,7 +16,7 @@ type Props = {
    height?: number
 }
 
-export const ImageWithLoading = ({ src, alt, className, ...props }: Props) => {
+export const ImageWithLoading = ({ src, alt, style, className, ...props }: Props) => {
    const [isLoading, setIsLoading] = useState(true)
    const [hasError, setHasError] = useState(false)
 
@@ -23,9 +24,9 @@ export const ImageWithLoading = ({ src, alt, className, ...props }: Props) => {
 
    return (
       <>
-         {isLoading && <div className='absolute inset-0 bg-muted animate-pulse' />}
+         {isLoading && <div style={style} className='absolute inset-0 bg-muted animate-pulse' />}
          {hasError ? (
-            <div className='absolute inset-0 bg-muted flex items-center justify-center'>
+            <div style={style} className='absolute inset-0 bg-muted flex items-center justify-center'>
                <span className='text-muted-foreground text-sm text-center p-4'>
                   Erreur lors du chargement de l&apos;image
                </span>
@@ -34,6 +35,7 @@ export const ImageWithLoading = ({ src, alt, className, ...props }: Props) => {
             <Image
                src={imageUrl}
                alt={alt}
+               style={style}
                className={cn('transition-opacity duration-300', isLoading ? 'opacity-0' : 'opacity-100', className)}
                onLoad={() => setIsLoading(false)}
                onError={() => {
