@@ -17,6 +17,7 @@ function generateKeys(name: string) {
 }
 
 export const postKey = generateKeys('posts')
+export const chatKey = generateKeys('chat')
 export const userKey = generateKeys('users')
 export const categoryKey = generateKeys('categories')
 export const companyKey = generateKeys('companies')
@@ -27,4 +28,5 @@ export const companyServiceKey = generateKeys('company-services')
 export const companyAppointmentRequestKey = generateKeys('company-appointment-requests')
 export const jobKey = generateKeys('jobs')
 export const applicationKey = generateKeys('applications')
+export const notificationKey = generateKeys('notifications')
 export const appointKey = generateKeys('appointments')

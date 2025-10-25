@@ -1,34 +1,8 @@
 'use server'
 
 import { authenticatedActionClient } from '@/lib/safe-action'
-import JobApplicationService from '@/services/job-application-service'
 import JobService from '@/services/job-service'
 
-export const getAppointmentCountAction = authenticatedActionClient
-   .metadata({ actionName: 'getAppointmentCount' })
-   .action(async ({}) => {
-      // TODO: Implement appointment count
-
-      return {
-         count: 0,
-      }
-   })
-
-export const getApplicationCountAction = authenticatedActionClient
-   .metadata({ actionName: 'getApplicationCount' })
-   .action(async ({ ctx }) => {
-      const companyId = ctx.user.companyId
-
-      if (!companyId) {
-         throw new Error('Company ID is required')
-      }
-
-      const result = await JobApplicationService.getTotal({ companyId }, ctx.token)
-
-      return {
-         count: result?.count ?? 0,
-      }
-   })
 
 export const getPostCountAction = authenticatedActionClient.metadata({ actionName: 'getPostCount' }).action(async ({}) => {
    // TODO: Implement post count

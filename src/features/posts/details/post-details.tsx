@@ -4,9 +4,9 @@ import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import { useAuth } from '@/components/providers/auth'
 import { postKey } from '@/lib/query-kye'
+import PostService from '@/services/post-service'
 import { UserRole } from '@/services/user-service'
 import { useQuery } from '@tanstack/react-query'
-import { getPostByIdAction } from '../actions'
 import { PostDetailsAdmin } from './post-details-admin'
 import { PostDetailsUser } from './post-details-user'
 
@@ -19,11 +19,9 @@ export default function PostDetails({ postId }: Props) {
 
    const { data, isLoading } = useQuery({
       queryKey: postKey.detail(postId),
-      async queryFn({ queryKey }) {
-         const postId = queryKey[2]
-         const result = await getPostByIdAction({ postId })
-         if (result.serverError) throw new Error(result.serverError)
-         return result.data
+      async queryFn() {
+         const result = await PostService.getById(postId)
+         return result
       },
    })
 

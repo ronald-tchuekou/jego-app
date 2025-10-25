@@ -5,57 +5,6 @@ import CompanyAppointmentRequestService, { AppointmentStatus } from '@/services/
 import { UserRole } from '@/services/user-service'
 import { z } from 'zod'
 
-// Action to get appointments with pagination and filters
-export const getAppointmentsAction = authenticatedActionClient
-   .metadata({ actionName: 'getAppointmentsAction' })
-   .inputSchema(
-      z.object({
-         page: z.number().min(1).default(1),
-         limit: z.number().min(1).max(100).default(10),
-         search: z.string().optional(),
-         status: z.string().optional(),
-         dateFrom: z.string().optional(),
-         dateTo: z.string().optional(),
-      })
-   )
-   .action(async ({ parsedInput: { page, limit, search, status, dateFrom, dateTo }, ctx }) => {
-      const filters: FilterQuery & { 
-         status?: AppointmentStatus
-         userId?: string
-         companyId?: string
-         dateFrom?: string
-         dateTo?: string
-      } = { page, limit }
-
-      if (search) filters.search = search
-
-      if (status && status !== 'all') {
-         filters.status = status as AppointmentStatus
-      }
-
-      if (dateFrom) filters.dateFrom = dateFrom
-      if (dateTo) filters.dateTo = dateTo
-
-      // If user is from a company, filter by company
-      if (ctx.user.companyId) {
-         filters.companyId = ctx.user.companyId
-      }
-
-      // If regular user, filter by user
-      if (ctx.user.role === UserRole.USER) {
-         filters.userId = ctx.user.id
-      }
-
-      return CompanyAppointmentRequestService.getAll(filters, ctx.token)
-   })
-
-// Action to get appointment by id
-export const getAppointmentByIdAction = authenticatedActionClient
-   .metadata({ actionName: 'getAppointmentByIdAction' })
-   .inputSchema(z.object({ appointmentId: z.string().min(1, "L'ID du rendez-vous est requis") }))
-   .action(async ({ parsedInput: { appointmentId }, ctx }) => {
-      return CompanyAppointmentRequestService.getById(appointmentId, ctx.token)
-   })
 
 // Action to update appointment status
 export const updateAppointmentStatusAction = authenticatedActionClient

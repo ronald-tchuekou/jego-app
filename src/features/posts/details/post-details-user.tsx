@@ -1,6 +1,7 @@
 'use client'
 
-import { ImageWithLoading } from '@/components/base/image-with-loading'
+import PostImage from '@/components/base/post-image'
+import PostVideo from '@/components/base/post-video'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -15,6 +16,9 @@ type Props = {
 }
 
 export function PostDetailsUser({ post }: Props) {
+   const mediaType = post.mediaType
+   const medias = post.medias
+
    return (
       <div className='w-full max-w-7xl space-y-5'>
          {/* Header Section */}
@@ -53,17 +57,13 @@ export function PostDetailsUser({ post }: Props) {
             </CardHeader>
 
             {/* Image Section */}
-            {!!post.image && (
+            {medias.length > 0 && (
                <CardContent className='pt-0'>
-                  <div className='relative aspect-video w-full overflow-hidden rounded-lg border'>
-                     <ImageWithLoading
-                        src={post.image}
-                        alt={post.title}
-                        fill
-                        className='object-contain bg-accent'
-                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw'
-                     />
-                  </div>
+                  {/* For images */}
+                  {mediaType === 'image' && <PostImage images={medias} />}
+
+                  {/* For videos */}
+                  {mediaType === 'video' && <PostVideo videoPaths={medias} />}
                </CardContent>
             )}
             <CardContent>

@@ -1,5 +1,6 @@
 import fetchHelper from '@/lib/helpers/fetch-helper'
 import { objectToQueryString } from '@/lib/utils'
+import { MediaModel } from './media_service'
 import { UserModel } from './user-service'
 
 export enum PostType {
@@ -15,10 +16,29 @@ export type PostModel = {
    status: string
    type: PostType
    category: string
-   image: string | null
+   mediaType: 'image' | 'video' | null
+   medias: MediaModel[]
    createdAt: string
    updatedAt: string
    user: UserModel
+}
+
+type CreatePostDto = {
+   title?: string
+   description: string
+   status: string
+   type: string
+   category: string
+   mediaType?: 'image' | 'video'
+   medias?: {
+      name: string
+      type: string
+      url: string
+      size: number
+      thumbnailUrl?: string
+      alt?: string
+      metadata?: Record<string, any>
+   }[]
 }
 
 const PostService = {
@@ -48,7 +68,7 @@ const PostService = {
       return data?.data || null
    },
 
-   async create(body: Partial<PostModel>, token: string) {
+   async create(body: CreatePostDto, token: string) {
       const { data, error } = await fetchHelper<{ post: PostModel }>('/posts', {
          method: 'POST',
          headers: {
@@ -61,7 +81,7 @@ const PostService = {
       return data?.post
    },
 
-   async update(id: string, body: Partial<PostModel>, token: string) {
+   async update(id: string, body: Partial<CreatePostDto>, token: string) {
       const { data, error } = await fetchHelper<{ post: PostModel }>(`/posts/${id}`, {
          method: 'PUT',
          headers: {

@@ -1,13 +1,15 @@
 "use client"
 
-import { applicationKey } from "@/lib/query-kye"
-import { useQuery } from "@tanstack/react-query"
-import { useQueryState } from "nuqs"
-import { useEffect } from "react"
-import { toast } from "sonner"
-import { getApplicationsAction } from "../actions"
+import { useAuth } from '@/components/providers/auth'
+import { applicationKey } from '@/lib/query-kye'
+import JobApplicationService, { JobApplicationStatus } from '@/services/job-application-service'
+import { useQuery } from '@tanstack/react-query'
+import { useQueryState } from 'nuqs'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 function useGetJobApplications(options?: { justRecent?: boolean }) {
+   const { auth } = useAuth()
    const [status] = useQueryState('status')
    const [page] = useQueryState('page')
    const [limit] = useQueryState('limit')
@@ -20,21 +22,25 @@ function useGetJobApplications(options?: { justRecent?: boolean }) {
          search: search || undefined,
          status: status || undefined,
       }),
-      async queryFn({ queryKey }) {
-         const filters = JSON.parse(queryKey[2].filters)
-         const result = await getApplicationsAction(filters)
-
-         if (result?.serverError) {
-            throw new Error(result.serverError)
+      async queryFn() {
+         if (!auth?.token) {
+            throw new Error('Not authenticated')
          }
 
-         if (result?.validationErrors) {
-            throw new Error(result.validationErrors._errors?.join(', ') || 'Erreur lors du chargement des candidatures')
+         const filters: FilterQuery & { status?: JobApplicationStatus; companyId?: string } = {
+            page: page ? parseInt(page) : 1,
+            limit: options?.justRecent ? 5 : limit ? parseInt(limit) : 10,
          }
 
-         return result?.data
+         if (search) filters.search = search
+         if (status && status !== 'all') filters.status = status as JobApplicationStatus
+         if (auth.user?.companyId) filters.companyId = auth.user.companyId
+
+         const result = await JobApplicationService.getAll(filters, auth.token)
+         return result
       },
       staleTime: 5 * 60 * 1000, // 5 minutes
+      enabled: !!auth?.token,
    })
 
    useEffect(() => {

@@ -1,25 +1,24 @@
 'use client'
 
+import { useAuth } from '@/components/providers/auth'
 import { userKey } from '@/lib/query-kye'
 import { useQuery } from '@tanstack/react-query'
-import { getAppointmentCountAction } from '../actions'
 
 export default function useGetAppointmentCount() {
+   const { auth } = useAuth()
+
    const { data, isLoading } = useQuery({
-      queryKey: userKey.list({ label: 'user-count' }),
+      queryKey: userKey.list({ label: 'appointment-count' }),
       async queryFn() {
-         const { data, serverError, validationErrors } = await getAppointmentCountAction()
-
-         if (serverError) {
-            throw new Error(serverError)
+         if (!auth?.token) {
+            throw new Error('Not authenticated')
          }
 
-         if (validationErrors?.formErrors) {
-            throw new Error(validationErrors.formErrors.join(', '))
-         }
-
-         return data?.count || 0
+         // TODO: Implement appointment count service
+         // For now, return 0 as it's not implemented yet
+         return 0
       },
+      enabled: !!auth?.token,
    })
 
    return { data, isLoading }

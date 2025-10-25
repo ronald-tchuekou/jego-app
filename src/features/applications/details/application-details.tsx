@@ -2,11 +2,12 @@
 
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
+import { useAuth } from '@/components/providers/auth'
 import { Button } from '@/components/ui/button'
 import { applicationKey } from '@/lib/query-kye'
+import JobApplicationService from '@/services/job-application-service'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
-import { getApplicationByIdAction } from '../actions'
 import PostInfo from './post-info'
 import UserInfo from './user-info'
 
@@ -15,29 +16,24 @@ type Props = {
 }
 
 export default function ApplicationDetails({ applicationId }: Props) {
+   const { auth } = useAuth()
+
    const {
       data: application,
       isLoading,
       error,
    } = useQuery({
       queryKey: applicationKey.detail(applicationId),
-      async queryFn({ queryKey }) {
-         const applicationId = queryKey[2]
-         const result = await getApplicationByIdAction({ applicationId })
-
-         if (result?.serverError) {
-            throw new Error(result.serverError)
+      async queryFn() {
+         if (!auth?.token) {
+            throw new Error('Not authenticated')
          }
 
-         if (result?.validationErrors) {
-            throw new Error(
-               result.validationErrors._errors?.join(', ') || 'Erreur lors du chargement de la candidature'
-            )
-         }
-
-         return result?.data
+         const result = await JobApplicationService.getById(applicationId, auth.token)
+         return result
       },
       staleTime: 5 * 60 * 1000, // 5 minutes
+      enabled: !!auth?.token,
    })
 
    if (isLoading) {

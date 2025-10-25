@@ -3,8 +3,8 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import { postKey } from '@/lib/query-kye'
+import PostService from '@/services/post-service'
 import { useQuery } from '@tanstack/react-query'
-import { getPostByIdAction } from '../actions'
 import CreatePostForm from './create-post-form'
 
 type Props = {
@@ -14,11 +14,9 @@ type Props = {
 function EditPostWrapper({ postId }: Props) {
    const { data, isLoading } = useQuery({
       queryKey: postKey.detail(postId),
-      async queryFn({ queryKey }) {
-         const id = queryKey[2]
-         const result = await getPostByIdAction({ postId: id })
-         if (result.serverError) throw new Error(result.serverError)
-         return result.data
+      async queryFn() {
+         const result = await PostService.getById(postId)
+         return result
       },
    })
 

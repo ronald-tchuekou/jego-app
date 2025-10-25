@@ -1,25 +1,25 @@
 'use client'
 
+import { useAuth } from '@/components/providers/auth'
 import { postKey } from '@/lib/query-kye'
+import PostService from '@/services/post-service'
 import { useQuery } from '@tanstack/react-query'
-import { getPostCountAction } from '../actions'
 
 export default function useGetPostCount() {
+   const { auth } = useAuth()
+
    const { data, isLoading } = useQuery({
       queryKey: postKey.list({ label: 'get-post-count' }),
       async queryFn() {
-         const { data, serverError, validationErrors } = await getPostCountAction()
-
-         if (serverError) {
-            throw new Error(serverError)
+         if (!auth?.token) {
+            throw new Error('Not authenticated')
          }
 
-         if (validationErrors?.formErrors) {
-            throw new Error(validationErrors.formErrors.join(', '))
-         }
-
-         return data?.count || 0
+         const companyId = auth.user?.companyId || ''
+         const count = await PostService.count(auth.token, companyId)
+         return count || 0
       },
+      enabled: !!auth?.token,
    })
 
    return { data, isLoading }

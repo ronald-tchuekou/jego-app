@@ -3,15 +3,19 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import CustomPagination from '@/components/dashboard/custom-pagination'
+import { useAuth } from '@/components/providers/auth'
 import { jobKey } from '@/lib/query-kye'
+import JobService, { JobStatus } from '@/services/job-service'
+import { UserRole } from '@/services/user-service'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { getJobsAction } from '../actions'
 import JobItem from './job-item'
 
 function JobsList() {
+   const { auth } = useAuth()
+
    // Pagination and filters state
    const [status] = useQueryState('status')
    const [page] = useQueryState('page')
@@ -32,17 +36,33 @@ function JobsList() {
          status: status || undefined,
          companyName: companyName || undefined,
       }),
-      async queryFn({ queryKey }) {
-         const filters = JSON.parse(queryKey[2].filters)
-         const result = await getJobsAction(filters)
-
-         if (result?.serverError) {
-            throw new Error(result.serverError)
+      async queryFn() {
+         const filters: FilterQuery & {
+            status?: JobStatus
+            companyName?: string
+            companyId?: string
+         } = {
+            page: page ? parseInt(page) : 1,
+            limit: limit ? parseInt(limit) : 20,
          }
 
-         return result?.data
+         if (search) filters.search = search
+         if (status && status !== 'all') filters.status = status as JobStatus
+         if (companyName && companyName !== 'all') filters.companyName = companyName
+
+         if (
+            auth?.user &&
+            (auth.user.role === UserRole.COMPANY_ADMIN || auth.user.role === UserRole.COMPANY_AGENT) &&
+            auth.user.companyId
+         ) {
+            filters.companyId = auth.user.companyId
+         }
+
+         const result = await JobService.getAll(filters)
+         return result
       },
       staleTime: 5 * 60 * 1000, // 5 minutes
+      enabled: !!auth,
    })
 
    const jobs = jobsData?.data || []

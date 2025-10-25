@@ -1,66 +1,9 @@
 'use server'
 
-import { actionClient, authenticatedActionClient } from '@/lib/safe-action'
+import { authenticatedActionClient } from '@/lib/safe-action'
 import PostService from '@/services/post-service'
 import { UserRole } from '@/services/user-service'
-import { z } from 'zod'
 import { deletePostSchema, postStatusSchema } from './schemas'
-
-// Action to get posts with pagination and filters
-export const getPostsAction = authenticatedActionClient
-   .metadata({ actionName: 'getPostsAction' })
-   .inputSchema(
-      z.object({
-         page: z.number().min(1).default(1),
-         limit: z.number().min(1).max(100).default(12),
-         search: z.string().optional(),
-         category: z.string().optional(),
-         type: z.string().optional(),
-         status: z.string().optional(),
-      })
-   )
-   .action(async ({ parsedInput: { page, limit, search, category, type, status }, ctx }) => {
-      try {
-         const filters: FilterQuery & {
-            category?: string
-            type?: string
-            status?: string
-         } = { page, limit }
-
-         if (search) filters.search = search
-
-         if (category && category !== 'all') {
-            filters.category = category
-         }
-
-         if (type && type !== 'all') {
-            filters.type = type
-         }
-
-         if (status && status !== 'all') {
-            filters.status = status
-         }
-
-         if (
-            (ctx.user.role === UserRole.COMPANY_ADMIN || ctx.user.role === UserRole.COMPANY_AGENT) &&
-            ctx.user.companyId
-         ) {
-            filters.companyId = ctx.user.companyId
-         }
-
-         return PostService.getAll(filters)
-      } catch (error) {
-         console.error(error)
-         throw new Error('Erreur lors du chargement des posts')
-      }
-   })
-
-export const getPostByIdAction = actionClient
-   .metadata({ actionName: 'getPostByIdAction' })
-   .inputSchema(z.object({ postId: z.string().min(1, "L'ID du post est requis") }))
-   .action(async ({ parsedInput: { postId } }) => {
-      return PostService.getById(postId)
-   })
 
 // Action to delete a post (author or admin only)
 export const deletePostAction = authenticatedActionClient

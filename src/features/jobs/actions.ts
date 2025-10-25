@@ -1,60 +1,10 @@
 'use server'
 
-import { actionClient, authenticatedActionClient } from '@/lib/safe-action'
+import { authenticatedActionClient } from '@/lib/safe-action'
 import JobService, { JobStatus } from '@/services/job-service'
 import { UserRole } from '@/services/user-service'
 import { z } from 'zod'
 import { deleteJobSchema, jobStatusSchema } from './schemas'
-
-// Action to get jobs with pagination and filters
-export const getJobsAction = authenticatedActionClient
-   .metadata({ actionName: 'getJobsAction' })
-   .inputSchema(
-      z.object({
-         page: z.number().min(1).default(1),
-         limit: z.number().min(1).max(100).default(12),
-         search: z.string().optional(),
-         status: z.string().optional(),
-         companyName: z.string().optional(),
-      })
-   )
-   .action(async ({ parsedInput: { page, limit, search, status, companyName }, ctx }) => {
-      try {
-         const filters: FilterQuery & {
-            status?: JobStatus
-            companyName?: string
-         } = { page, limit }
-
-         if (search) filters.search = search
-
-         if (status && status !== 'all') {
-            filters.status = status as JobStatus
-         }
-
-         if (companyName && companyName !== 'all') {
-            filters.companyName = companyName
-         }
-
-         if (
-            (ctx.user.role === UserRole.COMPANY_ADMIN || ctx.user.role === UserRole.COMPANY_AGENT) &&
-            ctx.user.companyId
-         ) {
-            filters.companyId = ctx.user.companyId
-         }
-
-         return JobService.getAll(filters)
-      } catch (error) {
-         console.error(error)
-         throw new Error('Erreur lors du chargement des jobs')
-      }
-   })
-
-export const getJobByIdAction = actionClient
-   .metadata({ actionName: 'getJobByIdAction' })
-   .inputSchema(z.object({ jobId: z.string().min(1, "L'ID du job est requis") }))
-   .action(async ({ parsedInput: { jobId } }) => {
-      return JobService.getById(jobId)
-   })
 
 // Action to delete a job (author or admin only)
 export const deleteJobAction = authenticatedActionClient
