@@ -1,11 +1,11 @@
-import { Badge } from "@/components/ui/badge"
-import { JobApplicationStatus } from "@/services/job-application-service"
+import { Badge } from '@/components/ui/badge'
+import { JobApplicationStatus } from '@/services/job-application-service'
 
 type Props = {
    status: JobApplicationStatus
 }
 
-const JobApplicationStatusLabel = ({status}: Props) => {
+const JobApplicationStatusLabel = ({ status }: Props) => {
    switch (status) {
       case JobApplicationStatus.PENDING:
          return (
@@ -29,6 +29,5 @@ const JobApplicationStatusLabel = ({status}: Props) => {
          return <Badge variant='outline'>Inconnu</Badge>
    }
 }
-
 
 export default JobApplicationStatusLabel

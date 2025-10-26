@@ -1,4 +1,3 @@
-
 export type MediaModel = {
    id: string
    userId: string
@@ -16,8 +15,6 @@ export type MediaModel = {
    } | null
 }
 
-const MediaService = {
-   
-}
+const MediaService = {}
 
 export default MediaService

@@ -14,7 +14,9 @@ const DynamicPostChart = dynamic(() => import('@/features/admin-stats/components
 
 // For company admin
 const DynamicCompanyAppointmentCount = dynamic(() => import('@/features/company-stats/components/appointment-count'))
-const DynamicCompanyJobApplicationCount = dynamic(() => import('@/features/company-stats/components/job-application-count'))
+const DynamicCompanyJobApplicationCount = dynamic(
+   () => import('@/features/company-stats/components/job-application-count'),
+)
 const DynamicCompanyJobCount = dynamic(() => import('@/features/company-stats/components/job-count'))
 const DynamicCompanyPostCount = dynamic(() => import('@/features/company-stats/components/post-count'))
 const DynamicApplicationsList = dynamic(() => import('@/features/applications/list/applications-list'))

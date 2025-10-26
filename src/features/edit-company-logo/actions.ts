@@ -16,7 +16,7 @@ export const updateCompanyLogoAction = authenticatedActionClient
             }
          }
 
-         const updatedCompany = await CompanyService.update(ctx.user.companyId, {logo: parsedInput}, ctx.token)
+         const updatedCompany = await CompanyService.update(ctx.user.companyId, { logo: parsedInput }, ctx.token)
 
          return {
             success: true,

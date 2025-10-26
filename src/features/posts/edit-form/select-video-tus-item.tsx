@@ -1,16 +1,25 @@
+'use client'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Spinner } from '@/components/ui/spinner'
 import env from '@/lib/env/client'
 import { UploadedFile } from '@/lib/helper-types'
-import { compactNumber, getImageDimensions, getVideoMetadata } from '@/lib/utils'
-import { useQuery } from '@tanstack/react-query'
-import axios, { AxiosError } from 'axios'
+import { compactNumber, getVideoMetadata } from '@/lib/utils'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { PlayIcon, RefreshCcwIcon, Trash2Icon, XIcon } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
-import Image from 'next/image'
-import { useState } from 'react'
-import { deleteFileAction } from './actions'
+import { useMemo, useState } from 'react'
+import { createBunnyTusCredentialsAction, deleteFileAction } from './actions'
+
+type BunnyTusCredentials = {
+   libraryId: number
+   videoId: string
+   signature: string
+   expire: number // UNIX timestamp seconds
+   title?: string
+   collection?: string
+   thumbnailTime?: number
+}
 
 type Props = {
    file: File
@@ -19,12 +28,12 @@ type Props = {
    onDeleted: VoidFunction
 }
 
-export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props) {
+export function SelectVideoTusItem({ file, onDeleted, onUploaded, filePath }: Props) {
    const [isPlaying, setIsPlaying] = useState(false)
    const [progress, setProgress] = useState<number>(0)
    const [error, setError] = useState<string | null>(null)
 
-   const isVideo = file.type.startsWith('video/')
+   const isVideo = useMemo(() => file.type.startsWith('video/'), [file])
 
    const { execute, isPending: isDeleting } = useAction(deleteFileAction, {
       onSuccess({ data }) {
@@ -37,68 +46,96 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
       },
    })
 
-   const { isLoading, refetch, isRefetching } = useQuery({
-      queryKey: ['post-file-upload', file.name, file.size],
-      queryFn: async () => {
+   const { mutate: uploadVideo, isPending: isUploadingVideo } = useMutation({
+      mutationFn: async (creds: BunnyTusCredentials) => {
          try {
-            if (filePath) return true
-
-            const formData = new FormData()
-            formData.append('files', file)
-
-            const isVideo = file.type.startsWith('video/')
-
-            const imageDimensions = isVideo ? undefined : await getImageDimensions(file)
-            const videoDimensions = isVideo ? await getVideoMetadata(file) : undefined
-
-            const result = await axios.post<{
-               path: string
-               name: string
-               type: string
-               filename: string
-            }>(`${env.NEXT_PUBLIC_API_URL}/v1/files/single`, formData, {
-               onUploadProgress: (progressEvent) => {
-                  const percentCompleted = !!progressEvent.total
-                     ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
-                     : 0
-                  setProgress(percentCompleted)
-               },
-            })
-
-            if (result.status === 400) {
-               const message = (result as any).response.message
-               throw new Error(message)
+            if (!isVideo) {
+               throw new Error('Seules les vidéos sont supportées par cet uploader')
             }
 
-            const dataResponse = result.data
+            if (filePath) return true
+
+            const videoDimensions = await getVideoMetadata(file)
+
+            const tusModule: any = await import('tus-js-client')
+            const Upload = tusModule?.Upload || tusModule
+
+            await new Promise<void>((resolve, reject) => {
+               const upload = new Upload(file, {
+                  endpoint: 'https://video.bunnycdn.com/tusupload',
+                  retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
+                  headers: {
+                     AuthorizationSignature: creds.signature,
+                     AuthorizationExpire: creds.expire,
+                     VideoId: creds.videoId,
+                     LibraryId: creds.libraryId,
+                  },
+                  metadata: {
+                     filetype: file.type,
+                     title: creds.title ?? file.name,
+                     ...(creds.collection ? { collection: creds.collection } : {}),
+                     ...(typeof creds.thumbnailTime === 'number' ? { thumbnailTime: String(creds.thumbnailTime) } : {}),
+                  },
+                  onError: function (error: Error) {
+                     reject(error)
+                  },
+                  onProgress: function (bytesUploaded: number, bytesTotal: number) {
+                     const percentCompleted = bytesTotal ? Math.round((bytesUploaded * 100) / bytesTotal) : 0
+                     setProgress(percentCompleted)
+                  },
+                  onSuccess: function (response: any) {
+                     resolve()
+                     console.log('Bunny response : ', response)
+                  },
+               })
+
+               upload.findPreviousUploads().then(function (previousUploads: any[]) {
+                  if (previousUploads.length) {
+                     upload.resumeFromPreviousUpload(previousUploads[0])
+                  }
+                  upload.start()
+               })
+            })
 
             onUploaded({
                name: file.name,
-               url: dataResponse.path,
+               url: `https://player.mediadelivery.net/embed/${env.NEXT_PUBLIC_BUNNY_LIBRARY_ID}/${creds.videoId}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`,
                type: file.type,
                size: file.size,
-               metadata: isVideo
-                  ? {
-                       width: videoDimensions?.width || 0,
-                       height: videoDimensions?.height || 0,
-                       duration: videoDimensions?.duration,
-                       aspectRatio: videoDimensions?.ratio || '12/9',
-                    }
-                  : {
-                       width: imageDimensions?.width || 0,
-                       height: imageDimensions?.height || 0,
-                       aspectRatio: imageDimensions?.ratio || '16/9',
-                    },
+               metadata: {
+                  width: videoDimensions?.width || 0,
+                  height: videoDimensions?.height || 0,
+                  duration: videoDimensions?.duration || 0,
+                  aspectRatio: videoDimensions?.ratio || '16:9',
+               },
             })
-         } catch (error) {
-            if (error instanceof AxiosError) {
-               const message = error.response?.data.message || "Une erreur est survenue lors de l'upload du fichier"
-               setError(message)
-            } else {
-               setError((error as Error).message)
-            }
+         } catch (e) {
+            const message = (e as Error)?.message || "Une erreur est survenue lors de l'upload de la vidéo"
+            setError(message)
          }
 
+         return true
+      },
+   })
+
+   const { execute: createBunnyCredentials, isPending: isCreatingBunnyCredentials } = useAction(
+      createBunnyTusCredentialsAction,
+      {
+         onSuccess: async ({ data }) => {
+            if (!data.success) return
+
+            uploadVideo(data.credentials)
+         },
+         onError(error) {
+            console.log('Get Bunny credentials error => ', error)
+         },
+      },
+   )
+
+   const { isLoading, refetch, isRefetching } = useQuery({
+      queryKey: ['post-video-upload-tus', file.name, file.size],
+      queryFn: () => {
+         createBunnyCredentials({ title: file.name })
          return true
       },
    })
@@ -112,25 +149,19 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
    return (
       <>
          <div className='size-40 aspect-square rounded-lg overflow-hidden border relative bg-accent'>
-            {isVideo ? (
+            {isVideo && (
                <video
                   src={window.URL.createObjectURL(file)}
                   className='w-full h-full object-cover object-center'
                   controls={false}
                />
-            ) : (
-               <Image
-                  src={window.URL.createObjectURL(file)}
-                  alt={file.name}
-                  width={100}
-                  height={100}
-                  className='w-full h-full object-cover object-center'
-               />
             )}
             <div className='bg-background/50 p-2 absolute bottom-0 left-0 right-0 backdrop-blur-lg space-y-1 border-t'>
                <p className='text-xs font-medium line-clamp-1'>{file.name}</p>
                <p className='text-[10px]'>{compactNumber(file.size)}o</p>
-               {(isLoading || isRefetching) && <Progress value={progress} className='w-full' />}
+               {(isLoading || isRefetching || isCreatingBunnyCredentials || isUploadingVideo) && (
+                  <Progress value={progress} className='w-full' />
+               )}
             </div>
             <div className='absolute top-2 right-2 flex gap-1'>
                {!!error && (
@@ -157,7 +188,7 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
                   </Button>
                )}
             </div>
-            {isVideo && !isLoading && !isRefetching && (
+            {isVideo && (!isUploadingVideo || !isLoading || !isRefetching || !isCreatingBunnyCredentials) && (
                <Button
                   size='icon-sm'
                   className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer'
@@ -166,7 +197,7 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
                   <PlayIcon className='fill-current' />
                </Button>
             )}
-            {(isLoading || isRefetching) && (
+            {(isLoading || isRefetching || isCreatingBunnyCredentials || isUploadingVideo) && (
                <div className='absolute inset-0 bg-background/50 flex items-center justify-center'>
                   <Spinner />
                </div>
@@ -206,4 +237,4 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
    )
 }
 
-export default SelectImageItem
+export default SelectVideoTusItem

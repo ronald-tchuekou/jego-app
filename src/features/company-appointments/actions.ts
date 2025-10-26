@@ -5,7 +5,6 @@ import CompanyAppointmentRequestService, { AppointmentStatus } from '@/services/
 import { UserRole } from '@/services/user-service'
 import { z } from 'zod'
 
-
 // Action to update appointment status
 export const updateAppointmentStatusAction = authenticatedActionClient
    .metadata({ actionName: 'updateAppointmentStatusAction' })
@@ -13,19 +12,23 @@ export const updateAppointmentStatusAction = authenticatedActionClient
       z.object({
          appointmentId: z.string().min(1, "L'ID du rendez-vous est requis"),
          status: z.enum(['pending', 'confirmed', 'cancelled', 'completed'] as const),
-      })
+      }),
    )
    .action(async ({ parsedInput: { appointmentId, status }, ctx }) => {
       try {
          // Check if user has permission to update appointment status
-         if (ctx.user.role !== UserRole.ADMIN && ctx.user.role !== UserRole.COMPANY_ADMIN && ctx.user.role !== UserRole.COMPANY_AGENT) {
+         if (
+            ctx.user.role !== UserRole.ADMIN &&
+            ctx.user.role !== UserRole.COMPANY_ADMIN &&
+            ctx.user.role !== UserRole.COMPANY_AGENT
+         ) {
             throw new Error("Vous n'avez pas la permission de modifier le statut des rendez-vous")
          }
 
          const appointment = await CompanyAppointmentRequestService.updateStatus(
-            appointmentId, 
+            appointmentId,
             status as AppointmentStatus,
-            ctx.token
+            ctx.token,
          )
 
          return {
@@ -45,7 +48,7 @@ export const deleteAppointmentAction = authenticatedActionClient
    .inputSchema(
       z.object({
          appointmentId: z.string().min(1, "L'ID du rendez-vous est requis"),
-      })
+      }),
    )
    .action(async ({ parsedInput: { appointmentId }, ctx }) => {
       try {
@@ -75,7 +78,7 @@ export const getUpcomingAppointmentsAction = authenticatedActionClient
    .inputSchema(
       z.object({
          days: z.number().min(1).default(7),
-      })
+      }),
    )
    .action(async ({ parsedInput: { days }, ctx }) => {
       try {
@@ -92,7 +95,7 @@ export const markAppointmentAsReadAction = authenticatedActionClient
    .inputSchema(
       z.object({
          appointmentId: z.string().min(1, "L'ID du rendez-vous est requis"),
-      })
+      }),
    )
    .action(async ({ parsedInput: { appointmentId }, ctx }) => {
       try {
@@ -118,7 +121,7 @@ export const updateAppointmentAction = authenticatedActionClient
          time: z.string().optional(),
          subject: z.string().optional(),
          content: z.string().optional(),
-      })
+      }),
    )
    .action(async ({ parsedInput: { appointmentId, ...data }, ctx }) => {
       try {

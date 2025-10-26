@@ -2,7 +2,9 @@ import { Button } from '@/components/ui/button'
 import { JobApplicationModel, JobApplicationStatus } from '@/services/job-application-service'
 import { CheckCircleIcon } from 'lucide-react'
 import { useRef } from 'react'
-import AlertDialogUpdateApplicationStatus, { AlertDialogUpdateApplicationStatusRef } from '../components/alert-dialog-update-status-application'
+import AlertDialogUpdateApplicationStatus, {
+   AlertDialogUpdateApplicationStatusRef,
+} from '../components/alert-dialog-update-status-application'
 
 type Props = {
    application: JobApplicationModel
@@ -13,7 +15,11 @@ const AcceptButton = ({ application }: Props) => {
 
    return (
       <>
-         <Button variant='outline' size='sm' onClick={() => ref.current?.open(application, JobApplicationStatus.ACCEPTED)}>
+         <Button
+            variant='outline'
+            size='sm'
+            onClick={() => ref.current?.open(application, JobApplicationStatus.ACCEPTED)}
+         >
             <CheckCircleIcon className='text-teal-500' />
             Accepter
          </Button>

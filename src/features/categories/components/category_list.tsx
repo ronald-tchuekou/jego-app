@@ -91,7 +91,7 @@ const CategoryList = () => {
                onClick={() => editCategoryModalRef.current?.open()}
                className={cn(
                   'rounded-md border border-primary/40 border-dashed p-5 flex items-center justify-center gap-2',
-                  'hover:bg-primary/10 transition-all hover:shadow-lg'
+                  'hover:bg-primary/10 transition-all hover:shadow-lg',
                )}
             >
                <PlusIcon className='size-6 text-primary' />

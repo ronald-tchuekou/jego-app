@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
 import { useAuth } from '@/components/providers/auth'
 import { companyAppointmentRequestKey } from '@/lib/query-kye'
 import CompanyAppointmentRequestService, { AppointmentStatus } from '@/services/company-appointment-request-service'
 import { UserRole } from '@/services/user-service'
-import { useQuery } from "@tanstack/react-query"
-import { useQueryState } from "nuqs"
-import { useEffect } from "react"
+import { useQuery } from '@tanstack/react-query'
+import { useQueryState } from 'nuqs'
+import { useEffect } from 'react'
 import { toast } from 'sonner'
 
 function useGetAppointments(options?: { justRecent?: boolean }) {

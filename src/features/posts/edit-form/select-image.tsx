@@ -1,3 +1,4 @@
+'use client'
 import { Button } from '@/components/ui/button'
 import { FileType, UploadedFile } from '@/lib/helper-types'
 import { cn, compactNumber, MAX_FILE_SIZE } from '@/lib/utils'
@@ -20,10 +21,19 @@ type Props = {
    ref?: Ref<SelectImageRef>
 }
 
-export function SelectImage({ value, onValueChange, maxFiles = 4, allowedTypes, title, message, className, ref }: Props) {
+export function SelectImage({
+   value,
+   onValueChange,
+   maxFiles = 4,
+   allowedTypes,
+   title,
+   message,
+   className,
+   ref,
+}: Props) {
    const [files, setFiles] = useState<File[]>([])
    const [isDragOver, setIsDragOver] = useState(false)
-   const [uploadedFiles, setUploadedFiles] = useState<(UploadedFile|null)[]>(value || [])
+   const [uploadedFiles, setUploadedFiles] = useState<(UploadedFile | null)[]>(value || [])
 
    const fileInputRef = useRef<HTMLInputElement>(null)
    const dropZoneRef = useRef<HTMLDivElement>(null)
@@ -68,16 +78,16 @@ export function SelectImage({ value, onValueChange, maxFiles = 4, allowedTypes, 
    }
 
    const removeFile = (index: number) => {
-      setFiles(files => [...files.slice(0, index), ...files.slice(index + 1)])
-      setUploadedFiles(value => [...value.slice(0), ...value.slice(index + 1)])
+      setFiles((files) => [...files.slice(0, index), ...files.slice(index + 1)])
+      setUploadedFiles((value) => [...value.slice(0), ...value.slice(index + 1)])
    }
-   
-   useImperativeHandle(ref, (() => ({
-      resetFiles(){
+
+   useImperativeHandle(ref, () => ({
+      resetFiles() {
          setFiles([])
          setUploadedFiles([])
-      }
-   })))
+      },
+   }))
 
    useEffect(() => {
       const setCount = uploadedFiles.filter((file) => file?.url).length
@@ -96,7 +106,7 @@ export function SelectImage({ value, onValueChange, maxFiles = 4, allowedTypes, 
                   'relative border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200 cursor-pointer',
                   isDragOver
                      ? 'border-primary bg-primary/10 dark:bg-primary/10'
-                     : 'hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/10'
+                     : 'hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/10',
                )}
                onClick={() => fileInputRef.current?.click()}
                role='button'
@@ -157,9 +167,8 @@ export function SelectImage({ value, onValueChange, maxFiles = 4, allowedTypes, 
                      filePath={uploadedFilesFromForm[index]?.url}
                      file={file}
                      key={`${file.name}-${index}`}
-                     onUploaded={(file) => {
-                        console.log('Uploaded file => ', file)
-                        setUploadedFiles((state) => [...state.slice(0, index), file, ...state.slice(index + 1)])
+                     onUploaded={(uploaded) => {
+                        setUploadedFiles((state) => [...state.slice(0, index), uploaded, ...state.slice(index + 1)])
                      }}
                      onDeleted={() => removeFile(index)}
                   />

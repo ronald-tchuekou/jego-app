@@ -26,7 +26,7 @@ export function SiteHeader() {
                <span className='truncate col-span-6 sm:col-span-7'>{auth?.user?.company?.name}</span>
             </span>
          ) : null,
-      [auth]
+      [auth],
    )
 
    return (

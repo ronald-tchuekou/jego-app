@@ -19,10 +19,7 @@ export default function UserInfo({ appointment }: Props) {
          </CardHeader>
          <CardContent className='space-y-4'>
             <div className='flex items-center gap-3'>
-               <UserAvatar
-                  user={user}
-                  className='size-10'
-               />
+               <UserAvatar user={user} className='size-10' />
                <div>
                   <p className='font-medium'>
                      {user?.firstName} {user?.lastName}
@@ -40,7 +37,7 @@ export default function UserInfo({ appointment }: Props) {
                      </a>
                   </div>
                )}
-               
+
                {user?.phone && (
                   <div className='flex items-center gap-2 text-sm'>
                      <Phone className='size-4 text-muted-foreground' />
