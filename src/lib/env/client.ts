@@ -6,13 +6,11 @@ const env = createEnv({
       NEXT_PUBLIC_API_URL: z.url().min(1),
       NEXT_PUBLIC_APP_URL: z.url().min(1),
       NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: z.string().min(1),
-      NEXT_PUBLIC_BUNNY_LIBRARY_ID: z.string().min(1),
    },
    experimental__runtimeEnv: {
       NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
       NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
       NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
-      NEXT_PUBLIC_BUNNY_LIBRARY_ID: process.env.NEXT_PUBLIC_BUNNY_LIBRARY_ID,
    },
 })
 
