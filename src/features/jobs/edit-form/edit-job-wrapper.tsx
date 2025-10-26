@@ -3,8 +3,8 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import { jobKey } from '@/lib/query-kye'
+import JobService from '@/services/job-service'
 import { useQuery } from '@tanstack/react-query'
-import { getJobByIdAction } from '../actions'
 import CreateJobForm from './create-job-form'
 
 type Props = {
@@ -14,11 +14,9 @@ type Props = {
 function EditJobWrapper({ jobId }: Props) {
    const { data, isLoading } = useQuery({
       queryKey: jobKey.detail(jobId),
-      async queryFn({ queryKey }) {
-         const id = queryKey[2]
-         const result = await getJobByIdAction({ jobId: id })
-         if (result.serverError) throw new Error(result.serverError)
-         return result.data
+      async queryFn() {
+         const result = await JobService.getById(jobId)
+         return result
       },
    })
 

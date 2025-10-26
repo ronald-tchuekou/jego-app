@@ -5,8 +5,8 @@ import LoaderContent from '@/components/base/loader-content'
 import { useAuth } from '@/components/providers/auth'
 import { getEditJobPermissions } from '@/lib/permissions'
 import { jobKey } from '@/lib/query-kye'
+import JobService from '@/services/job-service'
 import { useQuery } from '@tanstack/react-query'
-import { getJobByIdAction } from '../actions'
 import { JobDetailsAdmin } from './job-details-admin'
 import { JobDetailsUser } from './job-details-user'
 
@@ -19,11 +19,9 @@ export default function JobDetails({ jobId }: Props) {
 
    const { data, isLoading } = useQuery({
       queryKey: jobKey.detail(jobId),
-      async queryFn({ queryKey }) {
-         const jobId = queryKey[2]
-         const result = await getJobByIdAction({ jobId })
-         if (result.serverError) throw new Error(result.serverError)
-         return result.data
+      async queryFn() {
+         const result = await JobService.getById(jobId)
+         return result
       },
    })
 

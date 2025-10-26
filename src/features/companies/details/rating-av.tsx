@@ -3,8 +3,8 @@
 import { Rating } from '@/components/ui/rating'
 import { Skeleton } from '@/components/ui/skeleton'
 import { companyReviewKey } from '@/lib/query-kye'
+import CompanyReviewService from '@/services/company-review-service'
 import { useQuery } from '@tanstack/react-query'
-import { getCompanyStatsAction } from '../actions'
 
 type Props = {
    companyId: string
@@ -13,10 +13,9 @@ type Props = {
 const RatingAverage = ({ companyId }: Props) => {
    const { data: rating, isLoading } = useQuery({
       queryKey: companyReviewKey.detail(companyId),
-      async queryFn({ queryKey }) {
-         const companyId = queryKey[2]
-         const { data } = await getCompanyStatsAction({ companyId })
-         return data
+      async queryFn() {
+         const result = await CompanyReviewService.getCompanyStats(companyId)
+         return result
       },
    })
 

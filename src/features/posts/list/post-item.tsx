@@ -1,6 +1,7 @@
 'use client'
 
-import ImageWithLoading from '@/components/base/image-with-loading'
+import PostImage from '@/components/base/post-image'
+import PostVideo from '@/components/base/post-video'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { formatDate, getPostTypeLabel } from '@/lib/utils'
@@ -13,23 +14,24 @@ type Props = {
 }
 
 const PostItem = ({ post }: Props) => {
+   const mediaType = post.mediaType
+   const medias = post.medias
+
    return (
       <Card className='py-0'>
          <CardContent className='p-0 h-full flex flex-col relative'>
-            {post.image && (
+            {/* For images */}
+            {mediaType === 'image' && (
                <Link
                   href={`/posts/${post.id}`}
                   className='block relative w-full aspect-video border rounded-t-lg overflow-hidden'
                >
-                  <ImageWithLoading
-                     src={post.image}
-                     alt={post.title}
-                     width={400}
-                     height={300}
-                     className='w-full h-full object-contain bg-accent'
-                  />
+                  <PostImage images={medias} />
                </Link>
             )}
+
+            {/* For videos */}
+            {mediaType === 'video' && <PostVideo videoPaths={medias} />}
 
             <Link href={`/posts/${post.id}`} className='block space-y-3 p-4 group'>
                <div className='space-y-2'>

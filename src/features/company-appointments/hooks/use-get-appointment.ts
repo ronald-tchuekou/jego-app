@@ -1,29 +1,24 @@
 "use client"
 
-import { companyAppointmentRequestKey } from "@/lib/query-kye"
-import { useQuery } from "@tanstack/react-query"
-import { getAppointmentByIdAction } from "../actions"
+import { useAuth } from '@/components/providers/auth'
+import { companyAppointmentRequestKey } from '@/lib/query-kye'
+import CompanyAppointmentRequestService from '@/services/company-appointment-request-service'
+import { useQuery } from '@tanstack/react-query'
 
 function useGetAppointment(appointmentId: string) {
+   const { auth } = useAuth()
+
    const { data, isLoading, error } = useQuery({
       queryKey: companyAppointmentRequestKey.detail(appointmentId),
-      async queryFn({ queryKey }) {
-         const appointmentId = queryKey[2]
-         const result = await getAppointmentByIdAction({ appointmentId })
-
-         if (result?.serverError) {
-            throw new Error(result.serverError)
+      async queryFn() {
+         if (!auth?.token) {
+            throw new Error('Not authenticated')
          }
 
-         if (result?.validationErrors) {
-            throw new Error(
-               result.validationErrors._errors?.join(', ') || 'Erreur lors du chargement du rendez-vous'
-            )
-         }
-
-         return result?.data
+         const result = await CompanyAppointmentRequestService.getById(appointmentId, auth.token)
+         return result
       },
-      enabled: !!appointmentId,
+      enabled: !!appointmentId && !!auth?.token,
       staleTime: 5 * 60 * 1000, // 5 minutes
    })
 

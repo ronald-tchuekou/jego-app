@@ -3,16 +3,17 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import UserAvatar from '@/components/base/user-avatar'
+import { useAuth } from '@/components/providers/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { userKey } from '@/lib/query-kye'
 import { cn, formatDate, getRoleLabel } from '@/lib/utils'
+import UserService from '@/services/user-service'
 import { useQuery } from '@tanstack/react-query'
 import { BanIcon, CheckCircleIcon, Trash2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useRef } from 'react'
-import { getUserByIdAction } from '../actions'
 import { BlockUserDialog, DeleteUserDialog } from '../list/user-item-actions'
 
 type Props = {
@@ -20,6 +21,7 @@ type Props = {
 }
 
 const UserDetails = ({ userId }: Props) => {
+   const { auth } = useAuth()
    const deleteDialogRef = useRef<{ open: VoidFunction }>(null)
    const blockDialogRef = useRef<{ open: VoidFunction }>(null)
 
@@ -27,14 +29,15 @@ const UserDetails = ({ userId }: Props) => {
 
    const { data, isLoading } = useQuery({
       queryKey: userKey.detail(userId),
-      async queryFn({ queryKey }) {
-         const userId = queryKey[2]
-         const result = await getUserByIdAction({ userId })
+      async queryFn() {
+         if (!auth?.token) {
+            throw new Error('Not authenticated')
+         }
 
-         if (result.serverError) throw new Error(result.serverError)
-
-         return result.data
+         const result = await UserService.getUserById(userId, auth.token)
+         return result
       },
+      enabled: !!auth?.token,
    })
 
    if (isLoading) return <LoaderContent />

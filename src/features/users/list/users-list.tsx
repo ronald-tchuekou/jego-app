@@ -3,13 +3,14 @@
 import EmptyContent from '@/components/base/empty-content'
 import LoaderContent from '@/components/base/loader-content'
 import CustomPagination from '@/components/dashboard/custom-pagination'
+import { useAuth } from '@/components/providers/auth'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { userKey } from '@/lib/query-kye'
+import UserService, { UserRole } from '@/services/user-service'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { getUsersAction } from '../actions'
 import UserItem from './user-item'
 
 const COLUMNS = [
@@ -24,6 +25,8 @@ const COLUMNS = [
 ]
 
 export default function UsersList() {
+   const { auth } = useAuth()
+
    // Pagination and filters state
    const [role] = useQueryState('role')
    const [page] = useQueryState('page')
@@ -44,17 +47,30 @@ export default function UsersList() {
          role: role || undefined,
          status: status ? (status === 'active' ? 'active' : 'blocked') : undefined,
       }),
-      async queryFn({ queryKey }) {
-         const filters = JSON.parse(queryKey[2].filters)
-         const result = await getUsersAction(filters)
-
-         if (result?.serverError) {
-            throw new Error(result.serverError)
+      async queryFn() {
+         if (!auth?.token) {
+            throw new Error('Not authenticated')
          }
 
-         return result?.data
+         const filters: FilterQuery & {
+            role?: UserRole
+            status?: 'active' | 'blocked'
+         } = {
+            page: page ? parseInt(page) : 1,
+            limit: limit ? parseInt(limit) : 10,
+         }
+
+         if (search) filters.search = search
+         if (role && role !== 'all') filters.role = role as UserRole
+         if (status && status !== 'all') {
+            filters.status = status === 'blocked' ? 'blocked' : 'active'
+         }
+
+         const result = await UserService.getUsers(filters, auth.token)
+         return result
       },
       staleTime: 5 * 60 * 1000, // 5 minutes
+      enabled: !!auth?.token,
    })
 
    const users = usersData?.data || []

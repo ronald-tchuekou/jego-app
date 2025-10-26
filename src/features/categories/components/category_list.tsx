@@ -6,11 +6,11 @@ import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
 import { categoryKey } from '@/lib/query-kye'
 import { cn } from '@/lib/utils'
+import CategoryService from '@/services/category-service'
 import { useQuery } from '@tanstack/react-query'
 import { AwardIcon, EditIcon, PlusIcon } from 'lucide-react'
 import { useQueryState } from 'nuqs'
 import { useRef } from 'react'
-import { getCategoriesAction } from '../actions'
 import DeleteCategoryButton from './delete-category-button'
 import EditCategoryModal, { EditCategoryModalRef } from './edit-category-modal'
 
@@ -27,16 +27,15 @@ const CategoryList = () => {
          page: Number.parseInt(page || '1'),
          limit: Number.parseInt(limit || '10'),
       }),
-      async queryFn({ queryKey }) {
-         const filters = JSON.parse(queryKey[2].filters)
-
-         const response = await getCategoriesAction(filters)
-
-         if (response.serverError) {
-            throw new Error(response.serverError)
+      async queryFn() {
+         const filters = {
+            search: search || undefined,
+            page: Number.parseInt(page || '1'),
+            limit: Number.parseInt(limit || '10'),
          }
 
-         return response.data
+         const result = await CategoryService.getAll(filters)
+         return result
       },
    })
 
@@ -92,7 +91,7 @@ const CategoryList = () => {
                onClick={() => editCategoryModalRef.current?.open()}
                className={cn(
                   'rounded-md border border-primary/40 border-dashed p-5 flex items-center justify-center gap-2',
-                  'hover:bg-primary/10 transition-all hover:shadow-lg',
+                  'hover:bg-primary/10 transition-all hover:shadow-lg'
                )}
             >
                <PlusIcon className='size-6 text-primary' />

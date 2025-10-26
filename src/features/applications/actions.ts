@@ -5,40 +5,6 @@ import JobApplicationService, { JobApplicationStatus } from '@/services/job-appl
 import { UserRole } from '@/services/user-service'
 import { z } from 'zod'
 
-// Action to get applications with pagination and filters
-export const getApplicationsAction = authenticatedActionClient
-   .metadata({ actionName: 'getApplicationsAction' })
-   .inputSchema(
-      z.object({
-         page: z.number().min(1).default(1),
-         limit: z.number().min(1).max(100).default(10),
-         search: z.string().optional(),
-         status: z.string().optional(),
-      })
-   )
-   .action(async ({ parsedInput: { page, limit, search, status }, ctx }) => {
-      const filters: FilterQuery & { status?: JobApplicationStatus } = { page, limit }
-
-      if (search) filters.search = search
-
-      if (status && status !== 'all') {
-         filters.status = status as JobApplicationStatus
-      }
-
-      if (ctx.user.companyId) {
-         filters.companyId = ctx.user.companyId
-      }
-
-      return JobApplicationService.getAll(filters, ctx.token)
-   })
-
-// Action to get application by id
-export const getApplicationByIdAction = authenticatedActionClient
-   .metadata({ actionName: 'getApplicationByIdAction' })
-   .inputSchema(z.object({ applicationId: z.string().min(1, "L'ID de la candidature est requis") }))
-   .action(async ({ parsedInput: { applicationId }, ctx }) => {
-      return JobApplicationService.getById(applicationId, ctx.token)
-   })
 
 // Action to update application status
 export const updateApplicationStatusAction = authenticatedActionClient
