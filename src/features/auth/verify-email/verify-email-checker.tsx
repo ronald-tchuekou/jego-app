@@ -40,10 +40,10 @@ export default function VerifyEmailChecker({ token, userId }: Props) {
                {isPending
                   ? 'Vérification de votre adresse e-mail en cours...'
                   : data?.success
-                  ? 'Vérification réussie'
-                  : error
-                  ? 'Erreur de vérification'
-                  : 'Lien invalide'}
+                    ? 'Vérification réussie'
+                    : error
+                      ? 'Erreur de vérification'
+                      : 'Lien invalide'}
             </CardDescription>
          </CardHeader>
 

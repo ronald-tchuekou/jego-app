@@ -10,7 +10,7 @@ export const deleteCompanyAction = authenticatedActionClient
    .inputSchema(
       z.object({
          companyId: z.string().min(1, "L'ID entreprise est requis"),
-      })
+      }),
    )
    .action(async ({ parsedInput: { companyId }, ctx }) => {
       await CompanyService.delete(companyId, ctx.token)
@@ -23,7 +23,7 @@ export const toggleBlockCompanyAction = authenticatedActionClient
    .inputSchema(
       z.object({
          companyId: z.string().min(1, "L'ID entreprise est requis"),
-      })
+      }),
    )
    .action(async ({ parsedInput: { companyId }, ctx }) => {
       await CompanyService.toggleBlock(companyId, ctx.token)
@@ -32,7 +32,6 @@ export const toggleBlockCompanyAction = authenticatedActionClient
          message: "Statut de l'entreprise modifié avec succès",
       }
    })
-
 
 export const toggleApproveCompanyAction = authenticatedActionClient
    .metadata({ actionName: 'toggleApproveCompanyAction' })

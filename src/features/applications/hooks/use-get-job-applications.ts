@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useAuth } from '@/components/providers/auth'
 import { applicationKey } from '@/lib/query-kye'

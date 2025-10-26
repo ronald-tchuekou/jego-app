@@ -14,7 +14,7 @@ type Props = {
 
 export default function AppointmentInfo({ appointment }: Props) {
    const formattedDate = format(new Date(appointment.date), 'EEEE dd MMMM yyyy', { locale: fr })
-   
+
    return (
       <Card>
          <CardHeader>

@@ -20,7 +20,7 @@ export const updateCompanyProgramAction = authenticatedActionClient
          {
             dailyProgram: parsedInput,
          },
-         ctx.token
+         ctx.token,
       )
 
       return {

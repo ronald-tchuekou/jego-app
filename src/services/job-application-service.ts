@@ -1,7 +1,7 @@
-import fetchHelper from "@/lib/helpers/fetch-helper"
-import { objectToQueryString } from "@/lib/utils"
-import { JobModel } from "./job-service"
-import { UserModel } from "./user-service"
+import fetchHelper from '@/lib/helpers/fetch-helper'
+import { objectToQueryString } from '@/lib/utils'
+import { JobModel } from './job-service'
+import { UserModel } from './user-service'
 
 export enum JobApplicationStatus {
    PENDING = 'pending',
@@ -38,7 +38,7 @@ const JobApplicationService = {
                'Content-Type': 'application/json',
                Authorization: `Bearer ${token}`,
             },
-         }
+         },
       )
 
       if (error) throw new Error(error)
@@ -108,7 +108,7 @@ const JobApplicationService = {
                'Content-Type': 'application/json',
                Authorization: `Bearer ${token}`,
             },
-         }
+         },
       )
       if (error) throw new Error(error)
       return data
@@ -123,7 +123,7 @@ const JobApplicationService = {
                'Content-Type': 'application/json',
                Authorization: `Bearer ${token}`,
             },
-         }
+         },
       )
       if (error) throw new Error(error)
       return data
@@ -211,7 +211,7 @@ const JobApplicationService = {
                'Content-Type': 'application/json',
                Authorization: `Bearer ${token}`,
             },
-         }
+         },
       )
       if (error) throw new Error(error)
       return data
@@ -248,4 +248,4 @@ const JobApplicationService = {
    },
 }
 
-export default JobApplicationService;
+export default JobApplicationService

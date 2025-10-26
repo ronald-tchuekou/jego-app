@@ -11,7 +11,7 @@ export const updateCompanyLocationAction = authenticatedActionClient
             lat: z.number(),
             lng: z.number(),
          })
-         .optional()
+         .optional(),
    )
    .metadata({ actionName: 'updateCompanyLocationAction' })
    .action(async ({ parsedInput, ctx }) => {

@@ -86,7 +86,7 @@ function PostsList() {
             ) : posts.length === 0 ? (
                <EmptyContent text='Aucun post trouvé' />
             ) : (
-               <div className='columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4'>
+               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 space-y-4'>
                   {posts.map((post) => (
                      <div key={post.id} className='break-inside-avoid mb-4'>
                         <PostItem post={post} />

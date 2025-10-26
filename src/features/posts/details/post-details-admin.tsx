@@ -83,7 +83,6 @@ export function PostDetailsAdmin({ post }: Post) {
                               </Button>
                            </div>
                         </div>
-                        <h1 className='text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight'>{post.title}</h1>
                      </div>
 
                      {/* Meta Information */}
@@ -113,7 +112,26 @@ export function PostDetailsAdmin({ post }: Post) {
                         {mediaType === 'image' && <PostImage images={medias} />}
 
                         {/* For videos */}
-                        {mediaType === 'video' && <PostVideo videoPaths={medias} />}
+                        {mediaType === 'video' && (
+                           <>
+                              <PostVideo videoPaths={medias} />
+                              {/* <div style={{ position: 'relative', paddingTop: '56.25%' }} className='bg-accent border'>
+                                 <iframe
+                                    src={post.medias[0].url}
+                                    loading='lazy'
+                                    style={{
+                                       border: '0',
+                                       position: 'absolute',
+                                       top: '0',
+                                       height: '100%',
+                                       width: '100%',
+                                    }}
+                                    allow='accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;'
+                                    allowFullScreen={true}
+                                 ></iframe>
+                              </div> */}
+                           </>
+                        )}
                      </CardContent>
                   )}
 

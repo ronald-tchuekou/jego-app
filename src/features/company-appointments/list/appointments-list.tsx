@@ -47,7 +47,7 @@ export default function AppointmentsList({ justRecent }: Props) {
                            <TableHead key={column.name} style={{ width: column.width }}>
                               {column.name}
                            </TableHead>
-                        ) : null
+                        ) : null,
                      )}
                   </TableRow>
                </TableHeader>

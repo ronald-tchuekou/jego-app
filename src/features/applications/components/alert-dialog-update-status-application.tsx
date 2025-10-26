@@ -39,8 +39,8 @@ const AlertDialogUpdateApplicationStatus = ({ ref }: Props) => {
             status === JobApplicationStatus.ACCEPTED
                ? 'Candidature acceptée avec succès'
                : status === JobApplicationStatus.REJECTED
-                  ? 'Candidature rejetée avec succès'
-                  : 'Candidature mise en attente avec succès'
+                 ? 'Candidature rejetée avec succès'
+                 : 'Candidature mise en attente avec succès',
          )
          queryClient.invalidateQueries({ queryKey: applicationKey.all })
          closeModal()
@@ -74,8 +74,8 @@ const AlertDialogUpdateApplicationStatus = ({ ref }: Props) => {
                   {status === JobApplicationStatus.ACCEPTED
                      ? 'accepter'
                      : status === JobApplicationStatus.REJECTED
-                     ? 'rejeter'
-                     : 'mettre en attente'}{' '}
+                       ? 'rejeter'
+                       : 'mettre en attente'}{' '}
                   la candidature de <span className='font-bold'>{application?.user.displayName}</span> pour le poste{' '}
                   <span className='font-bold'>{application?.job.title}</span> ?
                </AlertDialogDescription>

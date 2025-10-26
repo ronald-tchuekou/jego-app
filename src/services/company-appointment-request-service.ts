@@ -35,7 +35,7 @@ const CompanyAppointmentRequestService = {
          dateFrom?: string
          dateTo?: string
       },
-      token: string
+      token: string,
    ) {
       const queryParams = new URLSearchParams()
 
@@ -54,7 +54,7 @@ const CompanyAppointmentRequestService = {
             headers: {
                Authorization: `Bearer ${token}`,
             },
-         }
+         },
       )
 
       return response.data
@@ -152,7 +152,7 @@ const CompanyAppointmentRequestService = {
             headers: {
                Authorization: `Bearer ${token}`,
             },
-         }
+         },
       )
 
       return response.data

@@ -14,11 +14,14 @@
 
 ## 🚀 Overview
 
-Jego App is a comprehensive Next.js application designed for managing job postings, company appointments, and business operations. The platform supports multiple user roles including administrators, company admins and company agents, each with specific permissions and dashboards.
+Jego App is a comprehensive Next.js application designed for managing job postings, company appointments, and business
+operations. The platform supports multiple user roles including administrators, company admins and company agents, each
+with specific permissions and dashboards.
 
 ## 🛠 Tech Stack
 
 ### Core Technologies
+
 - **Framework**: [Next.js 15.4.5](https://nextjs.org) with App Router
 - **Language**: TypeScript 5
 - **UI Library**: React 19.1.0
@@ -27,6 +30,7 @@ Jego App is a comprehensive Next.js application designed for managing job postin
 - **Data Fetching**: TanStack Query (React Query) 5.84.1
 
 ### UI Components & Libraries
+
 - **Component Library**: Custom components built with Radix UI primitives
 - **Forms**: React Hook Form 7.62.0 with Zod 4.0.14 validation
 - **Tables**: TanStack Table 8.21.3
@@ -39,6 +43,7 @@ Jego App is a comprehensive Next.js application designed for managing job postin
 - **Notifications**: Sonner
 
 ### Development Tools
+
 - **Linting**: ESLint 9 with Next.js config
 - **Type Safety**: TypeScript with strict mode
 - **Environment Validation**: @t3-oss/env-nextjs
@@ -47,6 +52,7 @@ Jego App is a comprehensive Next.js application designed for managing job postin
 ## ✨ Features
 
 ### For Administrators
+
 - **Dashboard Analytics**: User, company, job, and post statistics with interactive charts
 - **User Management**: Full CRUD operations for user accounts
 - **Company Management**: Manage company profiles and verifications
@@ -54,18 +60,20 @@ Jego App is a comprehensive Next.js application designed for managing job postin
 - **Content Moderation**: Review and manage all posts and job listings
 
 ### For Company Admins & Agents
+
 - **Company Dashboard**: View appointment counts, job applications, and recent activities
 - **Appointment Management**: Handle customer appointment requests
 - **Job Posting**: Create, edit, and manage job listings
 - **Post Management**: Publish company news and events
 - **Team Management**: Manage company team members
-- **Company Settings**: 
-  - Update company information
-  - Set location and map coordinates
-  - Configure business hours
-  - Upload company logo and images
+- **Company Settings**:
+   - Update company information
+   - Set location and map coordinates
+   - Configure business hours
+   - Upload company logo and images
 
 ### Common Features
+
 - **Authentication**: Secure login, registration, and password recovery
 - **Email Verification**: Account verification via email
 - **Responsive Design**: Mobile-first approach with adaptive layouts
@@ -194,7 +202,7 @@ The application uses `@t3-oss/env-nextjs` for runtime environment validation:
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - pnpm (recommended) or npm/yarn
 - Mapbox account for map features
 
@@ -236,7 +244,8 @@ Access the application at [http://localhost:3000](http://localhost:3000)
 
 ### Overview
 
-This application is designed to be deployed using [Coolify](https://coolify.io/) with [Nixpack](https://nixpacks.com/) as the build system. Nixpack automatically detects and builds Node.js applications without requiring a Dockerfile.
+This application is designed to be deployed using [Coolify](https://coolify.io/) with [Nixpack](https://nixpacks.com/)
+as the build system. Nixpack automatically detects and builds Node.js applications without requiring a Dockerfile.
 
 ### Deployment Configuration
 
@@ -252,6 +261,7 @@ This application is designed to be deployed using [Coolify](https://coolify.io/)
 Coolify will automatically detect the Next.js application. Configure the following:
 
 **Build Settings:**
+
 ```yaml
 Build Pack: Nixpack (auto-detected)
 Base Directory: /
@@ -281,11 +291,13 @@ NEXT_TELEMETRY_DISABLED=1
 #### 4. Runtime Configuration
 
 **Port Configuration:**
+
 ```yaml
 Port: 3000
 ```
 
 **Health Check:**
+
 ```yaml
 Path: /
 Interval: 30s
@@ -318,12 +330,14 @@ NODE_ENV = "production"
 #### 6. Advanced Coolify Settings
 
 **Resource Limits:**
+
 ```yaml
 CPU: 1000m (1 vCPU)
 Memory: 1Gi
 ```
 
 **Scaling:**
+
 ```yaml
 Min Replicas: 1
 Max Replicas: 3
@@ -331,6 +345,7 @@ Target CPU: 80%
 ```
 
 **Persistent Storage (if needed):**
+
 ```yaml
 Mount Path: /app/uploads
 Size: 10Gi
@@ -357,7 +372,7 @@ Size: 10Gi
 
 ## 📡 API Documentation
 
-The application connects to a backend API at the URL specified in `NEXT_PUBLIC_API_URL`. 
+The application connects to a backend API at the URL specified in `NEXT_PUBLIC_API_URL`.
 
 ### API Endpoints Structure
 
@@ -414,6 +429,7 @@ The application connects to a backend API at the URL specified in `NEXT_PUBLIC_A
 ### Authentication
 
 All authenticated endpoints require a Bearer token in the Authorization header:
+
 ```
 Authorization: Bearer <token>
 ```
