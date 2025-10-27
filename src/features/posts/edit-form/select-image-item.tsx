@@ -159,6 +159,7 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
             </div>
             {isVideo && !isLoading && !isRefetching && (
                <Button
+                  type='button'
                   size='icon-sm'
                   className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer'
                   onClick={() => setIsPlaying((s) => !s)}
@@ -184,6 +185,7 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
             >
                <div className='flex justify-end w-full max-w-[800px] py-2'>
                   <Button
+                     type='button'
                      size='icon-sm'
                      variant='ghost'
                      className='backdrop-blur-lg text-primary hover:text-primary/80'
