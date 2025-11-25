@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import CompanyGallery from './gallery'
 import CompanyInfo from './info'
 import CompanyPost from './posts'
+import CompanyReliableUsers from './reliable-users'
 import CompanyServices from './services'
 
 type Props = {
@@ -27,11 +28,14 @@ const CompanyDetails = ({ companyId }: Props) => {
 
    if (!data) return <EmptyContent />
 
+   console.log(data.users)
+
    return (
       <div className='flex flex-col gap-6'>
          <CompanyInfo company={data} />
          <CompanyServices services={data.services} />
          <CompanyGallery images={data.images} />
+         <CompanyReliableUsers users={data.users} />
          <CompanyPost posts={data.posts} />
       </div>
    )

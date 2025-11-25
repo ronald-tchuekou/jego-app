@@ -25,30 +25,30 @@ export const ImageWithLoading = ({ src, alt, style, imageClassName, className, .
 
    return (
       <div style={style} className={cn('relative w-full h-auto border bg-black', className)}>
-         {isLoading ? (
-            <div className='absolute inset-0 bg-muted animate-pulse' />
-         ) : hasError ? (
+         <Image
+            src={imageUrl}
+            alt={alt}
+            className={cn(
+               'transition-opacity duration-300 size-full object-contain object-center bg-black',
+               imageClassName,
+               {
+                  'bg-muted animate-pulse': isLoading,
+               }
+            )}
+            onLoad={() => setIsLoading(false)}
+            onError={() => {
+               setIsLoading(false)
+               setHasError(true)
+            }}
+            {...props}
+         />
+         {hasError ? (
             <div className='absolute inset-0 bg-muted flex items-center justify-center'>
                <span className='text-muted-foreground text-sm text-center p-4'>
                   Erreur lors du chargement de l&apos;image
                </span>
             </div>
-         ) : (
-            <Image
-               src={imageUrl}
-               alt={alt}
-               className={cn(
-                  'transition-opacity duration-300 size-full object-contain object-center bg-black',
-                  imageClassName
-               )}
-               onLoad={() => setIsLoading(false)}
-               onError={() => {
-                  setIsLoading(false)
-                  setHasError(true)
-               }}
-               {...props}
-            />
-         )}
+         ) : null}
       </div>
    )
 }
