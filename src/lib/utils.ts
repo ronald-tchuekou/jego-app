@@ -138,7 +138,7 @@ export function getImageDimensions(file: File): Promise<{ width: number; height:
 }
 
 export function getVideoMetadata(
-   file: File
+   file: File,
 ): Promise<{ width: number; height: number; duration: number; ratio: string } | null> {
    return new Promise((resolve, reject) => {
       // ✅ Vérifier si c’est une vidéo

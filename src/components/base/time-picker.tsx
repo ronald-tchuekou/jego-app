@@ -68,7 +68,7 @@ export function TimePicker({ value, onChange, placeholder = 'Heure', className }
                className={cn(
                   'w-full justify-start text-left font-normal',
                   !value && 'text-muted-foreground',
-                  className
+                  className,
                )}
             >
                <Clock />

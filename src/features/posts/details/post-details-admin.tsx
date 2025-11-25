@@ -83,7 +83,6 @@ export function PostDetailsAdmin({ post }: Post) {
                               </Button>
                            </div>
                         </div>
-                        <h1 className='text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight'>{post.title}</h1>
                      </div>
 
                      {/* Meta Information */}
@@ -113,7 +112,11 @@ export function PostDetailsAdmin({ post }: Post) {
                         {mediaType === 'image' && <PostImage images={medias} />}
 
                         {/* For videos */}
-                        {mediaType === 'video' && <PostVideo videoPaths={medias} />}
+                        {mediaType === 'video' && (
+                           <>
+                              <PostVideo videoPaths={medias} />
+                           </>
+                        )}
                      </CardContent>
                   )}
 

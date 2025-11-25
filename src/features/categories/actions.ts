@@ -5,7 +5,6 @@ import { getSlug } from '@/lib/utils'
 import CategoryService from '@/services/category-service'
 import { z } from 'zod'
 
-
 export const deleteCategoryAction = authenticatedActionClient
    .metadata({ actionName: 'delete-category' })
    .inputSchema(z.string())

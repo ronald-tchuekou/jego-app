@@ -13,7 +13,7 @@ function DateRangeFilter() {
    const [startDate, setStartDate] = useQueryState('startDate')
    const [endDate, setEndDate] = useQueryState('endDate')
    const [, setPage] = useQueryState('page', parseAsInteger.withDefault(1))
-   
+
    const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({
       from: startDate ? new Date(startDate) : undefined,
       to: endDate ? new Date(endDate) : undefined,
@@ -21,7 +21,7 @@ function DateRangeFilter() {
 
    const handleDateRangeSelect = (range?: { from?: Date; to?: Date }) => {
       setDateRange(range || {})
-      
+
       if (range?.from && range?.to) {
          setStartDate(format(range.from, 'yyyy-MM-dd'))
          setEndDate(format(range.to, 'yyyy-MM-dd'))
@@ -44,7 +44,7 @@ function DateRangeFilter() {
                   variant='outline'
                   className={cn(
                      'w-[280px] justify-start text-left font-normal bg-card shadow-lg',
-                     !dateRange.from && 'text-muted-foreground'
+                     !dateRange.from && 'text-muted-foreground',
                   )}
                >
                   <CalendarIcon className='mr-2 h-4 w-4' />
@@ -74,14 +74,9 @@ function DateRangeFilter() {
                />
             </PopoverContent>
          </Popover>
-         
+
          {(dateRange.from || dateRange.to) && (
-            <Button
-               variant='ghost'
-               size='icon'
-               className='h-10 w-10'
-               onClick={handleClearDates}
-            >
+            <Button variant='ghost' size='icon' className='h-10 w-10' onClick={handleClearDates}>
                <X className='h-4 w-4' />
                <span className='sr-only'>Effacer les dates</span>
             </Button>

@@ -43,7 +43,7 @@ export const updatePostAction = authenticatedActionClient
       z.object({
          postId: z.string().min(1, "L'ID du post est requis"),
          ...createPostFormSchema.shape,
-      }),
+      })
    )
    .action(async ({ parsedInput: { postId, ...updateData }, ctx }) => {
       const post = await PostService.update(postId, updateData, ctx.token)

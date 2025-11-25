@@ -134,7 +134,7 @@ function PostVideo({ videoPaths }: Props) {
          ref={containerRef}
          className={cn(
             'relative bg-gray-300 dark:bg-gray-600 overflow-hidden group border rounded-lg cursor-pointer',
-            getAspectRatioClass(aspectRatio)
+            getAspectRatioClass(aspectRatio),
          )}
          onClick={handleVideoClick}
          onMouseMove={handleInteraction}
@@ -184,7 +184,7 @@ function PostVideo({ videoPaths }: Props) {
          <div
             className={cn(
                'absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 transition-opacity duration-300',
-               showControls ? 'opacity-100' : 'opacity-0'
+               showControls ? 'opacity-100' : 'opacity-0',
             )}
             style={{ pointerEvents: showControls ? 'auto' : 'none' }}
          >
@@ -200,7 +200,7 @@ function PostVideo({ videoPaths }: Props) {
                   className={cn(
                      'rounded-full bg-background/90 hover:bg-background text-foreground shadow-lg backdrop-blur-sm transition-all duration-200 pointer-events-auto',
                      'w-14 h-14 sm:w-16 sm:h-16',
-                     !showControls && 'opacity-0'
+                     !showControls && 'opacity-0',
                   )}
                   aria-label={isPlaying ? 'Pause video' : 'Play video'}
                >

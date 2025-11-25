@@ -26,7 +26,7 @@ function PostImage({ images }: Props) {
    if (imageCount === 0) return null
 
    return (
-      <div className='bg-gray-300 dark:bg-gray-600 rounded-lg overflow-hidden border relative'>
+      <div className='my-3 relative'>
          {imageCount === 1 ? (
             <ImageWithLoading
                src={images[0].url}
@@ -37,6 +37,7 @@ function PostImage({ images }: Props) {
                style={{
                   aspectRatio: images[0].metadata?.aspectRatio?.replace(':', '/') || '16/10',
                }}
+               className={'max-h-[500px] min-h-[300px]'}
             />
          ) : (
             <div className='relative'>
@@ -44,18 +45,17 @@ function PostImage({ images }: Props) {
                   <CarouselContent>
                      {images.map((image, index) => (
                         <CarouselItem key={`${image.id}-${index}`}>
-                           <div className='p-1'>
-                              <ImageWithLoading
-                                 src={image.url}
-                                 alt={image.alt || 'Post image'}
-                                 fill={!image.metadata?.width || !image.metadata?.height}
-                                 width={image.metadata?.width || undefined}
-                                 height={image.metadata?.height || undefined}
-                                 style={{
-                                    aspectRatio: image.metadata?.aspectRatio?.replace(':', '/') || '16/10',
-                                 }}
-                              />
-                           </div>
+                           <ImageWithLoading
+                              src={image.url}
+                              alt={image.alt || 'Post image'}
+                              fill={!image.metadata?.width || !image.metadata?.height}
+                              width={image.metadata?.width || undefined}
+                              height={image.metadata?.height || undefined}
+                              style={{
+                                 aspectRatio: images[0].metadata?.aspectRatio?.replace(':', '/') || '16/10',
+                              }}
+                              className='max-h-[500px] min-h-[300px]'
+                           />
                         </CarouselItem>
                      ))}
                   </CarouselContent>
@@ -69,7 +69,7 @@ function PostImage({ images }: Props) {
                         onClick={() => api?.scrollTo(index)}
                         className={cn(
                            'w-2 h-2 rounded-full transition-all duration-200',
-                           current === index ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/75'
+                           current === index ? 'bg-primary w-6' : 'bg-primary/15 hover:bg-primary/25'
                         )}
                         aria-label={`Go to image ${index + 1}`}
                      />

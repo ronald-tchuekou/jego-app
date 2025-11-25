@@ -23,7 +23,7 @@ export default function useGetUserChartData() {
          if (timeRange) {
             range = {
                startDate: new Date(
-                  new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0]))
+                  new Date().setDate(new Date().getDate() - parseInt(timeRange.split('d')[0])),
                ).toISOString(),
                endDate: new Date().toISOString(),
             }

@@ -5,7 +5,6 @@ import JobApplicationService, { JobApplicationStatus } from '@/services/job-appl
 import { UserRole } from '@/services/user-service'
 import { z } from 'zod'
 
-
 // Action to update application status
 export const updateApplicationStatusAction = authenticatedActionClient
    .metadata({ actionName: 'updateApplicationStatusAction' })
@@ -13,19 +12,23 @@ export const updateApplicationStatusAction = authenticatedActionClient
       z.object({
          applicationId: z.string().min(1, "L'ID de la candidature est requis"),
          status: z.enum(JobApplicationStatus),
-      })
+      }),
    )
    .action(async ({ parsedInput: { applicationId, status }, ctx }) => {
       try {
          // Check if user has permission to update application status
-         if (ctx.user.role !== UserRole.ADMIN && ctx.user.role !== UserRole.COMPANY_ADMIN && ctx.user.role !== UserRole.COMPANY_AGENT) {
+         if (
+            ctx.user.role !== UserRole.ADMIN &&
+            ctx.user.role !== UserRole.COMPANY_ADMIN &&
+            ctx.user.role !== UserRole.COMPANY_AGENT
+         ) {
             throw new Error("Vous n'avez pas la permission de modifier le statut des candidatures")
          }
 
          const application = await JobApplicationService.update(
-            applicationId, 
+            applicationId,
             { status: status as JobApplicationStatus },
-            ctx.token
+            ctx.token,
          )
 
          return {
@@ -45,7 +48,7 @@ export const deleteApplicationAction = authenticatedActionClient
    .inputSchema(
       z.object({
          applicationId: z.string().min(1, "L'ID de la candidature est requis"),
-      })
+      }),
    )
    .action(async ({ parsedInput: { applicationId }, ctx }) => {
       try {
@@ -77,7 +80,7 @@ export const getApplicationsByJobIdAction = authenticatedActionClient
          jobId: z.string().min(1, "L'ID du job est requis"),
          page: z.number().min(1).default(1),
          limit: z.number().min(1).max(100).default(10),
-      })
+      }),
    )
    .action(async ({ parsedInput: { jobId, page, limit }, ctx }) => {
       try {

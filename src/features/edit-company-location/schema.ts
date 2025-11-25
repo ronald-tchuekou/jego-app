@@ -15,5 +15,5 @@ export type EditCompanyLocationSchema = z.infer<typeof editCompanyLocationSchema
 
 export const editCompanyLocationDefaultValues: EditCompanyLocationSchema = {
    lat: '',
-   lng: ''
+   lng: '',
 }

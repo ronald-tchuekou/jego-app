@@ -63,7 +63,20 @@ export function PostDetailsUser({ post }: Props) {
                   {mediaType === 'image' && <PostImage images={medias} />}
 
                   {/* For videos */}
-                  {mediaType === 'video' && <PostVideo videoPaths={medias} />}
+                  {mediaType === 'video' && (
+                     <>
+                        <PostVideo videoPaths={medias} />
+                        {/* <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+                           <iframe
+                              src={post.medias[0].url}
+                              loading='lazy'
+                              style={{ border: '0', position: 'absolute', top: '0', height: '100%', width: '100%' }}
+                              allow='accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;'
+                              allowFullScreen={true}
+                           ></iframe>
+                        </div> */}
+                     </>
+                  )}
                </CardContent>
             )}
             <CardContent>

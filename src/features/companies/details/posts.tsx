@@ -41,7 +41,7 @@ const CompanyPost = ({ posts }: Props) => {
 
 const PostItem = ({ post }: { post: PostModel }) => {
    const mediaType = post.mediaType
-   const medias = post.medias
+   const medias = post.medias || []
 
    return (
       <CarouselItem key={post.id} className='md:basis-1/2 lg:basis-1/3'>

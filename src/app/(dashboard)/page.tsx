@@ -14,7 +14,9 @@ const DynamicPostChart = dynamic(() => import('@/features/admin-stats/components
 
 // For company admin
 const DynamicCompanyAppointmentCount = dynamic(() => import('@/features/company-stats/components/appointment-count'))
-const DynamicCompanyJobApplicationCount = dynamic(() => import('@/features/company-stats/components/job-application-count'))
+const DynamicCompanyJobApplicationCount = dynamic(
+   () => import('@/features/company-stats/components/job-application-count'),
+)
 const DynamicCompanyJobCount = dynamic(() => import('@/features/company-stats/components/job-count'))
 const DynamicCompanyPostCount = dynamic(() => import('@/features/company-stats/components/post-count'))
 const DynamicApplicationsList = dynamic(() => import('@/features/applications/list/applications-list'))
@@ -24,7 +26,7 @@ export default async function Page() {
    return (
       <>
          <HomeDashboardTitle />
-         <div className='*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-5 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4'>
+         <div className='grid grid-cols-1 gap-5 @xl/main:grid-cols-2 @5xl/main:grid-cols-4'>
             <ContentGuard roles={[UserRole.ADMIN]}>
                <DynamicUserCount />
                <DynamicCompanyCount />

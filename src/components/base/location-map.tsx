@@ -99,7 +99,7 @@ const LocationMap = ({
          // Center map on the location
          map.current.setCenter([lng, lat])
       },
-      [interactive, onLocationSelect, showMarker]
+      [interactive, onLocationSelect, showMarker],
    )
 
    // Update marker when coordinates change

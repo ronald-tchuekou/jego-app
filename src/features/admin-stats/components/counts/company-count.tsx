@@ -12,7 +12,7 @@ const CompanyCount = () => {
    if (isLoading) return <CountLoader />
 
    return (
-      <Card className='@container/card'>
+      <Card className='bg-card'>
          <CardHeader>
             <CardDescription className='text-lg text-foreground'>Total Entreprises</CardDescription>
             <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>

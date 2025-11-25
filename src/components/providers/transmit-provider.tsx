@@ -6,7 +6,7 @@ import { createContext, ReactNode, useContext } from 'react'
 interface TransmitContextType {
    transmit: Transmit | null
    isConnected: boolean
-   subscribe: (channel: string, callback: (data: any) => void) => (() => void)
+   subscribe: (channel: string, callback: (data: any) => void) => () => void
 }
 
 const TransmitContext = createContext<TransmitContextType | undefined>(undefined)
@@ -18,11 +18,7 @@ interface Props {
 export const TransmitProvider = ({ children }: Props) => {
    const transmitState = useTransmit()
 
-   return (
-      <TransmitContext value={transmitState}>
-         {children}
-      </TransmitContext>
-   )
+   return <TransmitContext value={transmitState}>{children}</TransmitContext>
 }
 
 export const useTransmitContext = () => {

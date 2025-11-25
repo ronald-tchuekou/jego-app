@@ -2,18 +2,18 @@
 
 import { Button } from '@/components/ui/button'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuSeparator,
+   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { CompanyAppointmentRequestModel } from '@/services/company-appointment-request-service'
 import { Eye, MoreHorizontal, Trash } from 'lucide-react'
 import Link from 'next/link'
 import { useRef } from 'react'
 import AlertDialogDeleteAppointment, {
-    AlertDialogDeleteAppointmentRef,
+   AlertDialogDeleteAppointmentRef,
 } from '../components/alert-dialog-delete-appointment'
 
 type Props = {

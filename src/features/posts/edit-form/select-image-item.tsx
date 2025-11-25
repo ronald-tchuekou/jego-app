@@ -37,12 +37,12 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
       },
    })
 
-   const { isLoading, refetch } = useQuery({
+   const { isLoading, refetch, isRefetching } = useQuery({
       queryKey: ['post-file-upload', file.name, file.size],
       queryFn: async () => {
          try {
-            if (filePath) return true;
-            
+            if (filePath) return true
+
             const formData = new FormData()
             formData.append('files', file)
 
@@ -90,9 +90,7 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
                        aspectRatio: imageDimensions?.ratio || '16/9',
                     },
             })
-
          } catch (error) {
-            console.error('Upload file error => ', error)
             if (error instanceof AxiosError) {
                const message = error.response?.data.message || "Une erreur est survenue lors de l'upload du fichier"
                setError(message)
@@ -100,14 +98,15 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
                setError((error as Error).message)
             }
          }
-         
-         return true;
+
+         return true
       },
    })
 
    const handleRefresh = () => {
       refetch()
       setError(null)
+      setProgress(0)
    }
 
    return (
@@ -131,7 +130,7 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
             <div className='bg-background/50 p-2 absolute bottom-0 left-0 right-0 backdrop-blur-lg space-y-1 border-t'>
                <p className='text-xs font-medium line-clamp-1'>{file.name}</p>
                <p className='text-[10px]'>{compactNumber(file.size)}o</p>
-               {isLoading && <Progress value={progress} className='w-full' />}
+               {(isLoading || isRefetching) && <Progress value={progress} className='w-full' />}
             </div>
             <div className='absolute top-2 right-2 flex gap-1'>
                {!!error && (
@@ -158,8 +157,9 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
                   </Button>
                )}
             </div>
-            {isVideo && (
+            {isVideo && !isLoading && !isRefetching && (
                <Button
+                  type='button'
                   size='icon-sm'
                   className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer'
                   onClick={() => setIsPlaying((s) => !s)}
@@ -167,7 +167,7 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
                   <PlayIcon className='fill-current' />
                </Button>
             )}
-            {isLoading && (
+            {(isLoading || isRefetching) && (
                <div className='absolute inset-0 bg-background/50 flex items-center justify-center'>
                   <Spinner />
                </div>
@@ -185,6 +185,7 @@ export function SelectImageItem({ file, onDeleted, onUploaded, filePath }: Props
             >
                <div className='flex justify-end w-full max-w-[800px] py-2'>
                   <Button
+                     type='button'
                      size='icon-sm'
                      variant='ghost'
                      className='backdrop-blur-lg text-primary hover:text-primary/80'
